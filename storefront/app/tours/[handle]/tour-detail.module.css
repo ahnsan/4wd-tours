@@ -230,7 +230,7 @@
 
 @media (max-width: 1200px) {
   .grid {
-    grid-template-columns: 1fr minmax(auto, 320px);
+    grid-template-columns: 1fr minmax(auto, 360px);
     gap: 2.5rem;
   }
 }
