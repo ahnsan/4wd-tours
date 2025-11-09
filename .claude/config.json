@@ -1,0 +1,11 @@
+{
+  "project": "med-usa-4wd",
+  "description": "4WD Tours e-commerce platform built with Medusa",
+  "version": "1.0.0",
+  "hooks": {
+    "enabled": true
+  },
+  "commands": {
+    "enabled": true
+  }
+}

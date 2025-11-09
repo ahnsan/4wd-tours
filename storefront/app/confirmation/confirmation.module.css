@@ -1,0 +1,443 @@
+.confirmationPage {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 1rem;
+  text-align: center;
+}
+
+.successIcon {
+  margin: 0 auto 2rem;
+  animation: scaleIn 0.5s ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3rem;
+  color: #1a5f3f;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 3rem;
+}
+
+.bookingRef {
+  display: inline-flex;
+  flex-direction: column;
+  padding: 1.5rem 3rem;
+  background: #f8f9fa;
+  border-radius: 12px;
+  margin-bottom: 3rem;
+  border: 2px dashed #1a5f3f;
+}
+
+.refLabel {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.refNumber {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a5f3f;
+  font-family: 'Courier New', monospace;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  text-align: left;
+  margin-bottom: 3rem;
+}
+
+.detailsSection,
+.nextSteps {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.infoCard {
+  background: #e8f5e9;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.infoCard h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  color: #1a5f3f;
+  margin-bottom: 1rem;
+}
+
+.infoCard p {
+  color: #333;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.customerDetails,
+.tourDetails,
+.addonsDetails {
+  margin-bottom: 2rem;
+}
+
+.customerDetails h3,
+.tourDetails h3,
+.addonsDetails h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #eee;
+}
+
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.detailRow:last-child {
+  border-bottom: none;
+}
+
+.tourCard {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.tourHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.tourHeader h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  color: #1a5f3f;
+  margin: 0;
+}
+
+.tourPrice {
+  font-weight: 700;
+  color: #1a5f3f;
+  font-size: 1.2rem;
+  white-space: nowrap;
+}
+
+.tourMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.metaItem svg {
+  color: #1a5f3f;
+  flex-shrink: 0;
+}
+
+.addonItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.addonItem:last-child {
+  border-bottom: none;
+}
+
+.addonName {
+  font-weight: 600;
+  color: #333;
+}
+
+.addonQty {
+  color: #666;
+  margin-left: 0.5rem;
+}
+
+.addonPrice {
+  font-weight: 700;
+  color: #1a5f3f;
+}
+
+.totalSection {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 2px solid #eee;
+}
+
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.totalLabel {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.totalAmount {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a5f3f;
+}
+
+.nextSteps h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  color: #1a5f3f;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.stepsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.step {
+  display: flex;
+  gap: 1rem;
+}
+
+.stepNumber {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  background: #1a5f3f;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.stepContent h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.stepContent p {
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.helpCard {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.helpCard h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  color: #1a5f3f;
+  margin-bottom: 1rem;
+}
+
+.helpCard p {
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.contactInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 500px;
+  margin: 0 auto 3rem;
+}
+
+.printBtn,
+.browseBtn,
+.homeBtn {
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.printBtn {
+  background: #1a5f3f;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.printBtn:hover {
+  background: #2d8659;
+}
+
+.browseBtn {
+  background: white;
+  color: #1a5f3f;
+  border: 2px solid #1a5f3f;
+}
+
+.browseBtn:hover {
+  background: #f8f9fa;
+}
+
+.homeBtn {
+  background: #f8f9fa;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.homeBtn:hover {
+  background: #e8e8e8;
+}
+
+.socialShare {
+  padding: 2rem;
+  background: #f8f9fa;
+  border-radius: 12px;
+}
+
+.socialShare p {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.socialButtons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.socialBtn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: #1a5f3f;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.socialBtn:hover {
+  background: #2d8659;
+  transform: translateY(-2px);
+}
+
+.noBooking {
+  max-width: 800px;
+  margin: 4rem auto;
+  text-align: center;
+  padding: 3rem 2rem;
+}
+
+.noBooking h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3rem;
+  color: #1a5f3f;
+  margin-bottom: 1rem;
+}
+
+.noBooking p {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+.backBtn {
+  display: inline-block;
+  padding: 1rem 2rem;
+  background: #1a5f3f;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.backBtn:hover {
+  background: #2d8659;
+}
+
+@media (min-width: 1024px) {
+  .content {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+  }
+
+  .refNumber {
+    font-size: 1.5rem;
+  }
+
+  .tourHeader {
+    flex-direction: column;
+  }
+
+  .actions {
+    max-width: 100%;
+  }
+}

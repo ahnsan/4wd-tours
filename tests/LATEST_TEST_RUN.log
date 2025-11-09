@@ -1,0 +1,46 @@
+
+> medusa-starter-default@0.0.1 test:seeding
+> TEST_TYPE=unit NODE_OPTIONS=--experimental-vm-modules jest tests/unit/seeding --silent=false --runInBand --forceExit --coverage
+
+PASS tests/unit/seeding/addon-upsert.spec.ts
+  addon-upsert
+    upsertCollection
+      ✓ should return existing collection ID when collection exists (4 ms)
+      ✓ should create new collection when it does not exist (1 ms)
+      ✓ should throw error when collection creation fails (1 ms)
+    upsertProduct
+      ✓ should update existing product and return its ID (1 ms)
+      ✓ should create new product when it does not exist (1 ms)
+      ✓ should create product without linking to collection if collection_handle not provided
+      ✓ should use default status and metadata when not provided
+      ✓ should throw error when product creation fails
+    upsertVariant
+      ✓ should update existing variant and return its ID (1 ms)
+      ✓ should create new variant when none exists (1 ms)
+      ✓ should use default SKU when not provided (1 ms)
+      ✓ should handle manage_inventory undefined correctly
+      ✓ should throw error when variant creation fails
+    upsertPrice
+      ✓ should update existing price when price set and price exist
+      ✓ should create new price set when none exists
+      ✓ should create new price set when price set exists but price does not
+      ✓ should throw error when price update fails (1 ms)
+    upsertProductComplete
+      ✓ should complete full product upsert flow
+      ✓ should update existing product in complete flow (1 ms)
+      ✓ should propagate errors from product upsert
+      ✓ should propagate errors from variant upsert
+      ✓ should propagate errors from price upsert (1 ms)
+
+-----------------|---------|----------|---------|---------|-------------------
+File             | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-----------------|---------|----------|---------|---------|-------------------
+All files        |     100 |     90.9 |     100 |     100 |                   
+ addon-upsert.ts |     100 |     90.9 |     100 |     100 | 90-91,151         
+-----------------|---------|----------|---------|---------|-------------------
+Test Suites: 1 passed, 1 total
+Tests:       22 passed, 22 total
+Snapshots:   0 total
+Time:        0.584 s, estimated 1 s
+Ran all test suites matching /tests\/unit\/seeding/i.
+Force exiting Jest: Have you considered using `--detectOpenHandles` to detect async operations that kept running after all tests finished?

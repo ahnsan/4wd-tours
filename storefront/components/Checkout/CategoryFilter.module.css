@@ -1,0 +1,70 @@
+.filterContainer {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filterButton {
+  padding: var(--space-sm) var(--space-lg);
+  min-height: var(--touch-target-min);
+  background: white;
+  border: 2px solid var(--light-cream);
+  border-radius: var(--radius-full);
+  font-size: var(--font-sm);
+  font-weight: 500;
+  color: var(--text-dark);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  font-family: 'Lato', sans-serif;
+  white-space: nowrap;
+}
+
+.filterButton:hover {
+  border-color: var(--primary-tan);
+  background: rgba(186, 159, 130, 0.1);
+}
+
+.filterButton:focus-visible {
+  outline: 3px solid var(--primary-tan);
+  outline-offset: 2px;
+}
+
+.filterButton.active {
+  background: var(--primary-tan);
+  color: white;
+  border-color: var(--primary-tan);
+}
+
+@media (max-width: 767px) {
+  .filterButton {
+    padding: var(--space-xs) var(--space-md);
+    font-size: var(--font-xs);
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .filterButton {
+    min-height: 48px;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .filterButton {
+    background: #2C2C2C;
+    border-color: #3a3a3a;
+    color: #E8E8E8;
+  }
+
+  .filterButton:hover {
+    border-color: var(--primary-tan);
+    background: rgba(186, 159, 130, 0.2);
+  }
+
+  .filterButton.active {
+    background: var(--primary-tan);
+    color: white;
+  }
+}

@@ -1,0 +1,672 @@
+.addonsPage {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* Skip link for screen readers - WCAG 2.1 AA */
+.skipLink {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #1a5f3f;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 0 0 8px 0;
+  z-index: 1000;
+  transition: top 0.2s;
+}
+
+.skipLink:focus {
+  top: 0;
+  outline: 2px solid #ffdd00;
+  outline-offset: 2px;
+}
+
+/* Screen reader only class */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* List reset for accessibility */
+.addonsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  margin-bottom: 2rem;
+}
+
+.breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.breadcrumb li::after {
+  content: '/';
+  margin-left: 0.5rem;
+}
+
+.breadcrumb li:last-child::after {
+  content: '';
+}
+
+.breadcrumb a {
+  color: #1a5f3f;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.breadcrumb a:hover {
+  color: #2d8659;
+  text-decoration: underline;
+}
+
+.breadcrumb a:focus {
+  outline: 2px solid #1a5f3f;
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* Layout */
+.addonsContent {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 3rem;
+}
+
+/* Left Column */
+.leftColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.header {
+  text-align: center;
+}
+
+.header h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.5rem;
+  color: #1a5f3f;
+  margin-bottom: 1rem;
+}
+
+.header p {
+  font-size: 1.1rem;
+  color: #555;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Filter Section */
+.filterSection {
+  padding: 1.5rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.categoryBtn {
+  padding: 0.6rem 1.25rem;
+  background: white;
+  border: 2px solid #ddd;
+  color: #555;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  /* Performance: Use only GPU-accelerated properties in transitions */
+  transition: transform 0.15s ease-out, opacity 0.15s ease-out, background-color 0.2s ease-out, border-color 0.2s ease-out, color 0.2s ease-out;
+  /* GPU acceleration */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.categoryBtn:hover {
+  border-color: #1a5f3f;
+  color: #1a5f3f;
+  /* Use transform for better performance */
+  transform: scale(1.02) translateZ(0);
+}
+
+.categoryBtn.active {
+  background: #1a5f3f;
+  border-color: #1a5f3f;
+  color: white;
+}
+
+/* WCAG 2.1 AA Focus Indicators - 2px minimum */
+.categoryBtn:focus,
+.categoryBtn:focus-visible {
+  outline: 2px solid #1a5f3f;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 4px rgba(26, 95, 63, 0.2);
+}
+
+/* Add-ons Grid */
+.addonsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.addonCard {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  /* Performance: Use transform for GPU acceleration instead of box-shadow */
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+  /* Reserve space to prevent layout shift */
+  min-height: 200px;
+  /* GPU acceleration hint */
+  will-change: transform;
+  /* Force GPU layer for smooth animations */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.addonCard:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  /* Use transform instead of layout-affecting properties */
+  transform: translateY(-2px) translateZ(0);
+}
+
+.addonHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.addonName {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  color: #1a5f3f;
+  margin-bottom: 0.5rem;
+}
+
+.addonCategory {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  background: #e8f5e9;
+  color: #1a5f3f;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.priceTag {
+  flex-shrink: 0;
+}
+
+.price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a5f3f;
+}
+
+.addonDescription {
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.addonActions {
+  display: flex;
+  gap: 1rem;
+}
+
+.addBtn {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  background: #1a5f3f;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  /* Performance: GPU-accelerated transitions */
+  transition: background-color 0.2s ease-out, transform 0.15s ease-out;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.addBtn:hover {
+  background: #2d8659;
+  transform: scale(1.01) translateZ(0);
+}
+
+.addBtn:active {
+  transform: scale(0.98) translateZ(0);
+}
+
+/* Focus indicators for all interactive elements */
+.addBtn:focus,
+.addBtn:focus-visible {
+  outline: 2px solid #ffdd00;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 4px rgba(26, 95, 63, 0.3);
+}
+
+.quantityControl {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.quantityBtn {
+  width: 36px;
+  height: 36px;
+  border: 2px solid #1a5f3f;
+  background: white;
+  color: #1a5f3f;
+  border-radius: 6px;
+  font-size: 1.25rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quantityBtn:hover {
+  background: #1a5f3f;
+  color: white;
+}
+
+.quantityBtn:focus,
+.quantityBtn:focus-visible {
+  outline: 2px solid #1a5f3f;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(26, 95, 63, 0.2);
+}
+
+.quantity {
+  min-width: 30px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+/* Spinbutton focus indicator */
+.quantity:focus,
+.quantity:focus-visible {
+  outline: 2px solid #1a5f3f;
+  outline-offset: 2px;
+  background: rgba(26, 95, 63, 0.05);
+}
+
+.removeBtn {
+  padding: 0.75rem 1rem;
+  background: #e53e3e;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.removeBtn:hover {
+  background: #c53030;
+}
+
+.removeBtn:focus,
+.removeBtn:focus-visible {
+  outline: 2px solid #ffdd00;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(229, 62, 62, 0.2);
+}
+
+/* Right Column - Cart Summary */
+.cartSummary {
+  position: sticky;
+  top: 2rem;
+  height: fit-content;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  /* Performance: Prevent layout shifts with fixed dimensions */
+  min-height: 400px;
+  /* GPU acceleration for sticky positioning */
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.cartSummary h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  color: #1a5f3f;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #eee;
+}
+
+.cartSummary h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.tourSummary,
+.addonsSummary {
+  margin-bottom: 2rem;
+}
+
+.tourInfo {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.tourName {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.tourMeta {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0.25rem 0;
+}
+
+.itemPrice {
+  font-weight: 700;
+  color: #1a5f3f;
+  white-space: nowrap;
+}
+
+.addonItem {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.addonItem:last-child {
+  border-bottom: none;
+}
+
+.addonItemName {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.25rem;
+}
+
+.addonItemMeta {
+  font-size: 0.85rem;
+  color: #666;
+  margin: 0;
+}
+
+.totalSection {
+  margin: 2rem 0;
+  padding: 1.5rem 0;
+  border-top: 2px solid #eee;
+  border-bottom: 2px solid #eee;
+}
+
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.totalAmount {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a5f3f;
+}
+
+.actionButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.continueBtn {
+  width: 100%;
+  padding: 1rem;
+  background: #1a5f3f;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  /* Performance: GPU-accelerated transitions */
+  transition: background-color 0.2s ease-out, transform 0.15s ease-out;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.continueBtn:hover {
+  background: #2d8659;
+  transform: translateY(-1px) translateZ(0);
+}
+
+.continueBtn:active {
+  transform: translateY(0) translateZ(0);
+}
+
+.skipBtn {
+  width: 100%;
+  padding: 1rem;
+  background: white;
+  color: #1a5f3f;
+  border: 2px solid #1a5f3f;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.skipBtn:hover {
+  background: #f8f9fa;
+}
+
+.continueBtn:focus,
+.continueBtn:focus-visible,
+.skipBtn:focus,
+.skipBtn:focus-visible {
+  outline: 2px solid #1a5f3f;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 4px rgba(26, 95, 63, 0.2);
+}
+
+.trustBadges {
+  padding-top: 1.5rem;
+  border-top: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #555;
+  font-size: 0.85rem;
+}
+
+.badge svg {
+  color: #1a5f3f;
+  flex-shrink: 0;
+}
+
+/* No Tour State */
+.noTour {
+  max-width: 800px;
+  margin: 4rem auto;
+  text-align: center;
+  padding: 3rem 2rem;
+}
+
+.noTour h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3rem;
+  color: #1a5f3f;
+  margin-bottom: 1rem;
+}
+
+.noTour p {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+.backBtn {
+  display: inline-block;
+  padding: 1rem 2rem;
+  background: #1a5f3f;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.backBtn:hover {
+  background: #2d8659;
+}
+
+.backBtn:focus,
+.backBtn:focus-visible {
+  outline: 2px solid #ffdd00;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 4px rgba(26, 95, 63, 0.2);
+}
+
+/* Skeleton Loader for CLS Prevention */
+.cardSkeleton {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  min-height: 200px;
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.cardSkeleton::before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(240, 240, 240, 0) 0%,
+    rgba(240, 240, 240, 0.5) 50%,
+    rgba(240, 240, 240, 0) 100%
+  );
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Performance: Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .addonCard,
+  .categoryBtn,
+  .addBtn,
+  .continueBtn,
+  .cardSkeleton {
+    animation: none;
+    transition: none;
+  }
+
+  .addonCard:hover,
+  .categoryBtn:hover,
+  .addBtn:hover,
+  .continueBtn:hover {
+    transform: none;
+  }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .addonsContent {
+    grid-template-columns: 1fr;
+  }
+
+  .cartSummary {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .header h1 {
+    font-size: 2rem;
+  }
+
+  .addonHeader {
+    flex-direction: column;
+  }
+
+  .quantityControl {
+    flex-wrap: wrap;
+  }
+
+  .removeBtn {
+    flex: 1 0 100%;
+  }
+}

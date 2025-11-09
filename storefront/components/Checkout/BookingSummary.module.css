@@ -1,0 +1,437 @@
+/* Booking Summary Styling - Sticky Panel - WCAG 2.1 AA Compliant */
+
+.summary {
+  background: white;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: var(--space-xl);
+  max-height: calc(100vh - var(--space-2xl));
+  overflow-y: auto;
+  z-index: var(--z-sticky);
+}
+
+.summaryContent {
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+/* Title */
+.title {
+  font-size: var(--font-2xl);
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0;
+  font-family: 'Lato', sans-serif;
+  letter-spacing: 0.02em;
+  padding-bottom: var(--space-md);
+  border-bottom: 2px solid var(--light-cream);
+}
+
+/* Sections */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.section:last-of-type {
+  border-bottom: none;
+}
+
+.sectionTitle {
+  font-size: var(--font-base);
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+  font-family: 'Lato', sans-serif;
+}
+
+/* Tour Info */
+.tourInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: var(--light-cream);
+  border-radius: var(--radius-md);
+}
+
+.tourDetails {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.tourTitle {
+  font-size: var(--font-base);
+  font-weight: 600;
+  color: var(--text-dark);
+  font-family: 'Lato', sans-serif;
+}
+
+.tourMeta {
+  font-size: var(--font-sm);
+  color: #666;
+  margin: 0;
+}
+
+.tourPrice {
+  font-size: var(--font-lg);
+  font-weight: 700;
+  color: var(--primary-tan);
+  font-family: 'Lato', sans-serif;
+  white-space: nowrap;
+}
+
+/* Change Tour Button */
+.changeTourBtn {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  min-height: var(--touch-target-min);
+  background: white;
+  border: 2px solid var(--primary-tan);
+  color: var(--primary-tan);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: var(--font-sm);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  font-family: 'Lato', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.changeTourBtn:hover {
+  background: var(--primary-tan);
+  color: white;
+}
+
+.changeTourBtn:focus-visible {
+  outline: 3px solid var(--primary-tan);
+  outline-offset: 3px;
+}
+
+/* No Tour */
+.noTour {
+  padding: var(--space-xl);
+  text-align: center;
+  color: #999;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.noTour p {
+  margin: 0;
+  font-size: var(--font-base);
+}
+
+.selectTourBtn {
+  padding: var(--space-md) var(--space-xl);
+  min-height: var(--touch-target-min);
+  background: var(--primary-tan);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: var(--font-base);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  font-family: 'Lato', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.selectTourBtn:hover {
+  background: var(--dark-bg);
+}
+
+.selectTourBtn:focus-visible {
+  outline: 3px solid var(--primary-tan);
+  outline-offset: 3px;
+}
+
+/* Add-ons List */
+.addonsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.addonItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-sm);
+  background: var(--light-cream);
+  border-radius: var(--radius-sm);
+  gap: var(--space-md);
+}
+
+.addonInfo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex: 1;
+}
+
+.addonTitle {
+  font-size: var(--font-sm);
+  color: var(--text-dark);
+  font-weight: 500;
+}
+
+.addonQuantity {
+  font-size: var(--font-xs);
+  color: #666;
+  background: white;
+  padding: 2px var(--space-xs);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+}
+
+.addonPrice {
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--primary-tan);
+  white-space: nowrap;
+}
+
+/* Price List */
+.priceList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin: 0;
+}
+
+.priceRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--font-sm);
+  gap: var(--space-md);
+}
+
+.priceRow dt {
+  color: #666;
+  font-weight: 500;
+}
+
+.priceRow dd {
+  margin: 0;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.subtotalRow {
+  padding-top: var(--space-md);
+  border-top: 1px solid #e0e0e0;
+  font-size: var(--font-base);
+}
+
+.totalRow {
+  padding-top: var(--space-md);
+  border-top: 2px solid var(--primary-tan);
+  font-size: var(--font-lg);
+  font-weight: 700;
+}
+
+.totalRow dt,
+.totalRow dd {
+  color: var(--primary-tan);
+  font-weight: 700;
+  font-family: 'Lato', sans-serif;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.continueBtn {
+  width: 100%;
+  padding: var(--space-lg) var(--space-xl);
+  min-height: var(--touch-target-ideal);
+  background: var(--primary-tan);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: var(--font-base);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  font-family: 'Lato', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.continueBtn:hover:not(:disabled) {
+  background: var(--dark-bg);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.continueBtn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.continueBtn:focus-visible {
+  outline: 3px solid var(--primary-tan);
+  outline-offset: 3px;
+}
+
+.secureNote {
+  font-size: var(--font-xs);
+  color: #666;
+  text-align: center;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1023px) {
+  .summary {
+    position: relative;
+    top: 0;
+    max-height: none;
+    margin-top: var(--space-xl);
+  }
+}
+
+@media (max-width: 767px) {
+  .summaryContent {
+    padding: var(--space-lg);
+    gap: var(--space-lg);
+  }
+
+  .title {
+    font-size: var(--font-xl);
+  }
+
+  .tourInfo {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .tourPrice {
+    align-self: flex-end;
+  }
+
+  .section {
+    gap: var(--space-sm);
+  }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .continueBtn {
+    min-height: 56px;
+  }
+
+  .changeTourBtn,
+  .selectTourBtn {
+    min-height: 48px;
+  }
+}
+
+/* Smooth Scrolling for Long Summaries */
+.summary::-webkit-scrollbar {
+  width: 8px;
+}
+
+.summary::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: var(--radius-full);
+}
+
+.summary::-webkit-scrollbar-thumb {
+  background: var(--primary-tan);
+  border-radius: var(--radius-full);
+}
+
+.summary::-webkit-scrollbar-thumb:hover {
+  background: var(--dark-bg);
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .summary {
+    background: #2C2C2C;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  }
+
+  .title {
+    color: #E8E8E8;
+    border-bottom-color: #555;
+  }
+
+  .sectionTitle {
+    color: #b0b0b0;
+  }
+
+  .tourInfo {
+    background: #1a1a1a;
+  }
+
+  .tourTitle {
+    color: #E8E8E8;
+  }
+
+  .tourMeta {
+    color: #b0b0b0;
+  }
+
+  .changeTourBtn {
+    background: #2C2C2C;
+    border-color: var(--primary-tan);
+  }
+
+  .addonItem {
+    background: #1a1a1a;
+  }
+
+  .addonTitle {
+    color: #E8E8E8;
+  }
+
+  .addonQuantity {
+    background: #2C2C2C;
+    color: #b0b0b0;
+  }
+
+  .priceRow dt {
+    color: #b0b0b0;
+  }
+
+  .priceRow dd {
+    color: #E8E8E8;
+  }
+
+  .secureNote {
+    color: #b0b0b0;
+  }
+
+  .summary::-webkit-scrollbar-track {
+    background: #1a1a1a;
+  }
+}

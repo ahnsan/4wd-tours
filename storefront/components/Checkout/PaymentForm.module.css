@@ -1,0 +1,284 @@
+.paymentForm {
+  background: white;
+  padding: var(--space-2xl);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.formTitle {
+  font-size: var(--font-2xl);
+  font-weight: 500;
+  margin-bottom: var(--space-xl);
+  color: var(--text-dark);
+  font-family: 'Cormorant Garamond', serif;
+}
+
+.sectionTitle {
+  font-size: var(--font-lg);
+  font-weight: 500;
+  margin-bottom: var(--space-md);
+  color: var(--text-dark);
+  font-family: 'Cormorant Garamond', serif;
+}
+
+.methodSelection {
+  margin-bottom: var(--space-2xl);
+}
+
+.methodGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-md);
+}
+
+.methodButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: var(--space-lg);
+  border: 2px solid #ddd;
+  border-radius: var(--radius-md);
+  background: white;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  min-height: var(--touch-target-ideal);
+  font-family: 'Lato', sans-serif;
+  font-size: var(--font-sm);
+  color: var(--text-dark);
+}
+
+.methodButton:hover {
+  border-color: var(--primary-tan);
+  background: rgba(196, 181, 160, 0.05);
+}
+
+.methodButton:focus-visible {
+  outline: 3px solid var(--primary-tan);
+  outline-offset: 2px;
+}
+
+.methodActive {
+  border-color: var(--primary-tan);
+  background: rgba(196, 181, 160, 0.1);
+}
+
+.methodIcon {
+  width: 32px;
+  height: 32px;
+  color: var(--primary-tan);
+}
+
+.cardForm {
+  margin-bottom: var(--space-xl);
+}
+
+.formGroup {
+  margin-bottom: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+.label {
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--text-dark);
+  font-family: 'Lato', sans-serif;
+  display: block;
+}
+
+.label.required::after {
+  content: ' *';
+  color: #d32f2f;
+  font-weight: bold;
+}
+
+.input {
+  width: 100%;
+  padding: var(--space-md);
+  font-size: 16px;
+  border: 2px solid #ddd;
+  border-radius: var(--radius-sm);
+  font-family: 'Lato', sans-serif;
+  transition: all var(--transition-base);
+  background: white;
+  color: var(--text-dark);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--primary-tan);
+  box-shadow: 0 0 0 3px rgba(196, 181, 160, 0.1);
+}
+
+.input::placeholder {
+  color: #999;
+}
+
+.inputError {
+  border-color: #d32f2f;
+}
+
+.inputError:focus {
+  border-color: #d32f2f;
+  box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
+}
+
+.errorMessage {
+  font-size: var(--font-xs);
+  color: #d32f2f;
+  font-weight: 500;
+  display: block;
+  margin-top: var(--space-xs);
+}
+
+.paymentInfo {
+  padding: var(--space-lg);
+  background: rgba(196, 181, 160, 0.1);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-xl);
+}
+
+.infoText {
+  font-size: var(--font-sm);
+  color: var(--text-dark);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.termsGroup {
+  padding: var(--space-lg);
+  border-top: 1px solid #ddd;
+  margin-top: var(--space-xl);
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  cursor: pointer;
+  font-size: var(--font-sm);
+  line-height: 1.6;
+  color: var(--text-dark);
+}
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: var(--primary-tan);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.checkbox:focus-visible {
+  outline: 3px solid var(--primary-tan);
+  outline-offset: 2px;
+}
+
+.link {
+  color: var(--primary-tan);
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.link:hover {
+  opacity: 0.8;
+}
+
+/* Tablet and up */
+@media (min-width: 768px) {
+  .paymentForm {
+    padding: var(--space-3xl);
+  }
+
+  .methodGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 767px) {
+  .paymentForm {
+    padding: var(--space-xl);
+  }
+
+  .formTitle {
+    font-size: var(--font-xl);
+  }
+
+  .methodGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .methodButton,
+  .input {
+    min-height: var(--touch-target-comfortable);
+  }
+
+  .checkbox {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .methodButton,
+  .input {
+    border-width: 3px;
+  }
+
+  .inputError {
+    border-color: #b71c1c;
+  }
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  .paymentForm {
+    background: var(--light-cream);
+  }
+
+  .methodButton {
+    background: #2C2C2C;
+    border-color: #555;
+  }
+
+  .methodButton:hover {
+    background: rgba(196, 181, 160, 0.15);
+  }
+
+  .methodActive {
+    background: rgba(196, 181, 160, 0.2);
+  }
+
+  .input {
+    background: #2C2C2C;
+    border-color: #555;
+    color: #E8E8E8;
+  }
+
+  .input::placeholder {
+    color: #888;
+  }
+
+  .paymentInfo {
+    background: rgba(196, 181, 160, 0.15);
+  }
+}

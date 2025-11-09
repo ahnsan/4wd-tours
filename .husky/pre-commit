@@ -1,0 +1,30 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🔍 Running pre-commit checks..."
+
+# Navigate to storefront directory
+cd storefront
+
+# Run type checking
+echo "📝 Type checking..."
+npm run type-check || {
+  echo "❌ Type check failed. Please fix TypeScript errors before committing."
+  exit 1
+}
+
+# Run linting
+echo "🧹 Linting..."
+npm run lint || {
+  echo "❌ Linting failed. Please fix linting errors before committing."
+  exit 1
+}
+
+# Run unit tests with coverage
+echo "🧪 Running unit tests with coverage..."
+npm run test:ci || {
+  echo "❌ Unit tests failed. Please fix failing tests before committing."
+  exit 1
+}
+
+echo "✅ All pre-commit checks passed!"

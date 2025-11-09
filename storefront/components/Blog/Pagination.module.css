@@ -1,0 +1,102 @@
+/* Pagination Styles */
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 64px 0 32px 0;
+  gap: 16px;
+}
+
+.navButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 500;
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #333;
+}
+
+.navButton:hover:not(:disabled) {
+  border-color: #1a5f3f;
+  background: rgba(26, 95, 63, 0.05);
+  transform: translateY(-2px); /* MANDATORY: Use transform */
+}
+
+.navButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.navButton svg {
+  flex-shrink: 0;
+}
+
+.pageNumbers {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.pageButton {
+  min-width: 44px; /* MANDATORY: Touch target size */
+  height: 44px;
+  padding: 0 12px;
+  font-size: 1rem;
+  font-weight: 500;
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #333;
+}
+
+.pageButton:hover {
+  border-color: #1a5f3f;
+  background: rgba(26, 95, 63, 0.05);
+}
+
+.pageButton.active {
+  background: #1a5f3f;
+  border-color: #1a5f3f;
+  color: white;
+  font-weight: 600;
+}
+
+.ellipsis {
+  padding: 0 8px;
+  color: #999;
+  font-size: 1rem;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .pagination {
+    flex-direction: column;
+    gap: 16px;
+    margin: 48px 0 24px 0;
+  }
+
+  .navButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .pageNumbers {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .pageButton {
+    min-width: 40px;
+    height: 40px;
+    font-size: 0.875rem;
+  }
+}

@@ -1,0 +1,30 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🚀 Running pre-push checks..."
+
+# Navigate to storefront directory
+cd storefront
+
+# Run all unit tests
+echo "🧪 Running all unit tests..."
+npm run test:ci || {
+  echo "❌ Unit tests failed. Please fix failing tests before pushing."
+  exit 1
+}
+
+# Run E2E tests
+echo "🎭 Running E2E tests..."
+npm run test:e2e:ci || {
+  echo "❌ E2E tests failed. Please fix failing tests before pushing."
+  exit 1
+}
+
+# Build check
+echo "🏗️  Building project..."
+npm run build || {
+  echo "❌ Build failed. Please fix build errors before pushing."
+  exit 1
+}
+
+echo "✅ All pre-push checks passed!"

@@ -1,0 +1,167 @@
+.navigation {
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navContainer {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.logo {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logoText {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1a5f3f;
+  white-space: nowrap;
+}
+
+.navLinks {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.navLink {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 0.5rem 0;
+  transition: color 0.2s;
+  position: relative;
+}
+
+.navLink::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #1a5f3f;
+  transform: scaleX(0);
+  transition: transform 0.2s;
+}
+
+.navLink:hover,
+.navLink.active {
+  color: #1a5f3f;
+}
+
+.navLink:hover::after,
+.navLink.active::after {
+  transform: scaleX(1);
+}
+
+.navActions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cartIcon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1a5f3f;
+  text-decoration: none;
+  padding: 0.5rem;
+  transition: color 0.2s;
+}
+
+.cartIcon:hover {
+  color: #2d8659;
+}
+
+.cartBadge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #e53e3e;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.25rem;
+}
+
+.mobileMenuToggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: #1a5f3f;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.mobileMenu {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid #eee;
+  padding: 1rem;
+}
+
+.mobileNavLink {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  transition: all 0.2s;
+  border-radius: 6px;
+}
+
+.mobileNavLink:hover,
+.mobileNavLink.active {
+  color: #1a5f3f;
+  background: #f8f9fa;
+}
+
+@media (min-width: 768px) {
+  .navLinks {
+    display: flex;
+  }
+
+  .mobileMenuToggle {
+    display: none;
+  }
+
+  .mobileMenu {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .navContainer {
+    padding: 1rem;
+  }
+
+  .logoText {
+    font-size: 1.25rem;
+  }
+}

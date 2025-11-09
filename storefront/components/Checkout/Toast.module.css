@@ -1,0 +1,128 @@
+.toast {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  background: white;
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  min-width: 300px;
+  max-width: 500px;
+  animation: slideIn 0.3s ease-out;
+  border-left: 4px solid var(--primary-tan);
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex: 1;
+}
+
+.icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.message {
+  font-size: var(--font-sm);
+  color: var(--text-dark);
+  line-height: 1.5;
+}
+
+.closeButton {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-xs);
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-base);
+}
+
+.closeButton:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--text-dark);
+}
+
+.closeButton:focus-visible {
+  outline: 2px solid var(--primary-tan);
+  outline-offset: 2px;
+}
+
+/* Type variations */
+.toast.success {
+  border-left-color: #10b981;
+}
+
+.toast.success .icon {
+  color: #10b981;
+}
+
+.toast.error {
+  border-left-color: #ef4444;
+}
+
+.toast.error .icon {
+  color: #ef4444;
+}
+
+.toast.info {
+  border-left-color: var(--primary-tan);
+}
+
+.toast.info .icon {
+  color: var(--primary-tan);
+}
+
+@media (max-width: 767px) {
+  .toast {
+    min-width: unset;
+    max-width: calc(100vw - var(--space-lg) * 2);
+  }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .toast {
+    animation: none;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .toast {
+    background: #2C2C2C;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  }
+
+  .message {
+    color: #E8E8E8;
+  }
+
+  .closeButton {
+    color: #b0b0b0;
+  }
+
+  .closeButton:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #E8E8E8;
+  }
+}

@@ -1,0 +1,603 @@
+/* Add-ons Page Styling - WCAG 2.1 AA Compliant, PageSpeed Optimized */
+
+.page {
+  min-height: 100vh;
+  background: var(--light-cream);
+  padding: var(--space-2xl) 0;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xl);
+}
+
+/* Hero Section */
+.hero {
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: var(--space-2xl) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  align-items: center;
+}
+
+.pageTitle {
+  font-size: var(--font-4xl);
+  font-weight: 300;
+  color: var(--text-dark);
+  margin: 0;
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: 0.05em;
+}
+
+.pageDescription {
+  font-size: var(--font-lg);
+  color: #666;
+  line-height: 1.8;
+  margin: 0;
+  max-width: 600px;
+}
+
+.selectionBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-sm) var(--space-lg);
+  background: var(--primary-tan);
+  color: white;
+  border-radius: var(--radius-full);
+  font-size: var(--font-sm);
+  font-weight: 600;
+  font-family: 'Lato', sans-serif;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Selected Tour Card */
+.selectedTourCard {
+  background: white;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.tourCardContent {
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.tourCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.tourLabel {
+  font-size: var(--font-xs);
+  font-weight: 600;
+  color: var(--primary-tan);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-family: 'Lato', sans-serif;
+}
+
+.changeTourLink {
+  font-size: var(--font-sm);
+  color: var(--primary-tan);
+  text-decoration: underline;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-xs) var(--space-sm);
+  transition: opacity var(--transition-base);
+  font-family: 'Lato', sans-serif;
+  min-height: var(--touch-target-min);
+}
+
+.changeTourLink:hover {
+  opacity: 0.7;
+}
+
+.changeTourLink:focus-visible {
+  outline: 3px solid var(--primary-tan);
+  outline-offset: 3px;
+}
+
+.selectedTourTitle {
+  font-size: var(--font-2xl);
+  font-weight: 500;
+  color: var(--text-dark);
+  margin: 0;
+  font-family: 'Cormorant Garamond', serif;
+}
+
+.tourCardDetails {
+  display: flex;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+}
+
+.tourDetail {
+  font-size: var(--font-sm);
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+/* Main Content Grid */
+.contentGrid {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: var(--space-2xl);
+  align-items: start;
+}
+
+/* Add-ons Grid Section */
+.addOnsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+/* Filter Bar */
+.filterBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+  padding: var(--space-lg) 0;
+  border-bottom: 2px solid var(--light-cream);
+}
+
+/* Grid - ENHANCED for better desktop experience */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--space-lg);
+
+  /* Ensure consistent card heights in each row */
+  grid-auto-rows: 1fr;
+}
+
+/* Desktop-specific optimizations */
+@media (min-width: 1440px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-xl);
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-lg);
+  }
+}
+
+/* Skip Section */
+.skipSection {
+  text-align: center;
+  padding: var(--space-2xl) 0;
+}
+
+.skipLink {
+  background: none;
+  border: none;
+  color: var(--primary-tan);
+  font-size: var(--font-base);
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: var(--space-sm) var(--space-md);
+  transition: all var(--transition-base);
+  font-family: 'Lato', sans-serif;
+}
+
+.skipLink:hover {
+  color: var(--dark-bg);
+  transform: translateX(4px);
+}
+
+.skipLink:focus-visible {
+  outline: 3px solid var(--primary-tan);
+  outline-offset: 3px;
+}
+
+/* Summary Column */
+.summaryColumn {
+  position: sticky;
+  top: var(--space-lg);
+}
+
+/* Categories Container */
+.categoriesContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xl);
+}
+
+.categorySection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.categoryTitle {
+  font-size: var(--font-xl);
+  font-weight: 600;
+  color: var(--primary-tan);
+  margin: 0;
+  padding-bottom: var(--space-sm);
+  border-bottom: 2px solid var(--primary-tan);
+  font-family: 'Lato', sans-serif;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Add-ons Grid */
+.addonsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: var(--space-lg);
+}
+
+/* Loading State */
+.loadingState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-lg);
+  padding: var(--space-3xl);
+  text-align: center;
+  color: #666;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid var(--light-cream);
+  border-top-color: var(--primary-tan);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+    border-top-color: var(--primary-tan);
+  }
+}
+
+/* Error State */
+.errorState {
+  padding: var(--space-xl);
+  background: #fff3cd;
+  border: 2px solid #ffc107;
+  border-radius: var(--radius-md);
+  color: #856404;
+  text-align: center;
+}
+
+.errorState p {
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Empty State */
+.emptyState {
+  padding: var(--space-3xl);
+  text-align: center;
+  color: #666;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  align-items: center;
+}
+
+.emptyState p {
+  margin: 0;
+  font-size: var(--font-base);
+}
+
+.skipButton {
+  padding: var(--space-md) var(--space-xl);
+  min-height: var(--touch-target-min);
+  background: var(--primary-tan);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: var(--font-base);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  font-family: 'Lato', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.skipButton:hover {
+  background: var(--dark-bg);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.skipButton:focus-visible {
+  outline: 3px solid var(--primary-tan);
+  outline-offset: 3px;
+}
+
+/* Responsive Design */
+@media (max-width: 1199px) {
+  .contentGrid {
+    grid-template-columns: 1fr 360px;
+    gap: var(--space-xl);
+  }
+}
+
+@media (max-width: 1023px) {
+  .contentGrid {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+
+  .summaryColumn {
+    position: static;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .filterBar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 767px) {
+  .page {
+    padding: var(--space-xl) 0;
+  }
+
+  .container {
+    padding: 0 var(--space-md);
+    gap: var(--space-xl);
+  }
+
+  .hero {
+    padding: var(--space-xl) 0;
+  }
+
+  .pageTitle {
+    font-size: var(--font-3xl);
+  }
+
+  .pageDescription {
+    font-size: var(--font-base);
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  .contentGrid {
+    gap: var(--space-lg);
+  }
+
+  .filterBar {
+    padding: var(--space-md) 0;
+  }
+
+  .skipSection {
+    padding: var(--space-xl) 0;
+  }
+}
+
+@media (max-width: 479px) {
+  .pageTitle {
+    font-size: var(--font-2xl);
+  }
+
+  .tourCardContent {
+    padding: var(--space-md);
+  }
+
+  .categoryTitle {
+    font-size: var(--font-lg);
+  }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .changeTourLink {
+    min-height: 48px;
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .skipButton {
+    min-height: 56px;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .selectedTourCard {
+    border: 3px solid var(--text-dark);
+  }
+
+  .categoryTitle {
+    border-bottom-width: 3px;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .page {
+    background: #1a1a1a;
+  }
+
+  .pageTitle,
+  .sectionTitle,
+  .selectedTourTitle {
+    color: #E8E8E8;
+  }
+
+  .pageDescription,
+  .sectionDescription,
+  .tourDetail {
+    color: #b0b0b0;
+  }
+
+  .selectedTourCard {
+    background: #2C2C2C;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+  }
+
+  .changeTourLink {
+    color: var(--primary-tan);
+  }
+
+  .loadingState,
+  .emptyState {
+    color: #b0b0b0;
+  }
+
+  .spinner {
+    border-color: #2C2C2C;
+    border-top-color: var(--primary-tan);
+  }
+
+  .errorState {
+    background: #3a3a1a;
+    border-color: #ffc107;
+    color: #ffd54f;
+  }
+}
+
+/* Skeleton Loading States - Performance Optimized */
+.cardSkeleton,
+.summarySkeleton,
+.gridSkeleton {
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 0%,
+    #e8e8e8 50%,
+    #f0f0f0 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  border-radius: var(--radius-md);
+  min-height: 200px;
+  will-change: background-position;
+}
+
+.cardSkeleton {
+  min-height: 250px;
+  width: 100%;
+}
+
+.summarySkeleton {
+  min-height: 400px;
+  width: 100%;
+  position: sticky;
+  top: var(--space-lg);
+}
+
+.gridSkeleton {
+  min-height: 300px;
+  width: 100%;
+  padding: var(--space-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  font-size: var(--font-sm);
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .cardSkeleton,
+  .summarySkeleton,
+  .gridSkeleton {
+    animation: none;
+    background: #f0f0f0;
+  }
+}
+
+/* Dark mode skeleton loaders */
+@media (prefers-color-scheme: dark) {
+  .cardSkeleton,
+  .summarySkeleton,
+  .gridSkeleton {
+    background: linear-gradient(
+      90deg,
+      #2C2C2C 0%,
+      #3a3a3a 50%,
+      #2C2C2C 100%
+    );
+  }
+
+  .gridSkeleton {
+    color: #666;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .changeTourLink,
+  .skipButton {
+    display: none;
+  }
+
+  .page {
+    background: white;
+  }
+
+  .contentGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .cardSkeleton,
+  .summarySkeleton,
+  .gridSkeleton {
+    display: none;
+  }
+}

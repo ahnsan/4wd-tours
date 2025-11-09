@@ -1,0 +1,220 @@
+name: Automated Testing
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./storefront
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: './storefront/package-lock.json'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run unit tests with coverage
+        run: npm run test:ci
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./storefront/coverage/coverage-final.json
+          flags: unittests
+          name: unit-tests
+          fail_ci_if_error: false
+
+      - name: Archive coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: ./storefront/coverage/
+
+  type-check:
+    name: TypeScript Type Check
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./storefront
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: './storefront/package-lock.json'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type check
+        run: npm run type-check
+
+  lint:
+    name: Linting
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./storefront
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: './storefront/package-lock.json'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linter
+        run: npm run lint
+
+  e2e-tests:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: medusa-test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install backend dependencies
+        run: npm ci
+
+      - name: Install storefront dependencies
+        working-directory: ./storefront
+        run: npm ci
+
+      - name: Install Playwright browsers
+        working-directory: ./storefront
+        run: npx playwright install --with-deps chromium
+
+      - name: Setup database
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/medusa-test
+        run: |
+          npm run db:migrate
+          npm run db:seed
+
+      - name: Start Medusa backend
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/medusa-test
+          NODE_ENV: test
+        run: |
+          npm run dev &
+          sleep 30
+
+      - name: Build storefront
+        working-directory: ./storefront
+        run: npm run build
+
+      - name: Start storefront
+        working-directory: ./storefront
+        run: |
+          npm run start &
+          sleep 20
+
+      - name: Run E2E tests
+        working-directory: ./storefront
+        run: npm run test:e2e:ci
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: ./storefront/playwright-report/
+          retention-days: 30
+
+  build:
+    name: Build Check
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./storefront
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: './storefront/package-lock.json'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Archive build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: ./storefront/.next/
+
+  all-tests-passed:
+    name: All Tests Passed
+    runs-on: ubuntu-latest
+    needs: [unit-tests, type-check, lint, e2e-tests, build]
+    if: always()
+
+    steps:
+      - name: Check all jobs status
+        run: |
+          if [ "${{ needs.unit-tests.result }}" != "success" ] || \
+             [ "${{ needs.type-check.result }}" != "success" ] || \
+             [ "${{ needs.lint.result }}" != "success" ] || \
+             [ "${{ needs.e2e-tests.result }}" != "success" ] || \
+             [ "${{ needs.build.result }}" != "success" ]; then
+            echo "One or more jobs failed!"
+            exit 1
+          fi
+          echo "All tests passed successfully!"

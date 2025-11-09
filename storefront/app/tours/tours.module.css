@@ -1,0 +1,462 @@
+/* Tours page styles - Mobile-first responsive design matching home page */
+
+.toursPage {
+  min-height: 100vh;
+  background-color: var(--light-cream);
+  padding: 0;
+}
+
+/* Skip Link for Accessibility - WCAG 2.1 AA Compliant */
+.skipLink {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  background-color: var(--dark-bg);
+  color: white;
+  padding: clamp(0.75rem, 1.5vw, 1rem) clamp(1.5rem, 3vw, 2rem);
+  text-decoration: none;
+  z-index: 9999;
+  font-weight: 600;
+  border-radius: 0 0 4px 0;
+  transition: top 0.2s ease-in-out;
+  font-size: clamp(0.9rem, 1.2vw, 1rem);
+}
+
+.skipLink:focus {
+  top: 0;
+  outline: 3px solid var(--primary-tan);
+  outline-offset: 3px;
+}
+
+/* Page Header - Matching home page TourOptions section styling */
+.pageHeader {
+  background-color: var(--light-cream);
+  color: var(--text-dark);
+  padding: clamp(3rem, 8vw, 6rem) clamp(1.5rem, 5vw, 4rem) clamp(2.5rem, 5vw, 4rem);
+  text-align: center;
+}
+
+.pageTitle {
+  font-size: clamp(1.8rem, 4vw + 0.5rem, 3rem);
+  font-weight: 300;
+  font-family: var(--font-lora);
+  letter-spacing: 0.08em;
+  margin: 0 0 clamp(1rem, 2vw, 1.5rem);
+  line-height: 1.3;
+}
+
+.pageSubtitle {
+  font-size: clamp(1rem, 1.5vw, 1.1rem);
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.8;
+  color: var(--text-dark);
+  font-family: var(--font-lora);
+}
+
+/* Main Content - Matching home page section spacing */
+.mainContent {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: clamp(2rem, 4vw, 3rem) clamp(1.5rem, 5vw, 4rem);
+  background-color: var(--light-cream);
+}
+
+/* Results Info - Enhanced visibility */
+.resultsInfo {
+  margin-bottom: clamp(1.5rem, 2vw, 2rem);
+  color: #555;
+  font-size: clamp(0.9rem, 1.2vw, 1rem);
+  text-align: center;
+  font-weight: 500;
+  padding: clamp(0.75rem, 1vw, 1rem);
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+}
+
+/* Tours Grid - Matching home page TourOptions grid exactly */
+.toursGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr));
+  gap: clamp(1.5rem, 4vw, 3rem);
+  max-width: 1400px;
+  margin: 0 auto clamp(2rem, 4vw, 3rem);
+  padding: 0 1rem;
+}
+
+/* Loading State - Enhanced skeleton screens */
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1rem;
+  color: #666;
+}
+
+.spinner {
+  width: 56px;
+  height: 56px;
+  border: 5px solid #f0f0f0;
+  border-top: 5px solid #2c3e50;
+  border-radius: 50%;
+  animation: spin 0.8s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Skeleton loading for tour cards */
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.skeletonCard {
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  min-height: 500px;
+}
+
+.skeletonImage {
+  width: 100%;
+  height: 280px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+.skeletonContent {
+  padding: 1.5rem;
+}
+
+.skeletonTitle {
+  height: 28px;
+  width: 80%;
+  margin: 0 auto 1rem;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+.skeletonText {
+  height: 16px;
+  width: 90%;
+  margin: 0.5rem auto;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+.skeletonButton {
+  height: 48px;
+  width: 160px;
+  margin: 2rem auto 0;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+/* Error State */
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1rem;
+  text-align: center;
+  color: #e74c3c;
+}
+
+.errorContainer svg {
+  margin-bottom: 1rem;
+}
+
+.errorContainer h2 {
+  font-size: 1.5rem;
+  margin: 0 0 0.5rem;
+  color: #2c3e50;
+}
+
+.errorContainer p {
+  color: #666;
+  margin: 0 0 1.5rem;
+}
+
+.retryButton {
+  background-color: #2c3e50;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.retryButton:hover {
+  background-color: #34495e;
+}
+
+/* Empty State - Matching design system */
+.emptyContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(3rem, 6vw, 4rem) var(--space-lg);
+  text-align: center;
+  color: #999;
+}
+
+.emptyContainer svg {
+  margin-bottom: var(--space-lg);
+  color: var(--primary-tan);
+}
+
+.emptyContainer h2 {
+  font-size: var(--font-xl);
+  font-family: var(--font-lora);
+  font-weight: 400;
+  margin: 0 0 var(--space-md);
+  color: var(--text-dark);
+}
+
+.emptyContainer p {
+  color: #666;
+  font-size: var(--font-base);
+  line-height: 1.6;
+}
+
+/* Pagination - Matching design system button styles */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-lg);
+  margin-top: clamp(2rem, 4vw, 3rem);
+  flex-wrap: wrap;
+  padding: var(--space-md);
+}
+
+.paginationButton {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: clamp(0.75rem, 1.5vw, 0.8rem) clamp(1.25rem, 2vw, 1.5rem);
+  background-color: transparent;
+  border: 2px solid var(--text-dark);
+  border-radius: var(--radius-sm);
+  color: var(--text-dark);
+  font-size: clamp(0.8rem, 1.2vw, 0.9rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  min-height: var(--touch-target-min);
+  text-decoration: none;
+}
+
+.paginationButton:hover:not(:disabled) {
+  background-color: var(--dark-bg);
+  color: white;
+  border-color: var(--dark-bg);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.paginationButton:active {
+  transform: translateY(0);
+}
+
+.paginationButton:focus-visible {
+  outline: 3px solid var(--primary-tan);
+  outline-offset: 3px;
+}
+
+.paginationButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pageNumbers {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+.pageInfo {
+  color: var(--text-dark);
+  font-size: clamp(0.85rem, 1.2vw, 0.95rem);
+  padding: var(--space-sm) var(--space-md);
+}
+
+.ellipsis {
+  color: #999;
+  padding: 0 var(--space-sm);
+}
+
+/* Responsive breakpoints matching home page TourOptions exactly */
+
+/* Extra large desktop - 1440px+ */
+@media (min-width: 1440px) {
+  .pageHeader {
+    padding: 7rem 6rem 4rem;
+  }
+
+  .mainContent {
+    padding: 3rem 6rem;
+  }
+
+  .toursGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3.5rem;
+  }
+}
+
+/* Desktop - 1024px to 1439px */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .pageHeader {
+    padding: 5rem 3rem 4rem;
+  }
+
+  .mainContent {
+    padding: 3rem 3rem;
+  }
+
+  .toursGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+  }
+}
+
+/* Tablet - 768px to 1023px */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .pageHeader {
+    padding: 4rem 2rem 3rem;
+  }
+
+  .mainContent {
+    padding: 2.5rem 2rem;
+  }
+
+  .toursGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+
+  .resultsInfo {
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* Mobile landscape and small tablets - 480px to 767px */
+@media (min-width: 480px) and (max-width: 767px) {
+  .pageHeader {
+    padding: 3rem 1.5rem 2.5rem;
+  }
+
+  .mainContent {
+    padding: 2rem 1.5rem;
+  }
+
+  .toursGrid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 0;
+  }
+
+  .resultsInfo {
+    margin-bottom: 1.25rem;
+  }
+}
+
+/* Mobile portrait - 320px to 479px */
+@media (max-width: 479px) {
+  .pageHeader {
+    padding: 2.5rem 1rem 2rem;
+  }
+
+  .mainContent {
+    padding: 2rem 1rem;
+  }
+
+  .toursGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 0;
+  }
+
+  .pageTitle {
+    font-size: 1.8rem;
+  }
+
+  .pageSubtitle {
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  .resultsInfo {
+    font-size: 0.85rem;
+  }
+}
+
+/* Ultra small devices - below 320px */
+@media (max-width: 319px) {
+  .pageHeader {
+    padding: 2rem 0.75rem 1.5rem;
+  }
+
+  .mainContent {
+    padding: 1.5rem 0.75rem;
+  }
+
+  .pageTitle {
+    font-size: 1.6rem;
+  }
+
+  .pageSubtitle {
+    font-size: 0.9rem;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .paginationButton {
+    min-height: var(--touch-target-comfortable);
+    padding: 1rem 2rem;
+  }
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .paginationButton {
+    transition: none;
+  }
+
+  .paginationButton:hover {
+    transform: none;
+  }
+
+  .paginationButton:active {
+    transform: none;
+  }
+}

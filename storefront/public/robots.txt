@@ -1,0 +1,36 @@
+# robots.txt for Sunshine Coast 4WD Tours
+# https://sunshinecoast4wdtours.com.au/robots.txt
+
+# Allow all search engines to index the site
+User-agent: *
+Allow: /
+
+# Disallow admin and private areas (if any)
+Disallow: /api/
+Disallow: /admin/
+Disallow: /_next/
+Disallow: /private/
+
+# Explicitly allow blog section for all search engines
+Allow: /blog/
+Allow: /blog/*
+
+# Allow images for better SEO
+User-agent: Googlebot-Image
+Allow: /images/
+Allow: /images/blog/
+
+# Googlebot specific rules for blog content
+User-agent: Googlebot
+Allow: /
+Allow: /blog/
+Crawl-delay: 0
+
+# Bingbot specific rules
+User-agent: Bingbot
+Allow: /
+Allow: /blog/
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://sunshinecoast4wdtours.com.au/sitemap.xml

@@ -1,0 +1,141 @@
+.quantitySelector {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1a202c;
+  margin: 0;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+  width: fit-content;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.button {
+  background-color: white;
+  border: none;
+  border-right: 1px solid #e5e7eb;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4a5568;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.button:last-child {
+  border-right: none;
+  border-left: 1px solid #e5e7eb;
+}
+
+.button:hover:not(:disabled) {
+  background-color: #f7fafc;
+  color: #1a5f3f;
+}
+
+.button:focus {
+  outline: 2px solid #1a5f3f;
+  outline-offset: -2px;
+  z-index: 1;
+}
+
+.button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  background-color: #f7fafc;
+}
+
+.button:active:not(:disabled) {
+  background-color: #edf2f7;
+  transform: scale(0.98);
+}
+
+.input {
+  border: none;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1a202c;
+  width: 60px;
+  padding: 0.75rem 0.5rem;
+  background-color: white;
+  -moz-appearance: textfield;
+  min-height: 44px;
+}
+
+.input::-webkit-outer-spin-button,
+.input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input:focus {
+  outline: 2px solid #1a5f3f;
+  outline-offset: -2px;
+  z-index: 1;
+}
+
+.hint {
+  font-size: 0.875rem;
+  color: #718096;
+  margin: 0;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .controls {
+    width: 100%;
+    max-width: 200px;
+  }
+
+  .button {
+    flex: 1;
+    padding: 0.625rem 0.875rem;
+  }
+
+  .input {
+    flex: 1;
+    min-width: 50px;
+  }
+
+  .label {
+    font-size: 0.9375rem;
+  }
+
+  .hint {
+    font-size: 0.8125rem;
+  }
+}
+
+/* Tablet */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .controls {
+    width: auto;
+  }
+}
+
+/* Accessibility - High Contrast Mode */
+@media (prefers-contrast: high) {
+  .button {
+    border-color: currentColor;
+  }
+
+  .controls {
+    border-color: currentColor;
+  }
+}

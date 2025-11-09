@@ -1,0 +1,193 @@
+{
+  "verification": {
+    "name": "Tour Seeding Verification Suite",
+    "version": "1.0.0",
+    "created": "2025-11-07",
+    "agent": "Verification Agent"
+  },
+  "targets": {
+    "performance": {
+      "p95_response_time_ms": 300,
+      "avg_response_time_ms": 200,
+      "seed_duration_seconds": 30
+    },
+    "counts": {
+      "total_products": 8,
+      "tour_products": 5,
+      "addon_products": 3,
+      "collections": 2
+    }
+  },
+  "endpoints": [
+    {
+      "path": "/store/products",
+      "method": "GET",
+      "expected_status": 200,
+      "performance_target_ms": 300
+    },
+    {
+      "path": "/store/products?handle=1d-fraser-island",
+      "method": "GET",
+      "expected_status": 200,
+      "performance_target_ms": 300
+    },
+    {
+      "path": "/store/products?collection_id[]=tours",
+      "method": "GET",
+      "expected_status": 200,
+      "performance_target_ms": 300
+    }
+  ],
+  "products": {
+    "tours": [
+      {
+        "handle": "1d-rainbow-beach",
+        "title": "1 Day Rainbow Beach Tour",
+        "price": 200000,
+        "currency": "AUD",
+        "duration_days": 1,
+        "sku": "TOUR-1D-RAINBOW-BEACH"
+      },
+      {
+        "handle": "1d-fraser-island",
+        "title": "1 Day Fraser Island Tour",
+        "price": 200000,
+        "currency": "AUD",
+        "duration_days": 1,
+        "sku": "TOUR-1D-FRASER-ISLAND"
+      },
+      {
+        "handle": "2d-fraser-rainbow",
+        "title": "2 Day Fraser + Rainbow Combo",
+        "price": 400000,
+        "currency": "AUD",
+        "duration_days": 2,
+        "sku": "TOUR-2D-FRASER-RAINBOW"
+      },
+      {
+        "handle": "3d-fraser-rainbow",
+        "title": "3 Day Fraser & Rainbow Combo",
+        "price": 600000,
+        "currency": "AUD",
+        "duration_days": 3,
+        "sku": "TOUR-3D-FRASER-RAINBOW"
+      },
+      {
+        "handle": "4d-fraser-rainbow",
+        "title": "4 Day Fraser & Rainbow Combo",
+        "price": 800000,
+        "currency": "AUD",
+        "duration_days": 4,
+        "sku": "TOUR-4D-FRASER-RAINBOW"
+      }
+    ],
+    "addons": [
+      {
+        "handle": "addon-internet",
+        "title": "Always-on High-Speed Internet",
+        "price": 5000,
+        "currency": "AUD",
+        "unit": "per_day",
+        "sku": "ADDON-ADDON-INTERNET"
+      },
+      {
+        "handle": "addon-glamping",
+        "title": "Glamping Setup",
+        "price": 25000,
+        "currency": "AUD",
+        "unit": "per_day",
+        "sku": "ADDON-ADDON-GLAMPING"
+      },
+      {
+        "handle": "addon-bbq",
+        "title": "BBQ on the Beach",
+        "price": 18000,
+        "currency": "AUD",
+        "unit": "per_booking",
+        "sku": "ADDON-ADDON-BBQ"
+      }
+    ]
+  },
+  "test_suites": {
+    "bash_script": {
+      "path": "/Users/Karim/med-usa-4wd/scripts/verify-seeds.sh",
+      "tests": [
+        "Initial seed run",
+        "Second seed run (idempotency)",
+        "Product resolvability by handle",
+        "Store API endpoint functionality",
+        "Response time performance",
+        "Data integrity checks"
+      ],
+      "output_path": "/Users/Karim/med-usa-4wd/swarm/seeding/verification-complete"
+    },
+    "jest_integration": {
+      "path": "/Users/Karim/med-usa-4wd/tests/integration/seed-idempotency.spec.ts",
+      "test_groups": [
+        "Multiple seed runs",
+        "Product count verification",
+        "Collection integrity",
+        "Handle uniqueness",
+        "Product variants and prices",
+        "Product metadata",
+        "Product status",
+        "Performance considerations",
+        "Edge cases and error handling"
+      ],
+      "timeout_ms": 120000
+    }
+  },
+  "database_checks": [
+    {
+      "check": "No duplicate handles",
+      "query": "SELECT handle, COUNT(*) FROM product GROUP BY handle HAVING COUNT(*) > 1"
+    },
+    {
+      "check": "All products have variants",
+      "query": "SELECT p.id FROM product p LEFT JOIN product_variant pv ON p.id = pv.product_id WHERE pv.id IS NULL"
+    },
+    {
+      "check": "Product count",
+      "query": "SELECT COUNT(*) FROM product"
+    },
+    {
+      "check": "Collection count",
+      "query": "SELECT COUNT(*) FROM product_collection"
+    }
+  ],
+  "monitoring": {
+    "metrics": [
+      "response_time_p95",
+      "response_time_avg",
+      "product_count",
+      "collection_count",
+      "memory_usage_mb",
+      "db_queries_count"
+    ],
+    "alerts": {
+      "response_time_threshold_ms": 300,
+      "memory_threshold_mb": 512,
+      "error_threshold": 0
+    }
+  },
+  "environment": {
+    "required_env_vars": [
+      "DATABASE_URL"
+    ],
+    "optional_env_vars": [
+      "STORE_API_URL"
+    ],
+    "defaults": {
+      "STORE_API_URL": "http://localhost:9000"
+    }
+  },
+  "swarm_coordination": {
+    "hooks": {
+      "pre_task": "npx claude-flow@alpha hooks pre-task",
+      "post_task": "npx claude-flow@alpha hooks post-task",
+      "notify": "npx claude-flow@alpha hooks notify"
+    },
+    "memory_storage": "/Users/Karim/med-usa-4wd/swarm/seeding/",
+    "session_id": "swarm-seeding-verification"
+  }
+}

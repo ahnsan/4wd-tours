@@ -1,0 +1,160 @@
+.customerForm {
+  background: white;
+  padding: var(--space-2xl);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.formTitle {
+  font-size: var(--font-2xl);
+  font-weight: 500;
+  margin-bottom: var(--space-md);
+  color: var(--text-dark);
+  font-family: 'Cormorant Garamond', serif;
+}
+
+.formDescription {
+  font-size: var(--font-sm);
+  color: #666;
+  margin-bottom: var(--space-xl);
+  line-height: 1.6;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.label {
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--text-dark);
+  font-family: 'Lato', sans-serif;
+  display: block;
+}
+
+.label.required::after {
+  content: ' *';
+  color: #d32f2f;
+  font-weight: bold;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  padding: var(--space-md);
+  font-size: 16px;
+  border: 2px solid #ddd;
+  border-radius: var(--radius-sm);
+  font-family: 'Lato', sans-serif;
+  transition: all var(--transition-base);
+  background: white;
+  color: var(--text-dark);
+}
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: var(--primary-tan);
+  box-shadow: 0 0 0 3px rgba(196, 181, 160, 0.1);
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: #999;
+}
+
+.inputError {
+  border-color: #d32f2f;
+}
+
+.inputError:focus {
+  border-color: #d32f2f;
+  box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.6;
+}
+
+.errorMessage {
+  font-size: var(--font-xs);
+  color: #d32f2f;
+  font-weight: 500;
+  display: block;
+  margin-top: var(--space-xs);
+}
+
+.helpText {
+  font-size: var(--font-xs);
+  color: #666;
+  display: block;
+  margin-top: var(--space-xs);
+  font-style: italic;
+}
+
+/* Tablet and up */
+@media (min-width: 768px) {
+  .customerForm {
+    padding: var(--space-3xl);
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 767px) {
+  .customerForm {
+    padding: var(--space-xl);
+  }
+
+  .formTitle {
+    font-size: var(--font-xl);
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .input,
+  .textarea {
+    min-height: var(--touch-target-comfortable);
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .input,
+  .textarea {
+    border-width: 3px;
+  }
+
+  .inputError {
+    border-color: #b71c1c;
+  }
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  .customerForm {
+    background: var(--light-cream);
+  }
+
+  .input,
+  .textarea {
+    background: #2C2C2C;
+    border-color: #555;
+    color: #E8E8E8;
+  }
+
+  .input::placeholder,
+  .textarea::placeholder {
+    color: #888;
+  }
+}

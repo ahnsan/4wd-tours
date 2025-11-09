@@ -1,0 +1,55 @@
+/* Trust Badges - Mobile-First */
+
+.trustBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md) 0;
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: var(--font-xs);
+  color: #666;
+  font-weight: 500;
+  padding: var(--space-xs) var(--space-sm);
+  background-color: var(--light-cream);
+  border-radius: var(--radius-md);
+  white-space: nowrap;
+}
+
+.badge svg {
+  color: var(--primary-tan);
+  flex-shrink: 0;
+}
+
+/* Tablet and up */
+@media (min-width: 768px) {
+  .trustBadges {
+    justify-content: flex-start;
+  }
+
+  .badge {
+    font-size: var(--font-sm);
+    padding: var(--space-sm) var(--space-md);
+  }
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  .badge {
+    background-color: #3a3a3a;
+    color: #b0b0b0;
+  }
+}
+
+/* High Contrast */
+@media (prefers-contrast: high) {
+  .badge {
+    border: 2px solid var(--primary-tan);
+  }
+}

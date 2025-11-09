@@ -62,7 +62,8 @@ export default async function seedDemoData({ container }: ExecArgs) {
   const salesChannelModuleService = container.resolve(Modules.SALES_CHANNEL);
   const storeModuleService = container.resolve(Modules.STORE);
 
-  const countries = ["gb", "de", "dk", "se", "fr", "es", "it"];
+  const countries = ["au"];
+  const europeanCountries = ["gb", "de", "dk", "se", "fr", "es", "it"];
 
   logger.info("Seeding store data...");
   const [store] = await storeModuleService.listStores();
@@ -91,8 +92,11 @@ export default async function seedDemoData({ container }: ExecArgs) {
       store_id: store.id,
       supported_currencies: [
         {
-          currency_code: "eur",
+          currency_code: "aud",
           is_default: true,
+        },
+        {
+          currency_code: "eur",
         },
         {
           currency_code: "usd",
@@ -110,28 +114,61 @@ export default async function seedDemoData({ container }: ExecArgs) {
     },
   });
   logger.info("Seeding region data...");
-  const { result: regionResult } = await createRegionsWorkflow(container).run({
-    input: {
-      regions: [
-        {
-          name: "Europe",
-          currency_code: "eur",
-          countries,
-          payment_providers: ["pp_system_default"],
-        },
-      ],
-    },
-  });
-  const region = regionResult[0];
+  const regionModuleService = container.resolve(Modules.REGION);
+  let existingRegions = await regionModuleService.listRegions({});
+  let region = existingRegions.find(r => r.currency_code === "aud");
+  let europeanRegion = existingRegions.find(r => r.currency_code === "eur");
+
+  if (!region || !europeanRegion) {
+    const { result: regionResult } = await createRegionsWorkflow(container).run({
+      input: {
+        regions: [
+          ...(!region ? [{
+            name: "Australia",
+            currency_code: "aud",
+            countries,
+            payment_providers: ["pp_system_default"],
+          }] : []),
+          ...(!europeanRegion ? [{
+            name: "Europe",
+            currency_code: "eur",
+            countries: europeanCountries,
+            payment_providers: ["pp_system_default"],
+          }] : []),
+        ],
+      },
+    });
+
+    if (!region) {
+      region = regionResult[0];
+      europeanRegion = regionResult[1] || europeanRegion;
+    } else {
+      europeanRegion = regionResult[0];
+    }
+  }
   logger.info("Finished seeding regions.");
 
   logger.info("Seeding tax regions...");
-  await createTaxRegionsWorkflow(container).run({
-    input: countries.map((country_code) => ({
-      country_code,
-      provider_id: "tp_system",
-    })),
-  });
+  const taxModuleService = container.resolve(Modules.TAX);
+  const existingTaxRegions = await taxModuleService.listTaxRegions({});
+  const existingTaxCountries = existingTaxRegions.map((tr) => tr.country_code);
+
+  const allCountries = [...countries, ...europeanCountries];
+  const newTaxCountries = allCountries.filter(
+    (country) => !existingTaxCountries.includes(country)
+  );
+
+  if (newTaxCountries.length > 0) {
+    await createTaxRegionsWorkflow(container).run({
+      input: newTaxCountries.map((country_code) => ({
+        country_code,
+        provider_id: "tp_system",
+      })),
+    });
+    logger.info(`Created ${newTaxCountries.length} new tax regions.`);
+  } else {
+    logger.info("All tax regions already exist.");
+  }
   logger.info("Finished seeding tax regions.");
 
   logger.info("Seeding stock location data...");
@@ -140,6 +177,14 @@ export default async function seedDemoData({ container }: ExecArgs) {
   ).run({
     input: {
       locations: [
+        {
+          name: "Sunshine Coast Base",
+          address: {
+            city: "Sunshine Coast",
+            country_code: "AU",
+            address_1: "Queensland",
+          },
+        },
         {
           name: "European Warehouse",
           address: {
@@ -151,7 +196,7 @@ export default async function seedDemoData({ container }: ExecArgs) {
       ],
     },
   });
-  const stockLocation = stockLocationResult[0];
+  const stockLocation = stockLocationResult[0]; // Sunshine Coast Base
 
   await updateStoresWorkflow(container).run({
     input: {
@@ -193,9 +238,18 @@ export default async function seedDemoData({ container }: ExecArgs) {
   }
 
   const fulfillmentSet = await fulfillmentModuleService.createFulfillmentSets({
-    name: "European Warehouse delivery",
+    name: "Sunshine Coast Tours",
     type: "shipping",
     service_zones: [
+      {
+        name: "Australia",
+        geo_zones: [
+          {
+            country_code: "au",
+            type: "country",
+          },
+        ],
+      },
       {
         name: "Europe",
         geo_zones: [
@@ -244,28 +298,24 @@ export default async function seedDemoData({ container }: ExecArgs) {
   await createShippingOptionsWorkflow(container).run({
     input: [
       {
-        name: "Standard Shipping",
+        name: "Tour Pickup - Sunshine Coast",
         price_type: "flat",
         provider_id: "manual_manual",
-        service_zone_id: fulfillmentSet.service_zones[0].id,
+        service_zone_id: fulfillmentSet.service_zones[0].id, // Australia
         shipping_profile_id: shippingProfile.id,
         type: {
-          label: "Standard",
-          description: "Ship in 2-3 days.",
-          code: "standard",
+          label: "Pickup",
+          description: "Pickup from designated meeting point.",
+          code: "tour-pickup",
         },
         prices: [
           {
-            currency_code: "usd",
-            amount: 10,
-          },
-          {
-            currency_code: "eur",
-            amount: 10,
+            currency_code: "aud",
+            amount: 0,
           },
           {
             region_id: region.id,
-            amount: 10,
+            amount: 0,
           },
         ],
         rules: [
@@ -282,15 +332,15 @@ export default async function seedDemoData({ container }: ExecArgs) {
         ],
       },
       {
-        name: "Express Shipping",
+        name: "Standard Shipping",
         price_type: "flat",
         provider_id: "manual_manual",
-        service_zone_id: fulfillmentSet.service_zones[0].id,
+        service_zone_id: fulfillmentSet.service_zones[1].id, // Europe
         shipping_profile_id: shippingProfile.id,
         type: {
-          label: "Express",
-          description: "Ship in 24 hours.",
-          code: "express",
+          label: "Standard",
+          description: "Ship in 2-3 days.",
+          code: "standard",
         },
         prices: [
           {
@@ -302,7 +352,7 @@ export default async function seedDemoData({ container }: ExecArgs) {
             amount: 10,
           },
           {
-            region_id: region.id,
+            region_id: europeanRegion.id,
             amount: 10,
           },
         ],
@@ -357,11 +407,34 @@ export default async function seedDemoData({ container }: ExecArgs) {
 
   logger.info("Seeding product data...");
 
+  const productModuleService = container.resolve(Modules.PRODUCT);
+  const existingProducts = await productModuleService.listProducts({
+    handle: "2d-fraser-rainbow",
+  });
+
+  if (existingProducts.length > 0) {
+    logger.info("Tour product already exists, skipping product seeding.");
+    logger.info("Finished seeding product data.");
+    return;
+  }
+
   const { result: categoryResult } = await createProductCategoriesWorkflow(
     container
   ).run({
     input: {
       product_categories: [
+        {
+          name: "4WD Tours",
+          is_active: true,
+        },
+        {
+          name: "Fraser Island Tours",
+          is_active: true,
+        },
+        {
+          name: "Rainbow Beach Tours",
+          is_active: true,
+        },
         {
           name: "Shirts",
           is_active: true,
@@ -385,6 +458,97 @@ export default async function seedDemoData({ container }: ExecArgs) {
   await createProductsWorkflow(container).run({
     input: {
       products: [
+        {
+          title: "2 Day Fraser Island & Rainbow Beach Adventure",
+          category_ids: [
+            categoryResult.find((cat) => cat.name === "4WD Tours")!.id,
+            categoryResult.find((cat) => cat.name === "Fraser Island Tours")!.id,
+            categoryResult.find((cat) => cat.name === "Rainbow Beach Tours")!.id,
+          ],
+          description:
+            "Experience the ultimate 2-day 4WD adventure exploring Fraser Island and Rainbow Beach. Drive along pristine beaches, discover freshwater lakes, rainforests, and witness stunning coastal landscapes. Perfect for adventure seekers!",
+          handle: "2d-fraser-rainbow",
+          weight: 0,
+          status: ProductStatus.PUBLISHED,
+          shipping_profile_id: shippingProfile.id,
+          metadata: {
+            duration: "2 days",
+            category: "4WD Tour",
+            location: "Fraser Island & Rainbow Beach",
+            difficulty: "moderate",
+            includes: "4WD vehicle, camping equipment, guide",
+          },
+          images: [
+            {
+              url: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4",
+            },
+          ],
+          options: [
+            {
+              title: "Participants",
+              values: ["1 Person", "2 People", "3 People", "4 People"],
+            },
+          ],
+          variants: [
+            {
+              title: "1 Person",
+              sku: "FRASER-2D-1P",
+              options: {
+                Participants: "1 Person",
+              },
+              prices: [
+                {
+                  amount: 59900,
+                  currency_code: "aud",
+                },
+              ],
+            },
+            {
+              title: "2 People",
+              sku: "FRASER-2D-2P",
+              options: {
+                Participants: "2 People",
+              },
+              prices: [
+                {
+                  amount: 109900,
+                  currency_code: "aud",
+                },
+              ],
+            },
+            {
+              title: "3 People",
+              sku: "FRASER-2D-3P",
+              options: {
+                Participants: "3 People",
+              },
+              prices: [
+                {
+                  amount: 159900,
+                  currency_code: "aud",
+                },
+              ],
+            },
+            {
+              title: "4 People",
+              sku: "FRASER-2D-4P",
+              options: {
+                Participants: "4 People",
+              },
+              prices: [
+                {
+                  amount: 209900,
+                  currency_code: "aud",
+                },
+              ],
+            },
+          ],
+          sales_channels: [
+            {
+              id: defaultSalesChannel[0].id,
+            },
+          ],
+        },
         {
           title: "Medusa T-Shirt",
           category_ids: [
