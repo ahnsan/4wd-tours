@@ -5,24 +5,42 @@
  * No mock data fallbacks - fails fast if backend is unavailable.
  */
 
-import type { AddOn } from '../types/checkout';
+import type { Addon } from '../types/cart';
 
 // Environment configuration
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:9000';
 const API_TIMEOUT = 5000; // 5 seconds
-const DEFAULT_REGION_ID = 'reg_01K9G4HA190556136E7RJQ4411'; // Australia region
+
+/**
+ * Get region ID dynamically from environment or cart context
+ * This should be passed as a parameter from components that have access to cart context
+ */
+function getRegionId(regionId?: string): string {
+  // Use provided regionId from cart context if available
+  if (regionId) {
+    return regionId;
+  }
+
+  // Fallback to environment variable if configured
+  if (process.env.NEXT_PUBLIC_DEFAULT_REGION_ID) {
+    return process.env.NEXT_PUBLIC_DEFAULT_REGION_ID;
+  }
+
+  // Last resort: throw error to ensure proper region handling
+  throw new Error('Region ID must be provided from cart context or configured in NEXT_PUBLIC_DEFAULT_REGION_ID environment variable');
+}
 
 // Data source tracking
 type DataSource = 'api' | 'cache';
 
 export interface AddOnsResponse {
-  addons: AddOn[];
+  addons: Addon[];
   source: DataSource;
   count: number;
 }
 
 export interface AddOnResponse {
-  addon: AddOn | null;
+  addon: Addon | null;
   source: DataSource;
 }
 
@@ -58,26 +76,17 @@ const BACKEND_HANDLE_MAP: Record<string, string> = {
 };
 
 /**
- * Convert Medusa product to AddOn format
+ * Convert Medusa product to Addon format (Medusa-compatible)
+ *
+ * MEDUSA BEST PRACTICE: Use metadata fields directly from backend
+ * Don't infer or transform data that's already in metadata
  */
-function convertProductToAddOn(product: any): AddOn {
-  // Determine category based on handle or title
-  let category = 'General';
-  const handle = product.handle || '';
+function convertProductToAddOn(product: any): Addon {
+  // Use category from metadata (Medusa best practice)
+  // Backend has correct category in metadata.category field
+  const category = product.metadata?.category || 'General';
 
-  if (handle.includes('glamping') || handle.includes('camping')) {
-    category = 'Equipment';
-  } else if (handle.includes('internet') || handle.includes('wifi')) {
-    category = 'Equipment';
-  } else if (handle.includes('bbq') || handle.includes('meal') || handle.includes('food')) {
-    category = 'Food & Beverage';
-  } else if (handle.includes('photo')) {
-    category = 'Photography';
-  } else if (handle.includes('transport') || handle.includes('pickup')) {
-    category = 'Transport';
-  } else if (handle.includes('insurance')) {
-    category = 'Insurance';
-  }
+  console.log(`[Add-ons Service] Converting ${product.handle}: category="${category}"`);
 
   // Determine pricing type from metadata or default
   let pricingType: 'per_booking' | 'per_day' | 'per_person' = 'per_booking';
@@ -88,49 +97,80 @@ function convertProductToAddOn(product: any): AddOn {
   }
 
   // Extract price from calculated_price (requires currency_code in API call)
-  let price = 0;
-  if (product.variants && product.variants.length > 0) {
-    const variant = product.variants[0];
+  let price_cents = 0;
+  let variant_id = '';
 
-    if (variant.calculated_price && variant.calculated_price.calculated_amount) {
-      price = variant.calculated_price.calculated_amount;
-    } else {
-      console.error(`[Add-ons Service] FATAL: No price found for ${product.handle}. Backend pricing not configured.`);
-      throw new Error(`Add-on ${product.handle} has no price. Backend configuration required.`);
-    }
+  // Validate variants array exists and is not empty
+  if (!product.variants || !Array.isArray(product.variants) || product.variants.length === 0) {
+    console.error(`[Add-ons Service] FATAL: No variants array found for product ${product.handle || product.id}. Backend configuration required.`);
+    throw new Error(`Add-on product ${product.handle || product.id} has no variants. Backend must configure at least one variant.`);
   }
+
+  const variant = product.variants[0];
+
+  // Validate variant has required id field
+  if (!variant || !variant.id) {
+    console.error(`[Add-ons Service] FATAL: Variant missing id for product ${product.handle || product.id}. Invalid backend data.`);
+    throw new Error(`Add-on product ${product.handle || product.id} has invalid variant (missing id). Backend data integrity issue.`);
+  }
+
+  variant_id = variant.id;
+
+  // Validate pricing information exists
+  if (!variant.calculated_price || typeof variant.calculated_price.calculated_amount === 'undefined') {
+    console.error(`[Add-ons Service] FATAL: No calculated price found for variant ${variant_id} of product ${product.handle || product.id}. Backend pricing not configured.`);
+    throw new Error(`Add-on ${product.handle || product.id} (variant: ${variant_id}) has no calculated price. Ensure region pricing is configured in backend.`);
+  }
+
+  // Validate price is a valid number
+  const calculatedAmount = variant.calculated_price.calculated_amount;
+  if (typeof calculatedAmount !== 'number' || isNaN(calculatedAmount) || calculatedAmount < 0) {
+    console.error(`[Add-ons Service] FATAL: Invalid price value for variant ${variant_id} of product ${product.handle || product.id}. Price: ${calculatedAmount}`);
+    throw new Error(`Add-on ${product.handle || product.id} has invalid price: ${calculatedAmount}. Backend pricing configuration error.`);
+  }
+
+  price_cents = calculatedAmount;
 
   return {
     id: product.id,
+    variant_id,
     title: product.title,
     description: product.description || '',
-    price,
+    price_cents,
     pricing_type: pricingType,
     icon: getCategoryIcon(category),
     category: category,
     available: true,
+    metadata: {
+      max_quantity: product.metadata?.max_quantity,
+      quantity_allowed: product.metadata?.quantity_allowed,
+      recommended_for: product.metadata?.recommended_for,
+      tags: product.metadata?.tags,
+    },
   };
 }
 
 /**
- * Get icon name based on category
+ * Get icon path based on category
+ * Returns valid image path for Next.js Image component
  */
 function getCategoryIcon(category: string): string {
   const iconMap: Record<string, string> = {
-    'Equipment': 'tent',
-    'Food & Beverage': 'utensils',
-    'Photography': 'camera',
-    'Transport': 'car',
-    'Insurance': 'shield',
-    'General': 'star',
+    'Equipment': '/images/icons/tent.svg',
+    'Food & Beverage': '/images/icons/utensils.svg',
+    'Photography': '/images/icons/camera.svg',
+    'Transport': '/images/icons/car.svg',
+    'Insurance': '/images/icons/shield.svg',
+    'General': '/images/icons/star.svg',
   };
-  return iconMap[category] || 'star';
+  return iconMap[category] || '/images/icons/star.svg';
 }
 
 /**
  * Fetch all add-ons from API - NO MOCK FALLBACK
+ * @param regionId - Optional region ID from cart context. If not provided, uses environment variable or throws error.
  */
-export async function fetchAllAddOns(): Promise<AddOnsResponse> {
+export async function fetchAllAddOns(regionId?: string): Promise<AddOnsResponse> {
   try {
     // Build headers
     const headers: Record<string, string> = {
@@ -142,9 +182,12 @@ export async function fetchAllAddOns(): Promise<AddOnsResponse> {
       headers['x-publishable-api-key'] = apiKey;
     }
 
-    // Fetch from API with region_id to get calculated prices
+    // Get dynamic region ID
+    const dynamicRegionId = getRegionId(regionId);
+
+    // Fetch from dedicated add-ons API endpoint
     const response = await fetchWithTimeout(
-      `${API_BASE_URL}/store/products?region_id=${DEFAULT_REGION_ID}`,
+      `${API_BASE_URL}/store/add-ons?region_id=${dynamicRegionId}`,
       { headers, cache: 'no-store' },
       API_TIMEOUT
     );
@@ -155,9 +198,8 @@ export async function fetchAllAddOns(): Promise<AddOnsResponse> {
 
     const data = await response.json();
 
-    // Filter add-ons (products with handles starting with "addon-")
-    const addons = (data.products || [])
-      .filter((p: any) => p.handle?.startsWith('addon-'))
+    // Backend returns data.add_ons (not data.products)
+    const addons = (data.add_ons || [])
       .map(convertProductToAddOn);
 
     console.log(`[Add-ons Service] Fetched ${addons.length} add-ons from API`);
@@ -176,8 +218,10 @@ export async function fetchAllAddOns(): Promise<AddOnsResponse> {
 
 /**
  * Fetch single add-on by ID from API - NO MOCK FALLBACK
+ * @param id - Product ID to fetch
+ * @param regionId - Optional region ID from cart context. If not provided, uses environment variable or throws error.
  */
-export async function fetchAddOnById(id: string): Promise<AddOnResponse> {
+export async function fetchAddOnById(id: string, regionId?: string): Promise<AddOnResponse> {
   try {
     // Build headers
     const headers: Record<string, string> = {
@@ -189,9 +233,12 @@ export async function fetchAddOnById(id: string): Promise<AddOnResponse> {
       headers['x-publishable-api-key'] = apiKey;
     }
 
+    // Get dynamic region ID
+    const dynamicRegionId = getRegionId(regionId);
+
     // Fetch from API with region_id to get calculated prices
     const response = await fetchWithTimeout(
-      `${API_BASE_URL}/store/products/${id}?region_id=${DEFAULT_REGION_ID}`,
+      `${API_BASE_URL}/store/products/${id}?region_id=${dynamicRegionId}`,
       { headers, cache: 'no-store' },
       API_TIMEOUT
     );
@@ -223,9 +270,11 @@ export async function fetchAddOnById(id: string): Promise<AddOnResponse> {
 
 /**
  * Get add-ons by category
+ * @param category - Category to filter by
+ * @param regionId - Optional region ID from cart context. If not provided, uses environment variable or throws error.
  */
-export async function fetchAddOnsByCategory(category: string): Promise<AddOnsResponse> {
-  const allAddOnsResponse = await fetchAllAddOns();
+export async function fetchAddOnsByCategory(category: string, regionId?: string): Promise<AddOnsResponse> {
+  const allAddOnsResponse = await fetchAllAddOns(regionId);
 
   const filteredAddons = allAddOnsResponse.addons.filter(
     (addon) => addon.category === category

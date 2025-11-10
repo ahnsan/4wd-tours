@@ -3,7 +3,7 @@
 
 import { useEffect } from 'react';
 import useSWR from 'swr';
-import type { AddOn } from '../types/checkout';
+import type { Addon } from '../types/cart';
 import { fetchAllAddOns } from '../data/addons-service';
 
 // MANDATORY: Use coordination hooks before API calls
@@ -16,7 +16,7 @@ const useCoordinationHook = (operation: string) => {
 };
 
 interface UseAddOnsReturn {
-  addons: AddOn[];
+  addons: Addon[];
   isLoading: boolean;
   error: Error | null;
   refetch: () => void;

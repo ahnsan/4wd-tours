@@ -5,6 +5,7 @@ import '../styles/globals.css';
 import { WebVitals } from '../components/WebVitals';
 import Navigation from '../components/Navigation/Navigation';
 import { ErrorBoundary } from '../components/ErrorBoundary';
+import { ClientProviders } from '../components/Providers/ClientProviders';
 
 // Optimized font loading using Next.js font optimization
 // Performance gain: -300-400ms FCP, -0.10-0.15 CLS
@@ -309,10 +310,12 @@ export default function RootLayout({
         />
 
         <WebVitals />
-        <ErrorBoundary>
-          <Navigation />
-          {children}
-        </ErrorBoundary>
+        <ClientProviders>
+          <ErrorBoundary>
+            <Navigation />
+            {children}
+          </ErrorBoundary>
+        </ClientProviders>
       </body>
     </html>
   );

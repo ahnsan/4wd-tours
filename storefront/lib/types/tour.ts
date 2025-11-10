@@ -132,7 +132,7 @@ export interface TourSEO {
 // Additional types for catalog page
 export interface TourFilters {
   duration?: string;
-  sort?: 'price_asc' | 'price_desc';
+  sort?: 'price_asc' | 'price_desc' | 'name_asc' | 'name_desc';
   search?: string;
   page?: number;
   per_page?: number;

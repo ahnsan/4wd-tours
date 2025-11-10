@@ -133,9 +133,10 @@ export default function FilterBarClient() {
           aria-label="Filter tours by duration"
         >
           <option value="">All Durations</option>
-          <option value="half-day">Half Day</option>
-          <option value="full-day">Full Day</option>
-          <option value="multi-day">Multi Day</option>
+          <option value="1-day">1 Day</option>
+          <option value="2-day">2 Days</option>
+          <option value="3-day">3 Days</option>
+          <option value="4-day">4+ Days</option>
         </select>
 
         <select

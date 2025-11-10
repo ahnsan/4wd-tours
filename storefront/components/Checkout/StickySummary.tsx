@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import type { CartState } from '../../lib/types/checkout';
+import type { CartState } from '../../lib/types/cart';
 import styles from './StickySummary.module.css';
 
 interface StickySummaryProps {
@@ -21,28 +21,30 @@ export default function StickySummary({
   const router = useRouter();
   const previousTotalRef = useRef<number>(0);
 
-  // Calculate add-ons total
-  const addonsTotal = cart.selected_addons.reduce(
-    (sum, addon) => sum + addon.total_price,
+  // Calculate add-ons total (convert cents to dollars)
+  const addonsTotal = cart.addons?.reduce(
+    (sum, addon) => sum + ((addon.calculated_price_cents || 0) / 100),
     0
-  );
+  ) || 0;
 
-  // Calculate base tour total
-  const baseTourTotal = cart.tour ? cart.tour.base_price * cart.participants : 0;
+  // Calculate base tour total (convert cents to dollars)
+  const baseTourTotal = cart.tour_booking?.tour?.base_price_cents
+    ? ((cart.tour_booking.tour.base_price_cents / 100) * (cart.tour_booking.participants || 1))
+    : 0;
 
-  // Grand total
-  const grandTotal = baseTourTotal + addonsTotal;
+  // Grand total - ensure it's always a valid number
+  const grandTotal = (baseTourTotal || 0) + (addonsTotal || 0);
 
   // Announce total changes to screen readers
   useEffect(() => {
     if (previousTotalRef.current !== grandTotal && previousTotalRef.current !== 0) {
-      // Announce the change
+      // Announce the change - ensure grandTotal is a valid number
       const announcement = document.createElement('div');
       announcement.setAttribute('role', 'status');
       announcement.setAttribute('aria-live', 'polite');
       announcement.setAttribute('aria-atomic', 'true');
       announcement.className = 'sr-only';
-      announcement.textContent = `Total updated to $${grandTotal.toFixed(2)}`;
+      announcement.textContent = `Total updated to $${(grandTotal || 0).toFixed(2)}`;
       document.body.appendChild(announcement);
 
       // Remove after announcement
@@ -60,50 +62,50 @@ export default function StickySummary({
         <div className={styles.header}>
           <h2 className={styles.title}>Order Summary</h2>
           <span className={styles.itemCount}>
-            {cart.selected_addons.length} add-on{cart.selected_addons.length !== 1 ? 's' : ''}
+            {cart.addons?.length || 0} add-on{(cart.addons?.length || 0) !== 1 ? 's' : ''}
           </span>
         </div>
 
         {/* Tour Base */}
-        {cart.tour && (
+        {cart.tour_booking?.tour && (
           <section className={styles.section} aria-labelledby="tour-base-heading">
             <h3 id="tour-base-heading" className={styles.sectionTitle}>
               Tour Package
             </h3>
             <div className={styles.lineItem}>
               <div className={styles.itemDetails}>
-                <span className={styles.itemName}>{cart.tour.title}</span>
+                <span className={styles.itemName}>{cart.tour_booking.tour.title || 'Tour Package'}</span>
                 <span className={styles.itemMeta}>
-                  {cart.participants} × ${cart.tour.base_price.toFixed(2)}
+                  {cart.tour_booking.participants || 1} × ${((cart.tour_booking.tour.base_price_cents || 0) / 100).toFixed(2)}
                 </span>
               </div>
               <span className={styles.itemPrice}>
-                ${baseTourTotal.toFixed(2)}
+                ${(baseTourTotal || 0).toFixed(2)}
               </span>
             </div>
           </section>
         )}
 
         {/* Selected Add-ons */}
-        {cart.selected_addons.length > 0 && (
+        {(cart.addons?.length || 0) > 0 && (
           <section className={styles.section} aria-labelledby="addons-heading">
             <h3 id="addons-heading" className={styles.sectionTitle}>
               Add-ons
             </h3>
             <ul className={styles.addonsList} role="list">
-              {cart.selected_addons.map((addon) => (
-                <li key={addon.id} className={styles.lineItem}>
+              {cart.addons?.map((cartAddon) => (
+                <li key={cartAddon.addon?.id || Math.random()} className={styles.lineItem}>
                   <div className={styles.itemDetails}>
-                    <span className={styles.itemName}>{addon.title}</span>
+                    <span className={styles.itemName}>{cartAddon.addon?.title || 'Add-on'}</span>
                     <span className={styles.itemMeta}>
-                      {addon.pricing_type === 'per_day' && `${cart.tour?.duration_days || 1} day${(cart.tour?.duration_days || 1) > 1 ? 's' : ''}`}
-                      {addon.pricing_type === 'per_person' && `${cart.participants} person${cart.participants > 1 ? 's' : ''}`}
-                      {addon.pricing_type === 'per_booking' && 'Per booking'}
-                      {addon.quantity > 1 && ` × ${addon.quantity}`}
+                      {cartAddon.addon?.pricing_type === 'per_day' && `${cart.tour_booking?.tour?.duration_days || 1} day${(cart.tour_booking?.tour?.duration_days || 1) > 1 ? 's' : ''}`}
+                      {cartAddon.addon?.pricing_type === 'per_person' && `${cart.tour_booking?.participants || 1} person${(cart.tour_booking?.participants || 1) > 1 ? 's' : ''}`}
+                      {cartAddon.addon?.pricing_type === 'per_booking' && 'Per booking'}
+                      {(cartAddon.quantity || 1) > 1 && ` × ${cartAddon.quantity}`}
                     </span>
                   </div>
                   <span className={styles.itemPrice}>
-                    ${addon.total_price.toFixed(2)}
+                    ${((cartAddon.calculated_price_cents || 0) / 100).toFixed(2)}
                   </span>
                 </li>
               ))}
@@ -116,7 +118,7 @@ export default function StickySummary({
           <div className={styles.breakdownRow}>
             <span className={styles.breakdownLabel}>Subtotal</span>
             <span className={styles.breakdownValue}>
-              ${grandTotal.toFixed(2)}
+              ${(grandTotal || 0).toFixed(2)}
             </span>
           </div>
           <div className={styles.breakdownRow}>
@@ -131,10 +133,10 @@ export default function StickySummary({
         <div className={styles.total} aria-live="polite" aria-atomic="true">
           <span className={styles.totalLabel}>Total</span>
           <span className={styles.totalValue}>
-            ${grandTotal.toFixed(2)}
+            ${(grandTotal || 0).toFixed(2)}
           </span>
           <span className="sr-only">
-            Order total: ${grandTotal.toFixed(2)}
+            Order total: ${(grandTotal || 0).toFixed(2)}
           </span>
         </div>
 
@@ -143,7 +145,7 @@ export default function StickySummary({
           <button
             type="button"
             onClick={onContinue}
-            disabled={!cart.tour || isLoading}
+            disabled={!cart.tour_booking || isLoading}
             className={styles.primaryButton}
             aria-label="Continue to payment"
           >

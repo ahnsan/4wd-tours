@@ -130,13 +130,17 @@ export function getProductPrice(product: any): ProductPrice | null {
     const variant = product.variants[0];
 
     if (variant.calculated_price && variant.calculated_price.calculated_amount) {
+      // CRITICAL FIX: Medusa v2 returns prices in dollars (major units), not cents
+      // Convert to cents by multiplying by 100
+      // Reference: https://docs.medusajs.com/resources/commerce-modules/product/price
       return {
-        amount: variant.calculated_price.calculated_amount,
+        amount: Math.round(variant.calculated_price.calculated_amount * 100),
         currency_code: variant.calculated_price.currency_code || 'AUD',
       };
     }
 
     // Try variant.prices array (legacy format)
+    // Note: This is Medusa v1 format which already returns cents
     if (variant.prices && variant.prices.length > 0) {
       const audPrice = variant.prices.find((p: any) => p.currency_code === 'AUD');
       if (audPrice) {
@@ -149,6 +153,7 @@ export function getProductPrice(product: any): ProductPrice | null {
   }
 
   // Fallback to hardcoded prices based on handle
+  // These are already in cents
   if (product.handle && TOUR_PRICES[product.handle] !== undefined) {
     const price = TOUR_PRICES[product.handle];
     if (price !== undefined) {
@@ -194,6 +199,7 @@ export function formatPrice(
 
 /**
  * Get lowest price from multiple variants
+ * Note: getProductPrice() now handles Medusa v2 dollar→cent conversion
  */
 export function getLowestPrice(product: any): ProductPrice | null {
   if (!product.variants || product.variants.length === 0) {

@@ -2,6 +2,7 @@
 
 export interface Tour {
   id: string;
+  handle?: string; // Tour handle for filtering addons
   title: string;
   description: string;
   base_price: number;
@@ -18,6 +19,23 @@ export interface AddOn {
   icon?: string;
   category?: string;
   available: boolean;
+  metadata?: AddOnMetadata;
+}
+
+export interface AddOnMetadata {
+  addon?: boolean;
+  unit?: 'per_booking' | 'per_day' | 'per_person';
+  category?: string;
+  applicable_tours?: string[];
+  description?: string;
+  persuasive_title?: string;
+  persuasive_description?: string;
+  value_proposition?: string;
+  urgency_text?: string;
+  features?: string[];
+  testimonial?: string;
+  category_intro?: string;
+  category_persuasion?: string;
 }
 
 export interface SelectedAddOn extends AddOn {
@@ -29,7 +47,7 @@ export interface CartState {
   tour: Tour | null;
   participants: number;
   tour_start_date: string | null;
-  selected_addons: SelectedAddOn[];
+  addons: SelectedAddOn[]; // Changed from selected_addons to match Medusa cart.ts
   subtotal: number;
   total: number;
   medusa_cart_id: string | null; // Medusa backend cart ID for sync

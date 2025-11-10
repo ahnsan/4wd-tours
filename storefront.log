@@ -1,0 +1,55 @@
+
+> sunshine-coast-4wd-tours-storefront@0.1.0 dev
+> next dev -p 8000
+
+  ▲ Next.js 14.2.33
+  - Local:        http://localhost:8000
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 2.3s
+ ○ Compiling / ...
+ ✓ Compiled / in 2.6s (852 modules)
+ GET / 200 in 2764ms
+ ○ Compiling /tours ...
+ ✓ Compiled /tours in 549ms (819 modules)
+[Tours Service] Fetched 5 tours from API
+ GET /tours 200 in 927ms
+ ○ Compiling /tours/[handle] ...
+ ✓ Compiled /tours/[handle] in 529ms (872 modules)
+[Tours Service] Fetched tour "1 Day Fraser Island Tour" from API with 1 variants
+[Tours Service] Fetched tour "1 Day Fraser Island Tour" from API with 1 variants
+[Tour Page] Validation issues (non-blocking): {
+  errors: [],
+  warnings: [
+    {
+      field: 'metadata',
+      message: 'Product metadata is missing - tour details may be incomplete',
+      severity: 'warning'
+    }
+  ]
+}
+[WARN] 2025-11-10T04:54:36.082Z
+  Message: Tour product has validation warnings
+  Context: {
+    tourHandle: '1d-fraser-island',
+    warnings: [
+      {
+        field: 'metadata',
+        message: 'Product metadata is missing - tour details may be incomplete',
+        severity: 'warning'
+      }
+    ],
+    summary: '1 warning(s)',
+    dataSource: 'api'
+  }
+ ⨯ The requested resource isn't a valid image for /images/icons/star.svg received null
+ ⨯ The requested resource isn't a valid image for /images/icons/utensils.svg received null
+ ○ Compiling /checkout/add-ons-flow ...
+ ✓ Compiled /checkout/add-ons-flow in 558ms (964 modules)
+ ✓ Compiled /_not-found in 229ms (912 modules)
+ GET /images/icons/wifi.svg 404 in 378ms
+ ✓ Compiled /checkout in 373ms (963 modules)
+ GET /images/icons/wifi.svg 404 in 108ms
+ GET /checkout/add-ons-flow?tour=2d-fraser-rainbow 200 in 38ms
+ GET /api/store/add-ons?tour=2d-fraser-rainbow 404 in 16ms

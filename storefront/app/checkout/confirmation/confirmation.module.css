@@ -82,15 +82,40 @@
 }
 
 .container {
-  max-width: 900px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 0 var(--space-xl);
 }
 
 .contentGrid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: var(--space-2xl);
+  align-items: start;
+}
+
+.detailsColumn {
   display: flex;
   flex-direction: column;
   gap: var(--space-2xl);
+}
+
+.summaryColumn {
+  position: sticky;
+  top: var(--space-xl);
+}
+
+/* Mobile: Stack vertically */
+@media (max-width: 1023px) {
+  .contentGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .summaryColumn {
+    position: relative;
+    top: 0;
+    order: -1; /* Show summary first on mobile */
+  }
 }
 
 .referenceSection {

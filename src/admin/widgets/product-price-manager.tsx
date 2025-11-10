@@ -19,12 +19,18 @@ import { DetailWidgetProps, AdminProduct } from "@medusajs/framework/types"
  * @see https://docs.medusajs.com/resources/commerce-modules/pricing
  */
 const ProductPriceManager = ({ data }: DetailWidgetProps<AdminProduct>) => {
+  // 1. Add early null check
+  if (!data || !data.id) {
+    return null
+  }
+
   const product = data
   const [prices, setPrices] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [editMode, setEditMode] = useState(false)
   const [editedPrices, setEditedPrices] = useState<Record<string, number>>({})
   const [saving, setSaving] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   // Load variant prices on mount
   useEffect(() => {
@@ -34,41 +40,46 @@ const ProductPriceManager = ({ data }: DetailWidgetProps<AdminProduct>) => {
   const loadPrices = async () => {
     try {
       setLoading(true)
+      setError(null)
 
-      // Fetch product with variants and prices
+      // 3. Wrap API calls in try-catch
       const response = await fetch(`/admin/products/${product.id}?fields=+variants.calculated_price,+variants.prices`, {
         credentials: 'include',
       })
 
       if (!response.ok) {
+        console.error('Widget API error: Failed to fetch prices')
         throw new Error('Failed to fetch prices')
       }
 
       const { product: productData } = await response.json()
 
-      // Extract prices from all variants
+      // Extract prices from all variants with null checks
       const allPrices: any[] = []
-      productData.variants?.forEach((variant: any) => {
-        if (variant.prices && variant.prices.length > 0) {
+      productData?.variants?.forEach((variant: any) => {
+        if (variant?.prices && Array.isArray(variant.prices) && variant.prices.length > 0) {
           variant.prices.forEach((price: any) => {
-            allPrices.push({
-              variantId: variant.id,
-              variantTitle: variant.title || 'Default',
-              variantSku: variant.sku,
-              priceId: price.id,
-              amount: price.amount,
-              currencyCode: price.currency_code || 'aud',
-              regionId: price.region_id,
-              minQuantity: price.min_quantity,
-              maxQuantity: price.max_quantity,
-            })
+            if (price && price.id) {
+              allPrices.push({
+                variantId: variant.id,
+                variantTitle: variant.title || 'Default',
+                variantSku: variant.sku || '',
+                priceId: price.id,
+                amount: price.amount || 0,
+                currencyCode: price.currency_code || 'aud',
+                regionId: price.region_id || '',
+                minQuantity: price.min_quantity,
+                maxQuantity: price.max_quantity,
+              })
+            }
           })
         }
       })
 
       setPrices(allPrices)
     } catch (error) {
-      console.error('Error loading prices:', error)
+      console.error('Widget API error:', error)
+      setError('Failed to load price data')
     } finally {
       setLoading(false)
     }
@@ -94,6 +105,7 @@ const ProductPriceManager = ({ data }: DetailWidgetProps<AdminProduct>) => {
   const handleSavePrices = async () => {
     try {
       setSaving(true)
+      setError(null)
 
       // Prepare price updates
       const updates = Object.entries(editedPrices).map(([priceId, amount]) => ({
@@ -101,18 +113,28 @@ const ProductPriceManager = ({ data }: DetailWidgetProps<AdminProduct>) => {
         amount: Math.round(amount * 100), // Convert dollars to cents
       }))
 
-      // Update prices via admin API
+      // Update prices via admin API with error handling
       for (const update of updates) {
-        await fetch(`/admin/prices/${update.id}`, {
-          method: 'POST',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            amount: update.amount,
-          }),
-        })
+        try {
+          const response = await fetch(`/admin/prices/${update.id}`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              amount: update.amount,
+            }),
+          })
+
+          if (!response.ok) {
+            console.error('Widget API error: Failed to update price')
+            throw new Error('Failed to update price')
+          }
+        } catch (err) {
+          console.error('Widget API error:', err)
+          throw err
+        }
       }
 
       // Reload prices to reflect changes
@@ -122,7 +144,8 @@ const ProductPriceManager = ({ data }: DetailWidgetProps<AdminProduct>) => {
 
       alert('Prices updated successfully!')
     } catch (error) {
-      console.error('Error saving prices:', error)
+      console.error('Widget API error:', error)
+      setError('Failed to save prices')
       alert('Error saving prices. Please try again.')
     } finally {
       setSaving(false)
@@ -145,6 +168,25 @@ const ProductPriceManager = ({ data }: DetailWidgetProps<AdminProduct>) => {
     return days > 0 ? totalAmount / days : totalAmount
   }
 
+  // 4. Handle error state
+  if (error && !loading) {
+    return (
+      <Container>
+        <div className="p-6">
+          <Heading level="h2" className="mb-4">Price Management</Heading>
+          <Text className="text-red-600">Unable to load widget data: {error}</Text>
+          <button
+            onClick={loadPrices}
+            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+          >
+            Retry
+          </button>
+        </div>
+      </Container>
+    )
+  }
+
+  // 5. Handle loading state
   if (loading) {
     return (
       <Container>

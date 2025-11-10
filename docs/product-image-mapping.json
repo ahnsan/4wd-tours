@@ -1,0 +1,189 @@
+{
+  "metadata": {
+    "generatedAt": "2025-11-08T14:20:00Z",
+    "totalProducts": 5,
+    "totalImages": 11,
+    "storageLocation": "/Users/Karim/med-usa-4wd/static/",
+    "baseUrl": "http://localhost:9000/static/"
+  },
+  "products": [
+    {
+      "id": "prod_01K9H8KY3ERTCHH6EERRTVTRDA",
+      "handle": "1d-fraser-island",
+      "title": "1 Day Fraser Island Tour",
+      "thumbnail": "http://localhost:9000/static/1762597232972-kgari-aerial.jpg",
+      "images": [
+        {
+          "id": "img_01K9HFPRBP2P0V3XKB0NQRJ12A",
+          "url": "http://localhost:9000/static/1762597232972-kgari-aerial.jpg",
+          "filename": "kgari-aerial.jpg",
+          "description": "Aerial view of Fraser Island (K'gari)"
+        },
+        {
+          "id": "img_01K9HFPRBPSYKC03VN8FGRC6Y2",
+          "url": "http://localhost:9000/static/1762597232974-kgari-dingo.jpg",
+          "filename": "kgari-dingo.jpg",
+          "description": "Native dingo wildlife"
+        }
+      ]
+    },
+    {
+      "id": "prod_01K9H8KY10KSHDDY4TH6ZQYY99",
+      "handle": "1d-rainbow-beach",
+      "title": "1 Day Rainbow Beach Tour",
+      "thumbnail": "http://localhost:9000/static/1762597233052-rainbow-beach.jpg",
+      "images": [
+        {
+          "id": "img_01K9HFPRDPDXC2P3WG4E9D210W",
+          "url": "http://localhost:9000/static/1762597233052-rainbow-beach.jpg",
+          "filename": "rainbow-beach.jpg",
+          "description": "Rainbow Beach colored sand cliffs"
+        },
+        {
+          "id": "img_01K9HFPRDPP631C1ZKDRHRZCBT",
+          "url": "http://localhost:9000/static/1762597233054-double-island-point.jpg",
+          "filename": "double-island-point.jpg",
+          "description": "Double Island Point coastal view"
+        }
+      ]
+    },
+    {
+      "id": "prod_01K9H8KY4G9TCZGNYE9QV3RPPW",
+      "handle": "2d-fraser-rainbow",
+      "title": "2 Day Fraser + Rainbow Combo",
+      "thumbnail": "http://localhost:9000/static/1762597233091-4wd-on-beach.jpg",
+      "images": [
+        {
+          "id": "img_01K9HFPRESPBQ761K6DMV6W6EB",
+          "url": "http://localhost:9000/static/1762597233091-4wd-on-beach.jpg",
+          "filename": "4wd-on-beach.jpg",
+          "description": "4WD adventure on the beach"
+        },
+        {
+          "id": "img_01K9HFPRES8CF6SA1H7SD0V6N6",
+          "url": "http://localhost:9000/static/1762597233093-double-island-point.jpg",
+          "filename": "double-island-point.jpg",
+          "description": "Double Island Point coastal view"
+        }
+      ]
+    },
+    {
+      "id": "prod_01K9H8KY5C1118R7DHVEVE0P0P",
+      "handle": "3d-fraser-rainbow",
+      "title": "3 Day Fraser & Rainbow Combo",
+      "thumbnail": "http://localhost:9000/static/1762597233127-kgari-wreck.jpg",
+      "images": [
+        {
+          "id": "img_01K9HFPRG10DZ5H4JN5FY1K6N5",
+          "url": "http://localhost:9000/static/1762597233127-kgari-wreck.jpg",
+          "filename": "kgari-wreck.jpg",
+          "description": "Historic Maheno Shipwreck"
+        },
+        {
+          "id": "img_01K9HFPRG1QSZX382826NZ9KAF",
+          "url": "http://localhost:9000/static/1762597233129-kgari-aerial.jpg",
+          "filename": "kgari-aerial.jpg",
+          "description": "Aerial view of Fraser Island"
+        }
+      ]
+    },
+    {
+      "id": "prod_01K9H8KY65D2DNDY8VGD7XNTQE",
+      "handle": "4d-fraser-rainbow",
+      "title": "4 Day Fraser & Rainbow Combo",
+      "thumbnail": "http://localhost:9000/static/1762597233168-Double-island-2.jpg",
+      "images": [
+        {
+          "id": "img_01K9HFPRH6C4YJGXXSW3RA192S",
+          "url": "http://localhost:9000/static/1762597233168-Double-island-2.jpg",
+          "filename": "Double-island-2.jpg",
+          "description": "Premium Double Island Point vista"
+        },
+        {
+          "id": "img_01K9HFPRH63R0W5YQX7T6J7KZG",
+          "url": "http://localhost:9000/static/1762597233170-kgari-aerial.jpg",
+          "filename": "kgari-aerial.jpg",
+          "description": "Comprehensive aerial view"
+        },
+        {
+          "id": "img_01K9HFPRH6PRZA00QTWF3VPD2Q",
+          "url": "http://localhost:9000/static/1762597233173-4wd-on-beach.jpg",
+          "filename": "4wd-on-beach.jpg",
+          "description": "Adventure activity showcase"
+        }
+      ]
+    }
+  ],
+  "imageFiles": {
+    "kgari-aerial.jpg": {
+      "usedIn": ["1d-fraser-island", "3d-fraser-rainbow", "4d-fraser-rainbow"],
+      "description": "Aerial view of Fraser Island showing pristine beaches and rainforest",
+      "sizeBytes": 1917913,
+      "dimensions": "Unknown (not measured)",
+      "format": "JPEG"
+    },
+    "kgari-dingo.jpg": {
+      "usedIn": ["1d-fraser-island"],
+      "description": "Native dingo - unique Fraser Island wildlife",
+      "sizeBytes": 1789542,
+      "dimensions": "Unknown (not measured)",
+      "format": "JPEG"
+    },
+    "rainbow-beach.jpg": {
+      "usedIn": ["1d-rainbow-beach"],
+      "description": "Rainbow Beach colored sand cliffs - iconic landscape",
+      "sizeBytes": 1340509,
+      "dimensions": "Unknown (not measured)",
+      "format": "JPEG"
+    },
+    "double-island-point.jpg": {
+      "usedIn": ["1d-rainbow-beach", "2d-fraser-rainbow"],
+      "description": "Double Island Point coastal scenery",
+      "sizeBytes": 1770857,
+      "dimensions": "Unknown (not measured)",
+      "format": "JPEG"
+    },
+    "4wd-on-beach.jpg": {
+      "usedIn": ["2d-fraser-rainbow", "4d-fraser-rainbow"],
+      "description": "4WD vehicle on beach - adventure action shot",
+      "sizeBytes": 1078044,
+      "dimensions": "Unknown (not measured)",
+      "format": "JPEG"
+    },
+    "kgari-wreck.jpg": {
+      "usedIn": ["3d-fraser-rainbow"],
+      "description": "Historic Maheno Shipwreck - famous Fraser Island landmark",
+      "sizeBytes": 1339830,
+      "dimensions": "Unknown (not measured)",
+      "format": "JPEG"
+    },
+    "Double-island-2.jpg": {
+      "usedIn": ["4d-fraser-rainbow"],
+      "description": "Premium vista of Double Island Point",
+      "sizeBytes": 1721706,
+      "dimensions": "Unknown (not measured)",
+      "format": "JPEG"
+    }
+  },
+  "recommendations": {
+    "optimization": {
+      "currentAverageSize": "1.5MB",
+      "recommendedSize": "< 500KB",
+      "suggestedFormat": "WebP",
+      "suggestedDimensions": "1200x800px",
+      "estimatedSavings": "60-70% file size reduction"
+    },
+    "production": {
+      "fileProvider": "Use @medusajs/file-s3 or similar cloud provider",
+      "cdn": "Implement CloudFront or similar CDN",
+      "imageOptimization": "Use Cloudinary or imgix for automatic optimization",
+      "backups": "Implement regular backups of uploaded files"
+    },
+    "seo": {
+      "altText": "Add descriptive alt text for all images",
+      "filenames": "Already using SEO-friendly descriptive names",
+      "structuredData": "Implement ImageObject schema.org markup",
+      "imageSitemap": "Create XML image sitemap for better indexing"
+    }
+  }
+}

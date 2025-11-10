@@ -30,7 +30,6 @@ export default function TourGallery({ images, title }: TourGalleryProps) {
           loading={selectedImageIndex === 0 ? 'eager' : 'lazy'}
           className={styles.mainImage}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 800px"
-          unoptimized={selectedImage.url.startsWith('http')}
         />
 
         {/* Image Counter */}

@@ -1,15 +1,13 @@
 'use client';
 
 import React, { useState, useEffect, Suspense } from 'react';
-
-// Force dynamic rendering since this page uses useSearchParams
-export const dynamicParams = true;
-export const revalidate = 0;
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import styles from './confirmation.module.css';
 import { formatCurrency, calculatePriceBreakdown } from '../../../lib/utils/pricing';
 import { getOrder, type MedusaOrder } from '../../../lib/data/cart-service';
+import BookingSummary from '../../../components/Checkout/BookingSummary';
+import type { CartState } from '../../../lib/types/cart';
 
 interface BookingDetails {
   bookingId: string;
@@ -51,6 +49,7 @@ function ConfirmationWithParams() {
   const [isDownloading, setIsDownloading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [cartState, setCartState] = useState<CartState | null>(null);
 
   useEffect(() => {
     if (!bookingId) {
@@ -66,6 +65,51 @@ function ConfirmationWithParams() {
         const orderData = await getOrder(bookingId);
         setOrder(orderData);
         console.log('[Confirmation] Order loaded successfully');
+
+        // Convert order to CartState for BookingSummary
+        // This assumes the first item is the tour
+        const tourItem = orderData.items[0];
+        const addonItems = orderData.items.slice(1);
+
+        const mockCartState: CartState = ({
+          tour_booking: tourItem ? {
+            tour: {
+              id: tourItem.variant_id || tourItem.id,
+              title: tourItem.title || 'Tour Package',
+              description: tourItem.description || '',
+              base_price_cents: tourItem.unit_price || 0,
+              duration_days: 1, // Default, should be in metadata
+              featured_image_url: '',
+            },
+            participants: tourItem?.quantity || 1,
+            start_date: orderData.created_at,
+            end_date: orderData.created_at, // Default to same as start
+            total_price_cents: tourItem.total || 0,
+          } : null,
+          addons: addonItems.map((item) => ({
+            addon: {
+              id: item.variant_id || item.id,
+              title: item.title || 'Add-on',
+              description: item.description || '',
+              price: (item.unit_price || 0) / 100,
+              pricing_type: 'per_booking' as const,
+              available: true,
+            },
+            quantity: item.quantity,
+            calculated_price_cents: item.total || 0,
+          })) as any,
+          tour_total_cents: tourItem?.total || 0,
+          addons_total_cents: addonItems.reduce((sum, item) => sum + (item.total || 0), 0),
+          subtotal_cents: orderData.subtotal,
+          tax_cents: orderData.tax_total,
+          total_cents: orderData.total,
+          cart_id: null,
+          isLoading: false,
+          error: null,
+          last_synced_at: null,
+        } as any);
+
+        setCartState(mockCartState);
       } catch (error) {
         console.error('[Confirmation] Failed to load order:', error);
         setError('Failed to load order details. Please contact support.');
@@ -174,6 +218,16 @@ function ConfirmationWithParams() {
       {/* Main Content */}
       <div className={styles.container}>
         <div className={styles.contentGrid}>
+          {/* BookingSummary Sidebar */}
+          {cartState && (
+            <aside className={styles.summaryColumn}>
+              <BookingSummary
+                cart={cartState}
+                showEditLinks={false}
+                currentStep="confirmation"
+              />
+            </aside>
+          )}
           {/* Booking Reference */}
           <div className={styles.referenceSection}>
             <div className={styles.referenceBox}>
@@ -189,6 +243,8 @@ function ConfirmationWithParams() {
             </p>
           </div>
 
+          {/* Order Details Column */}
+          <div className={styles.detailsColumn}>
           {/* Booking Details Card */}
           <div className={styles.detailsCard}>
             <h2 className={styles.cardTitle}>Booking Details</h2>
@@ -380,6 +436,7 @@ function ConfirmationWithParams() {
               <li>Check your email for detailed meeting point information</li>
               <li>Contact us at least 24 hours in advance for any changes</li>
             </ul>
+          </div>
           </div>
         </div>
       </div>

@@ -93,17 +93,34 @@ function applyFilters(tours: any[], filters: TourFilters) {
 
   // Duration filter
   if (filters.duration) {
-    filtered = filtered.filter(tour =>
-      tour.duration?.toLowerCase().includes(filters.duration!.toLowerCase())
-    );
+    filtered = filtered.filter(tour => {
+      const durationDays = tour.duration_days || tour.metadata?.duration_days || 1;
+
+      switch (filters.duration) {
+        case '1-day':
+          return durationDays === 1;
+        case '2-day':
+          return durationDays === 2;
+        case '3-day':
+          return durationDays === 3;
+        case '4-day':
+          return durationDays >= 4;
+        default:
+          return true;
+      }
+    });
   }
 
   // Sort
   if (filters.sort) {
     if (filters.sort === 'price_asc') {
-      filtered.sort((a, b) => a.price - b.price);
+      filtered.sort((a, b) => (a.base_price_cents || 0) - (b.base_price_cents || 0));
     } else if (filters.sort === 'price_desc') {
-      filtered.sort((a, b) => b.price - a.price);
+      filtered.sort((a, b) => (b.base_price_cents || 0) - (a.base_price_cents || 0));
+    } else if (filters.sort === 'name_asc') {
+      filtered.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+    } else if (filters.sort === 'name_desc') {
+      filtered.sort((a, b) => (b.title || '').localeCompare(a.title || ''));
     }
   }
 
@@ -233,7 +250,7 @@ export default async function ToursPage({
     per_page: 12,
     page: searchParams.page ? Number(searchParams.page) : 1,
     duration: searchParams.duration as string | undefined,
-    sort: searchParams.sort as 'price_asc' | 'price_desc' | undefined,
+    sort: searchParams.sort as 'price_asc' | 'price_desc' | 'name_asc' | 'name_desc' | undefined,
     search: searchParams.search as string | undefined,
   };
 

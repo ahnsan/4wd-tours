@@ -1,14 +1,14 @@
 'use client';
 
 import React, { useEffect, useRef, useCallback, memo } from 'react';
-import type { AddOn } from '../../lib/types/checkout';
+import type { Addon } from '../../lib/types/cart';
 import styles from './AddOnDrawer.module.css';
 
 interface AddOnDrawerProps {
-  addon: AddOn | null;
+  addon: Addon | null;
   isOpen: boolean;
   onClose: () => void;
-  onAddToCart?: (addon: AddOn) => void;
+  onAddToCart?: (addon: Addon) => void;
   tourDays?: number;
   participants?: number;
 }
@@ -123,26 +123,26 @@ const AddOnDrawer = memo(function AddOnDrawer({
 
   if (!addon) return null;
 
-  // Calculate display price
+  // Calculate display price (convert cents to dollars)
   const getDisplayPrice = () => {
-    const basePrice = addon.price;
+    const basePriceDollars = addon.price_cents / 100;
     switch (addon.pricing_type) {
       case 'per_day':
         return {
-          price: basePrice * tourDays,
+          price: basePriceDollars * tourDays,
           unit: `per item (${tourDays} day${tourDays > 1 ? 's' : ''})`,
-          breakdown: `$${basePrice.toFixed(2)} × ${tourDays} day${tourDays > 1 ? 's' : ''}`,
+          breakdown: `$${basePriceDollars.toFixed(2)} × ${tourDays} day${tourDays > 1 ? 's' : ''}`,
         };
       case 'per_person':
         return {
-          price: basePrice * participants,
+          price: basePriceDollars * participants,
           unit: `per item (${participants} person${participants > 1 ? 's' : ''})`,
-          breakdown: `$${basePrice.toFixed(2)} × ${participants} person${participants > 1 ? 's' : ''}`,
+          breakdown: `$${basePriceDollars.toFixed(2)} × ${participants} person${participants > 1 ? 's' : ''}`,
         };
       case 'per_booking':
       default:
         return {
-          price: basePrice,
+          price: basePriceDollars,
           unit: 'per booking',
           breakdown: 'One-time fee',
         };

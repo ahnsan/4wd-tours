@@ -19,7 +19,7 @@ export default function Navigation() {
   }, []);
 
   // Calculate item count from cart
-  const itemCount = (cart.tour ? 1 : 0) + cart.selected_addons.length;
+  const itemCount = (cart.tour_booking ? 1 : 0) + (cart.addons?.length || 0);
 
   const navLinks = [
     { href: '/', label: 'Home' },

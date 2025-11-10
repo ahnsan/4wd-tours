@@ -1,16 +1,18 @@
 'use client';
 
 import React, { useState, useCallback, useRef, useEffect, memo } from 'react';
-import type { AddOn } from '../../lib/types/checkout';
+import Image from 'next/image';
+import type { Addon } from '../../lib/types/cart';
+import { getAddonImageByHandle, getAddonImageById, getFallbackAddonImage } from '../../lib/utils/addon-images';
 import styles from './AddOnCard.module.css';
 
 interface AddOnCardProps {
-  addon: AddOn;
+  addon: Addon;
   isSelected: boolean;
   quantity: number;
-  onToggle: (addon: AddOn) => void;
+  onToggle: (addon: Addon) => void;
   onQuantityChange: (addonId: string, quantity: number) => void;
-  onLearnMore?: (addon: AddOn) => void;
+  onLearnMore?: (addon: Addon) => void;
   tourDays?: number;
   participants?: number;
 }
@@ -66,29 +68,83 @@ const AddOnCard = memo(function AddOnCard({
 }: AddOnCardProps) {
   const [localQuantity, setLocalQuantity] = useState(quantity);
 
-  const icon = IconMap[addon.icon || 'default'] || IconMap.default;
+  // Extract icon name from path (e.g., '/images/icons/tent.svg' -> 'tent')
+  const getIconName = (iconPath: string | undefined): string => {
+    if (!iconPath) return 'default';
+    const match = iconPath.match(/\/([^/]+)\.(svg|png|jpg)$/);
+    return match && match[1] ? match[1] : 'default';
+  };
+
+  const iconName = getIconName(addon.icon || addon.category);
+  const icon = IconMap[iconName] || IconMap.default;
+
+  // Get image data from manifest
+  const imageData = getAddonImageByHandle(addon.id) || getAddonImageById(addon.id, addon.title) || getFallbackAddonImage();
 
   // Debounce quantity changes to reduce parent re-renders (300ms)
   const debouncedQuantityChange = useDebounce(onQuantityChange, 300);
 
-  // Calculate display price based on pricing type
+  // Calculate display price based on pricing type (convert cents to dollars)
   const getDisplayPrice = () => {
-    const basePrice = addon.price;
+    // CRITICAL: Validate ALL inputs before calculations
+    // Validate price_cents exists and is a valid number (Medusa standard: prices in cents)
+    const priceCents = typeof addon.price_cents === 'number' && !isNaN(addon.price_cents)
+      ? addon.price_cents
+      : 0;
+
+    // Validate tourDays (handle undefined, null, NaN, and invalid values)
+    const validTourDays = typeof tourDays === 'number' && tourDays > 0 && !isNaN(tourDays)
+      ? tourDays
+      : 1;
+
+    // Validate participants (handle undefined, null, NaN, and invalid values)
+    const validParticipants = typeof participants === 'number' && participants > 0 && !isNaN(participants)
+      ? participants
+      : 1;
+
+    // Log error if invalid data detected (helps debugging)
+    if (priceCents === 0 && addon.price_cents !== 0) {
+      console.error('[AddOnCard] Invalid price_cents for addon:', {
+        addon_id: addon.id,
+        title: addon.title,
+        price_cents: addon.price_cents,
+        type: typeof addon.price_cents,
+      });
+    }
+
+    if (validTourDays !== tourDays) {
+      console.warn('[AddOnCard] Invalid tourDays, using fallback:', {
+        addon_id: addon.id,
+        tourDays,
+        fallback: validTourDays,
+      });
+    }
+
+    if (validParticipants !== participants) {
+      console.warn('[AddOnCard] Invalid participants, using fallback:', {
+        addon_id: addon.id,
+        participants,
+        fallback: validParticipants,
+      });
+    }
+
+    const basePriceDollars = priceCents / 100;
+
     switch (addon.pricing_type) {
       case 'per_day':
         return {
-          price: basePrice * tourDays,
-          unit: `per item (${tourDays} day${tourDays > 1 ? 's' : ''})`,
+          price: basePriceDollars * validTourDays,
+          unit: `per item (${validTourDays} day${validTourDays > 1 ? 's' : ''})`,
         };
       case 'per_person':
         return {
-          price: basePrice * participants,
-          unit: `per item (${participants} person${participants > 1 ? 's' : ''})`,
+          price: basePriceDollars * validParticipants,
+          unit: `per item (${validParticipants} person${validParticipants > 1 ? 's' : ''})`,
         };
       case 'per_booking':
       default:
         return {
-          price: basePrice,
+          price: basePriceDollars,
           unit: 'per booking',
         };
     }
@@ -129,6 +185,25 @@ const AddOnCard = memo(function AddOnCard({
       aria-describedby={`addon-desc-${addon.id} addon-price-${addon.id}`}
       role="listitem"
     >
+      {/* Add-on Image */}
+      <div className={styles.imageWrapper}>
+        <Image
+          src={imageData.image_path}
+          alt={imageData.alt_text}
+          width={1200}
+          height={800}
+          loading="lazy"
+          quality={85}
+          className={styles.addonImage}
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 400px"
+        />
+        {!addon.available && (
+          <div className={styles.unavailableOverlay}>
+            <span>Currently Unavailable</span>
+          </div>
+        )}
+      </div>
+
       <div className={styles.cardHeader}>
         <input
           type="checkbox"
@@ -236,7 +311,7 @@ const AddOnCard = memo(function AddOnCard({
     prevProps.addon.id === nextProps.addon.id &&
     prevProps.isSelected === nextProps.isSelected &&
     prevProps.quantity === nextProps.quantity &&
-    prevProps.addon.price === nextProps.addon.price &&
+    prevProps.addon.price_cents === nextProps.addon.price_cents &&
     prevProps.addon.available === nextProps.addon.available &&
     prevProps.tourDays === nextProps.tourDays &&
     prevProps.participants === nextProps.participants

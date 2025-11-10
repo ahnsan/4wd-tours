@@ -1,50 +1,318 @@
-/* Booking Summary Styling - Sticky Panel - WCAG 2.1 AA Compliant */
+/* Booking Summary Styling - Unified Component - WCAG 2.1 AA Compliant */
 
+/* Main Container - Sticky Sidebar on Desktop */
 .summary {
   background: white;
-  border-radius: var(--radius-lg);
+  border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   position: sticky;
-  top: var(--space-xl);
-  max-height: calc(100vh - var(--space-2xl));
+  top: 24px;
+  max-height: calc(100vh - 48px);
   overflow-y: auto;
-  z-index: var(--z-sticky);
+  z-index: 10;
+  transition: all 0.3s ease;
 }
 
-.summaryContent {
-  padding: var(--space-xl);
+/* Compact Mode - HEAVILY OPTIMIZED */
+.summary.compact {
+  max-height: 85vh;
+  font-size: 0.875em;
+}
+
+.summary.compact .content {
+  padding: 12px;
+  gap: 10px;
+}
+
+.summary.compact .section {
+  gap: 8px;
+  padding-bottom: 10px;
+}
+
+.summary.compact .sectionTitle {
+  font-size: 0.75rem;
+}
+
+.summary.compact .tourCard {
+  padding: 10px;
+}
+
+.summary.compact .tourTitle {
+  font-size: 0.9375rem;
+}
+
+.summary.compact .tourPrice {
+  font-size: 1rem;
+}
+
+.summary.compact .tourDetails {
+  gap: 6px;
+  font-size: 0.75rem;
+}
+
+.summary.compact .addonItem {
+  padding: 8px;
+}
+
+.summary.compact .addonName {
+  font-size: 0.8125rem;
+}
+
+.summary.compact .addonMeta {
+  font-size: 0.6875rem;
+}
+
+.summary.compact .priceBreakdown {
+  gap: 6px;
+}
+
+.summary.compact .priceRow {
+  font-size: 0.8125rem;
+}
+
+.summary.compact .totalRow {
+  font-size: 1rem;
+}
+
+.summary.compact .trustBadges {
+  display: none;
+}
+
+.summary.compact .supportNote {
+  display: none;
+}
+
+/* Collapsed State (Mobile) */
+.summary.collapsed .content {
+  display: none;
+}
+
+/* Summary Content Wrapper */
+.content {
+  padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: var(--space-xl);
+  gap: 24px;
 }
 
-/* Title */
-.title {
-  font-size: var(--font-2xl);
-  font-weight: 600;
-  color: var(--text-dark);
+/* Mobile Header (Collapsible) */
+.mobileHeader {
+  all: unset;
+  display: none;
+  width: 100%;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #D4AF37 0%, #B8941E 100%);
+  color: white;
+  border-radius: 12px 12px 0 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.mobileHeader:hover {
+  background: linear-gradient(135deg, #B8941E 0%, #9A7A0F 100%);
+}
+
+.mobileHeaderContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.mobileTitle {
+  font-size: 18px;
+  font-weight: 700;
   margin: 0;
-  font-family: 'Lato', sans-serif;
-  letter-spacing: 0.02em;
-  padding-bottom: var(--space-md);
-  border-bottom: 2px solid var(--light-cream);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.addonBadge {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.mobileTotal {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.collapseIcon {
+  transition: transform 0.3s ease;
+}
+
+.summary.collapsed .collapseIcon {
+  transform: rotate(180deg);
+}
+
+/* Empty State */
+.emptyState {
+  padding: 48px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.emptyIcon {
+  color: #999;
+}
+
+.emptyTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.emptyText {
+  color: #666;
+  margin: 0;
+  font-size: 14px;
+}
+
+.browseTours {
+  display: inline-block;
+  padding: 12px 24px;
+  background: #D4AF37;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.browseTours:hover {
+  background: #B8941E;
+  transform: translateY(-2px);
+}
+
+/* Progress Indicator - COMPACT */
+.progress {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.progressTitle {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.progressSteps {
+  display: flex;
+  gap: 8px;
+}
+
+.progressStep {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  opacity: 0.4;
+  transition: opacity 0.2s ease;
+}
+
+.progressStep.active {
+  opacity: 1;
+}
+
+.stepIndicator {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: #666;
+  transition: background-color 0.2s ease;
+}
+
+.progressStep.active .stepIndicator {
+  background: #D4AF37;
+  color: white;
+}
+
+.progressStep.completed .stepIndicator {
+  background: #10b981;
+  color: white;
+}
+
+.stepLabel {
+  font-size: 0.625rem;
+  font-weight: 500;
+  color: #666;
+  text-align: center;
+}
+
+.progressStep.active .stepLabel {
+  color: #333;
+  font-weight: 600;
+}
+
+/* Order Confirmed Badge */
+.confirmedBadge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-md);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+.confirmedIcon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.confirmedBadge span {
+  font-weight: 600;
+  font-size: var(--font-base);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
 }
 
 /* Sections */
 .section {
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
-  padding-bottom: var(--space-md);
+  gap: 12px;
+  padding-bottom: 16px;
   border-bottom: 1px solid #e0e0e0;
 }
 
 .section:last-of-type {
   border-bottom: none;
+  padding-bottom: 0;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .sectionTitle {
-  font-size: var(--font-base);
+  font-size: 14px;
   font-weight: 600;
   color: #666;
   text-transform: uppercase;
@@ -53,43 +321,82 @@
   font-family: 'Lato', sans-serif;
 }
 
-/* Tour Info */
-.tourInfo {
+.editLink {
+  all: unset;
+  font-size: 13px;
+  font-weight: 600;
+  color: #D4AF37;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.editLink:hover {
+  background: #FFF8E1;
+  color: #B8941E;
+}
+
+.editLink:focus-visible {
+  outline: 2px solid #D4AF37;
+  outline-offset: 2px;
+}
+
+/* Tour Card */
+.tourCard {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: #FFF8E1;
+  border-radius: 8px;
+  border: 2px solid #D4AF37;
+}
+
+.tourHeader {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: var(--space-md);
-  padding: var(--space-md);
-  background: var(--light-cream);
-  border-radius: var(--radius-md);
-}
-
-.tourDetails {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
+  gap: 12px;
 }
 
 .tourTitle {
-  font-size: var(--font-base);
+  font-size: 16px;
   font-weight: 600;
-  color: var(--text-dark);
+  color: #333;
   font-family: 'Lato', sans-serif;
-}
-
-.tourMeta {
-  font-size: var(--font-sm);
-  color: #666;
   margin: 0;
 }
 
 .tourPrice {
-  font-size: var(--font-lg);
+  font-size: 18px;
   font-weight: 700;
-  color: var(--primary-tan);
+  color: #D4AF37;
   font-family: 'Lato', sans-serif;
   white-space: nowrap;
+}
+
+.tourDetails {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.tourDetail {
+  display: flex;
+  gap: 6px;
+}
+
+.tourDetail dt {
+  color: #666;
+  font-weight: 500;
+}
+
+.tourDetail dd {
+  color: #333;
+  font-weight: 600;
+  margin: 0;
 }
 
 /* Change Tour Button */
@@ -167,53 +474,50 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
+  gap: 8px;
 }
 
 .addonItem {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: var(--space-sm);
-  background: var(--light-cream);
-  border-radius: var(--radius-sm);
-  gap: var(--space-md);
+  align-items: flex-start;
+  padding: 12px;
+  background: #F5F5F5;
+  border-radius: 6px;
+  gap: 12px;
 }
 
 .addonInfo {
   display: flex;
-  align-items: center;
-  gap: var(--space-sm);
+  flex-direction: column;
+  gap: 4px;
   flex: 1;
 }
 
-.addonTitle {
-  font-size: var(--font-sm);
-  color: var(--text-dark);
+.addonName {
+  font-size: 14px;
+  color: #333;
   font-weight: 500;
 }
 
-.addonQuantity {
-  font-size: var(--font-xs);
+.addonMeta {
+  font-size: 12px;
   color: #666;
-  background: white;
-  padding: 2px var(--space-xs);
-  border-radius: var(--radius-sm);
-  font-weight: 600;
+  font-weight: 400;
 }
 
 .addonPrice {
-  font-size: var(--font-sm);
+  font-size: 14px;
   font-weight: 600;
-  color: var(--primary-tan);
+  color: #D4AF37;
   white-space: nowrap;
 }
 
-/* Price List */
-.priceList {
+/* Price Breakdown */
+.priceBreakdown {
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
+  gap: 8px;
   margin: 0;
 }
 
@@ -221,8 +525,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: var(--font-sm);
-  gap: var(--space-md);
+  font-size: 14px;
+  gap: 12px;
 }
 
 .priceRow dt {
@@ -233,27 +537,75 @@
 .priceRow dd {
   margin: 0;
   font-weight: 600;
-  color: var(--text-dark);
+  color: #333;
 }
 
 .subtotalRow {
-  padding-top: var(--space-md);
+  padding-top: 12px;
+  margin-top: 8px;
   border-top: 1px solid #e0e0e0;
-  font-size: var(--font-base);
+  font-size: 15px;
 }
 
 .totalRow {
-  padding-top: var(--space-md);
-  border-top: 2px solid var(--primary-tan);
-  font-size: var(--font-lg);
+  padding-top: 12px;
+  margin-top: 8px;
+  border-top: 2px solid #D4AF37;
+  font-size: 18px;
   font-weight: 700;
 }
 
 .totalRow dt,
 .totalRow dd {
-  color: var(--primary-tan);
+  color: #D4AF37;
   font-weight: 700;
   font-family: 'Lato', sans-serif;
+}
+
+/* Trust Badges */
+.trustBadges {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  background: #F5F5F5;
+  border-radius: 8px;
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #666;
+}
+
+.badge svg {
+  color: #10b981;
+  flex-shrink: 0;
+}
+
+.badge span {
+  font-weight: 500;
+}
+
+/* Support Note */
+.supportNote {
+  padding: 12px;
+  background: #FFF8E1;
+  border-radius: 6px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #666;
+}
+
+.supportNote p {
+  margin: 0;
+}
+
+.supportNote strong {
+  color: #333;
+  font-weight: 600;
 }
 
 /* Actions */
@@ -308,37 +660,71 @@
   gap: var(--space-xs);
 }
 
-/* Responsive Adjustments */
-@media (max-width: 1023px) {
+/* Mobile Responsiveness */
+@media (max-width: 767px) {
+  /* Show mobile header, make collapsible */
+  .mobileHeader {
+    display: block;
+  }
+
   .summary {
     position: relative;
     top: 0;
     max-height: none;
-    margin-top: var(--space-xl);
+    border-radius: 12px;
+  }
+
+  .content {
+    padding: 20px;
+    gap: 20px;
+  }
+
+  .progressSteps {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .progressStep {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+  }
+
+  .stepLabel {
+    text-align: left;
+  }
+
+  .tourCard {
+    padding: 12px;
+  }
+
+  .tourDetails {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .trustBadges {
+    padding: 12px;
   }
 }
 
-@media (max-width: 767px) {
-  .summaryContent {
-    padding: var(--space-lg);
-    gap: var(--space-lg);
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .summary {
+    position: relative;
+    top: 0;
+    max-height: none;
+    margin-top: 24px;
   }
+}
 
-  .title {
-    font-size: var(--font-xl);
-  }
-
-  .tourInfo {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .tourPrice {
-    align-self: flex-end;
-  }
-
-  .section {
-    gap: var(--space-sm);
+/* Desktop - Sticky Sidebar */
+@media (min-width: 1024px) {
+  .summary {
+    position: sticky;
+    top: 24px;
+    max-height: calc(100vh - 48px);
   }
 }
 

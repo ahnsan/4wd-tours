@@ -43,7 +43,7 @@ export default function LazyAddOnCard(props: LazyAddOnCardProps) {
   return (
     <div ref={ref} style={{ minHeight: isIntersecting ? 'auto' : '250px' }}>
       {isIntersecting ? (
-        <AddOnCard {...props} />
+        <AddOnCard {...props as any} />
       ) : (
         <div
           className={styles.cardSkeleton}

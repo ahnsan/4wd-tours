@@ -199,21 +199,38 @@ export function validateProductData(product: any): ProductValidationResult {
       });
     }
 
-    // Validate prices array
-    if (!variant.prices || !Array.isArray(variant.prices)) {
+    // Validate pricing (Medusa v2 uses calculated_price, v1 uses prices array)
+    const hasCalculatedPrice = variant.calculated_price &&
+      typeof variant.calculated_price.calculated_amount === 'number';
+    const hasPricesArray = variant.prices &&
+      Array.isArray(variant.prices) &&
+      variant.prices.length > 0;
+
+    if (!hasCalculatedPrice && !hasPricesArray) {
       errors.push({
-        field: 'variants[0].prices',
-        message: 'Variant prices array is missing or invalid',
+        field: 'variants[0].price',
+        message: 'Variant has no price information (neither calculated_price nor prices array)',
         severity: 'critical',
       });
-    } else if (variant.prices.length === 0) {
-      errors.push({
-        field: 'variants[0].prices',
-        message: 'Variant has no prices available',
-        severity: 'critical',
-      });
-    } else {
-      // Validate first price
+    } else if (hasCalculatedPrice) {
+      // Medusa v2: Validate calculated_price
+      const calculatedAmount = variant.calculated_price.calculated_amount;
+      if (calculatedAmount < 0) {
+        errors.push({
+          field: 'variants[0].calculated_price.calculated_amount',
+          message: 'Calculated price amount is negative',
+          severity: 'critical',
+        });
+      }
+      if (!variant.calculated_price.currency_code) {
+        warnings.push({
+          field: 'variants[0].calculated_price.currency_code',
+          message: 'Currency code is missing - will use default (AUD)',
+          severity: 'warning',
+        });
+      }
+    } else if (hasPricesArray) {
+      // Medusa v1: Validate prices array
       const price = variant.prices[0];
       if (price.amount === undefined || price.amount === null) {
         errors.push({

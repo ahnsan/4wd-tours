@@ -1,0 +1,503 @@
+{
+  "metadata": {
+    "generatedAt": "2025-11-09T00:00:00Z",
+    "purpose": "Add-on image requirements for Pexels API integration",
+    "totalAddons": 19,
+    "categories": 5,
+    "context": "Fraser Island, Rainbow Beach, 4WD tours, Australian adventure tourism",
+    "apiEndpoint": "https://api.pexels.com/v1/search"
+  },
+  "categories": [
+    {
+      "name": "Food & Beverage",
+      "description": "Culinary experiences to enhance the adventure",
+      "imageStyle": "Appetizing, outdoor setting, Australian coastal vibe",
+      "colorPalette": ["warm tones", "golden hour", "natural light"]
+    },
+    {
+      "name": "Connectivity",
+      "description": "Internet and communication solutions for remote locations",
+      "imageStyle": "Modern technology in natural settings, connectivity concepts",
+      "colorPalette": ["blue sky", "technology meets nature", "clean minimal"]
+    },
+    {
+      "name": "Photography",
+      "description": "Memory capture and content creation services",
+      "imageStyle": "Action shots, aerial perspectives, professional equipment",
+      "colorPalette": ["dramatic landscapes", "adventure action", "sunset golden"]
+    },
+    {
+      "name": "Accommodation & Comfort",
+      "description": "Premium comfort upgrades for multi-day tours",
+      "imageStyle": "Luxury camping, beachfront relaxation, eco-tourism",
+      "colorPalette": ["natural earth tones", "coastal blues", "sunrise/sunset"]
+    },
+    {
+      "name": "Activities & Equipment",
+      "description": "Adventure activities and water sports",
+      "imageStyle": "Action photography, water sports, outdoor adventure",
+      "colorPalette": ["vibrant blues", "action movement", "beach lifestyle"]
+    }
+  ],
+  "addons": [
+    {
+      "handle": "addon-gourmet-bbq",
+      "title": "Gourmet Beach BBQ",
+      "category": "food",
+      "price": 180,
+      "pexels_search_terms": [
+        "beach bbq australia",
+        "beach barbecue sunset",
+        "outdoor grilling beach",
+        "australian seafood grill",
+        "sunset beach dining"
+      ],
+      "image_requirements": {
+        "primary_focus": "BBQ grill with food on beach at sunset",
+        "setting": "Australian beach, golden hour lighting",
+        "mood": "Appetizing, social, premium outdoor dining",
+        "must_include": "Grill or BBQ setup, beach background, warm lighting"
+      },
+      "alt_text_template": "Gourmet beach BBQ setup on Fraser Island with premium Australian meats and seafood at sunset",
+      "seo_keywords": ["beach bbq", "Fraser Island dining", "outdoor grilling", "Australian beach food"],
+      "fallback_searches": ["beachside grilling", "sunset bbq", "coastal outdoor cooking"]
+    },
+    {
+      "handle": "addon-picnic-hamper",
+      "title": "Picnic Hamper",
+      "category": "food",
+      "price": 85,
+      "pexels_search_terms": [
+        "gourmet picnic beach australia",
+        "picnic basket beach",
+        "outdoor picnic food spread",
+        "artisan food picnic",
+        "beach picnic blanket"
+      ],
+      "image_requirements": {
+        "primary_focus": "Artisan picnic spread with local produce",
+        "setting": "Beach or lakeside with picnic blanket",
+        "mood": "Fresh, artisanal, relaxed outdoor dining",
+        "must_include": "Picnic basket or hamper, fresh food display, outdoor setting"
+      },
+      "alt_text_template": "Artisan picnic hamper with Queensland cheeses and gourmet food on Rainbow Beach",
+      "seo_keywords": ["beach picnic", "gourmet hamper", "outdoor dining", "Fraser Island lunch"],
+      "fallback_searches": ["beach food spread", "outdoor lunch", "picnic australia"]
+    },
+    {
+      "handle": "addon-seafood-platter",
+      "title": "Seafood Platter",
+      "category": "food",
+      "price": 150,
+      "pexels_search_terms": [
+        "fresh seafood platter australia",
+        "prawns oysters seafood",
+        "ocean fresh seafood display",
+        "australian seafood feast",
+        "beach seafood dining"
+      ],
+      "image_requirements": {
+        "primary_focus": "Fresh seafood platter with prawns, oysters, fish",
+        "setting": "Beachfront or coastal setting",
+        "mood": "Premium, fresh, ocean-to-table",
+        "must_include": "Multiple seafood items, ice display, coastal background"
+      },
+      "alt_text_template": "Fresh Queensland seafood platter with prawns, oysters and local catch on Fraser Island beach",
+      "seo_keywords": ["seafood platter", "fresh prawns", "Queensland seafood", "beach dining"],
+      "fallback_searches": ["seafood display", "fresh prawns oysters", "coastal seafood"]
+    },
+    {
+      "handle": "addon-bbq",
+      "title": "BBQ on the Beach",
+      "category": "food",
+      "price": 120,
+      "pexels_search_terms": [
+        "beach bbq cooking",
+        "beach barbecue australia",
+        "campfire beach cooking",
+        "outdoor beach grill",
+        "beach cooking sunset"
+      ],
+      "image_requirements": {
+        "primary_focus": "BBQ or grill on beach with food cooking",
+        "setting": "Sandy beach, casual outdoor atmosphere",
+        "mood": "Casual, fun, social beach cooking",
+        "must_include": "Grill or BBQ, beach setting, food being prepared"
+      },
+      "alt_text_template": "Beach BBQ cooking setup on Rainbow Beach with 4WD tour group",
+      "seo_keywords": ["beach BBQ", "outdoor cooking", "beach grilling", "Fraser Island food"],
+      "fallback_searches": ["beach grilling", "sand cooking", "beach fire cooking"]
+    },
+    {
+      "handle": "addon-internet",
+      "title": "Always-on High-Speed Internet",
+      "category": "connectivity",
+      "price": 30,
+      "pexels_search_terms": [
+        "portable wifi hotspot",
+        "mobile internet device beach",
+        "smartphone beach connectivity",
+        "working remotely beach",
+        "digital nomad beach"
+      ],
+      "image_requirements": {
+        "primary_focus": "Person using phone/device with wifi/connectivity concept",
+        "setting": "Beach or outdoor adventure location",
+        "mood": "Modern, connected, seamless technology",
+        "must_include": "Mobile device or hotspot, natural outdoor setting"
+      },
+      "alt_text_template": "Portable high-speed internet hotspot keeping travelers connected on Fraser Island 4WD tour",
+      "seo_keywords": ["portable wifi", "beach internet", "remote connectivity", "4WD tour wifi"],
+      "fallback_searches": ["beach wifi", "mobile hotspot outdoor", "connected beach"]
+    },
+    {
+      "handle": "addon-starlink",
+      "title": "Starlink Satellite Internet",
+      "category": "connectivity",
+      "price": 50,
+      "pexels_search_terms": [
+        "starlink satellite dish",
+        "satellite internet remote",
+        "starlink beach setup",
+        "satellite dish outdoor",
+        "remote internet technology"
+      ],
+      "image_requirements": {
+        "primary_focus": "Starlink dish or satellite internet concept",
+        "setting": "Remote outdoor location, clear sky view",
+        "mood": "Cutting-edge, reliable, premium connectivity",
+        "must_include": "Satellite dish or technology equipment, remote/outdoor setting"
+      },
+      "alt_text_template": "Starlink satellite internet providing high-speed connectivity in remote Fraser Island locations",
+      "seo_keywords": ["Starlink internet", "satellite wifi", "remote internet", "Fraser Island connectivity"],
+      "fallback_searches": ["satellite internet outdoor", "remote wifi", "wilderness connectivity"]
+    },
+    {
+      "handle": "addon-drone-photography",
+      "title": "Aerial Photography Package",
+      "category": "photography",
+      "price": 200,
+      "pexels_search_terms": [
+        "drone aerial photography beach",
+        "aerial view fraser island",
+        "drone camera beach australia",
+        "aerial 4wd beach photography",
+        "drone over ocean beach"
+      ],
+      "image_requirements": {
+        "primary_focus": "Drone in flight or aerial perspective of beach/island",
+        "setting": "Coastal or beach aerial view, preferably Australian",
+        "mood": "Epic, cinematic, breathtaking perspective",
+        "must_include": "Aerial viewpoint, coastal landscape, stunning perspective"
+      },
+      "alt_text_template": "Professional drone capturing aerial photography of 4WD adventure on Fraser Island beach",
+      "seo_keywords": ["aerial photography", "drone footage", "Fraser Island aerial", "4WD drone video"],
+      "fallback_searches": ["aerial beach photography", "drone coastal", "overhead beach view"]
+    },
+    {
+      "handle": "addon-gopro",
+      "title": "GoPro Package",
+      "category": "photography",
+      "price": 75,
+      "pexels_search_terms": [
+        "gopro action camera adventure",
+        "action camera beach surfing",
+        "gopro helmet mount 4wd",
+        "underwater gopro photography",
+        "gopro beach sports"
+      ],
+      "image_requirements": {
+        "primary_focus": "GoPro camera in use or POV action shot",
+        "setting": "Action/adventure scenario - beach, water, 4WD",
+        "mood": "Exciting, immersive, action-packed",
+        "must_include": "Action camera or POV perspective, adventure activity"
+      },
+      "alt_text_template": "GoPro action camera capturing POV footage of Fraser Island 4WD and water adventures",
+      "seo_keywords": ["GoPro rental", "action camera", "adventure photography", "Fraser Island video"],
+      "fallback_searches": ["action camera beach", "pov adventure camera", "waterproof camera sports"]
+    },
+    {
+      "handle": "addon-photo-album",
+      "title": "Professional Photo Album",
+      "category": "photography",
+      "price": 150,
+      "pexels_search_terms": [
+        "professional photo album",
+        "hardcover photo book",
+        "wedding photo album luxury",
+        "travel photo book",
+        "premium photo album"
+      ],
+      "image_requirements": {
+        "primary_focus": "High-quality hardcover photo album open or displayed",
+        "setting": "Clean, elegant presentation",
+        "mood": "Premium, heirloom quality, timeless",
+        "must_include": "Photo album, quality printing, professional presentation"
+      },
+      "alt_text_template": "Premium hardcover photo album preserving Fraser Island 4WD tour memories",
+      "seo_keywords": ["photo album", "travel memories", "professional photo book", "Fraser Island album"],
+      "fallback_searches": ["travel photo album", "hardcover photo book", "memory book"]
+    },
+    {
+      "handle": "addon-camera",
+      "title": "Professional Camera Rental",
+      "category": "photography",
+      "price": 100,
+      "pexels_search_terms": [
+        "professional camera dslr",
+        "photographer camera beach",
+        "canon nikon professional camera",
+        "camera equipment rental",
+        "landscape photography camera"
+      ],
+      "image_requirements": {
+        "primary_focus": "Professional DSLR or mirrorless camera",
+        "setting": "Outdoor photography scenario",
+        "mood": "Professional, quality equipment",
+        "must_include": "Professional camera body, outdoor/adventure context"
+      },
+      "alt_text_template": "Professional camera rental for capturing high-quality Fraser Island adventure photos",
+      "seo_keywords": ["camera rental", "professional photography", "DSLR rental", "tour photography"],
+      "fallback_searches": ["dslr camera outdoor", "professional camera rental", "photography equipment"]
+    },
+    {
+      "handle": "addon-glamping",
+      "title": "Glamping Setup",
+      "category": "accommodation",
+      "price": 250,
+      "pexels_search_terms": [
+        "glamping tent beach australia",
+        "luxury camping beach",
+        "safari tent ocean view",
+        "beach glamping sunset",
+        "eco glamping australia"
+      ],
+      "image_requirements": {
+        "primary_focus": "Luxury glamping tent with comfortable interior",
+        "setting": "Beach or coastal location, preferably Australian",
+        "mood": "Luxurious, comfortable, nature-immersive",
+        "must_include": "Safari-style tent, quality bedding, natural setting"
+      },
+      "alt_text_template": "Luxury glamping tent setup on Fraser Island beach with hotel-quality amenities",
+      "seo_keywords": ["beach glamping", "luxury camping", "Fraser Island glamping", "safari tent"],
+      "fallback_searches": ["luxury tent beach", "glamping ocean", "beach camping luxury"]
+    },
+    {
+      "handle": "addon-beach-cabana",
+      "title": "Beach Cabana",
+      "category": "accommodation",
+      "price": 180,
+      "pexels_search_terms": [
+        "beach cabana umbrella",
+        "beach tent shade",
+        "luxury beach setup australia",
+        "beach lounge chairs cabana",
+        "private beach shade"
+      ],
+      "image_requirements": {
+        "primary_focus": "Beach cabana or luxury shade setup with loungers",
+        "setting": "Pristine beach, preferably Australian",
+        "mood": "Relaxing, exclusive, resort-style",
+        "must_include": "Shade structure, comfortable seating, beach backdrop"
+      },
+      "alt_text_template": "Private beach cabana with luxury loungers on Rainbow Beach providing shaded comfort",
+      "seo_keywords": ["beach cabana", "beach shade", "luxury beach setup", "private beach"],
+      "fallback_searches": ["beach tent luxury", "beach lounge setup", "beach umbrella chairs"]
+    },
+    {
+      "handle": "addon-eco-lodge",
+      "title": "Eco-Lodge Upgrade",
+      "category": "accommodation",
+      "price": 300,
+      "pexels_search_terms": [
+        "eco lodge australia beach",
+        "sustainable resort ocean view",
+        "eco friendly accommodation",
+        "rainforest lodge australia",
+        "eco resort sunset"
+      ],
+      "image_requirements": {
+        "primary_focus": "Modern eco-lodge with ocean/rainforest views",
+        "setting": "Coastal or rainforest eco-accommodation",
+        "mood": "Sustainable luxury, peaceful, environmentally conscious",
+        "must_include": "Eco-architecture, natural materials, scenic views"
+      },
+      "alt_text_template": "Premium eco-lodge accommodation near Fraser Island with sustainable luxury and ocean views",
+      "seo_keywords": ["eco lodge", "sustainable accommodation", "Fraser Island lodge", "eco resort"],
+      "fallback_searches": ["eco resort australia", "sustainable hotel beach", "green accommodation"]
+    },
+    {
+      "handle": "addon-fishing",
+      "title": "Fishing Equipment",
+      "category": "activities",
+      "price": 65,
+      "pexels_search_terms": [
+        "beach fishing australia",
+        "fishing rod beach sunset",
+        "surf fishing ocean",
+        "fishing equipment beach",
+        "beach fishing catch"
+      ],
+      "image_requirements": {
+        "primary_focus": "Fishing on beach with rod and ocean backdrop",
+        "setting": "Australian beach, surf fishing scenario",
+        "mood": "Peaceful, rewarding, authentic fishing experience",
+        "must_include": "Fishing rod, beach/ocean setting, sunset lighting preferred"
+      },
+      "alt_text_template": "Beach fishing equipment for catching fresh fish on Fraser Island's legendary 75 Mile Beach",
+      "seo_keywords": ["beach fishing", "Fraser Island fishing", "surf fishing", "fishing equipment rental"],
+      "fallback_searches": ["surf fishing rod", "beach angling", "ocean fishing"]
+    },
+    {
+      "handle": "addon-sandboarding",
+      "title": "Sandboarding Gear",
+      "category": "activities",
+      "price": 45,
+      "pexels_search_terms": [
+        "sandboarding sand dunes",
+        "sand boarding australia",
+        "dune boarding rainbow beach",
+        "sandboard action",
+        "sand dune adventure"
+      ],
+      "image_requirements": {
+        "primary_focus": "Person sandboarding down large sand dune",
+        "setting": "Massive sand dunes, action shot",
+        "mood": "Thrilling, adventurous, fun for all ages",
+        "must_include": "Sandboard, large dune, action/movement"
+      },
+      "alt_text_template": "Sandboarding adventure down Rainbow Beach's iconic colored sand dunes",
+      "seo_keywords": ["sandboarding", "sand dunes", "Rainbow Beach activity", "dune boarding"],
+      "fallback_searches": ["sand boarding action", "dune surfing", "sand dune sports"]
+    },
+    {
+      "handle": "addon-bodyboarding",
+      "title": "Bodyboarding Set",
+      "category": "activities",
+      "price": 35,
+      "pexels_search_terms": [
+        "bodyboarding ocean waves",
+        "bodyboard surfing beach",
+        "boogie board waves australia",
+        "bodyboarding action",
+        "beach bodyboard fun"
+      ],
+      "image_requirements": {
+        "primary_focus": "Person bodyboarding/riding wave",
+        "setting": "Ocean waves, Australian beach preferred",
+        "mood": "Fun, accessible, family-friendly water sport",
+        "must_include": "Bodyboard, waves, action shot"
+      },
+      "alt_text_template": "Bodyboarding fun on Fraser Island's 75 Mile Beach with perfect waves for all skill levels",
+      "seo_keywords": ["bodyboarding", "boogie board", "Fraser Island waves", "beach water sports"],
+      "fallback_searches": ["boogie boarding waves", "bodyboard ocean", "wave riding beach"]
+    },
+    {
+      "handle": "addon-paddleboarding",
+      "title": "Paddleboarding Package",
+      "category": "activities",
+      "price": 55,
+      "pexels_search_terms": [
+        "stand up paddleboard calm water",
+        "sup paddleboard australia",
+        "paddleboarding crystal clear water",
+        "sup board beach australia",
+        "paddleboard peaceful lake"
+      ],
+      "image_requirements": {
+        "primary_focus": "Person stand-up paddleboarding on calm water",
+        "setting": "Crystal clear water, lake or sheltered bay",
+        "mood": "Peaceful, scenic, meditative water activity",
+        "must_include": "SUP board, calm water, person paddling"
+      },
+      "alt_text_template": "Stand-up paddleboarding on Fraser Island's crystal-clear Lake McKenzie",
+      "seo_keywords": ["paddleboarding", "SUP", "Lake McKenzie", "Fraser Island water sports"],
+      "fallback_searches": ["sup boarding clear water", "stand up paddle beach", "paddleboard calm"]
+    },
+    {
+      "handle": "addon-kayaking",
+      "title": "Kayaking Adventure",
+      "category": "activities",
+      "price": 75,
+      "pexels_search_terms": [
+        "ocean kayaking australia",
+        "kayak coastal waters",
+        "sea kayaking beach",
+        "kayaking dolphins",
+        "kayak adventure ocean"
+      ],
+      "image_requirements": {
+        "primary_focus": "Ocean kayaking along coastline",
+        "setting": "Coastal waters, preferably Australian",
+        "mood": "Adventurous, exploratory, wildlife encounters",
+        "must_include": "Kayak, ocean/coastal setting, scenic backdrop"
+      },
+      "alt_text_template": "Ocean kayaking adventure exploring hidden coves and wildlife around Fraser Island",
+      "seo_keywords": ["kayaking", "ocean kayak", "Fraser Island kayaking", "coastal adventure"],
+      "fallback_searches": ["sea kayaking coast", "ocean kayak adventure", "coastal kayaking"]
+    },
+    {
+      "handle": "addon-picnic",
+      "title": "Gourmet Picnic Package",
+      "category": "food",
+      "price": 95,
+      "pexels_search_terms": [
+        "gourmet picnic beach",
+        "luxury picnic ocean view",
+        "beach picnic setup australia",
+        "romantic beach picnic",
+        "picnic food beach sunset"
+      ],
+      "image_requirements": {
+        "primary_focus": "Elegant picnic setup with gourmet food",
+        "setting": "Beach or scenic coastal location",
+        "mood": "Upscale, romantic, Instagram-worthy",
+        "must_include": "Picnic spread, quality presentation, beach/coastal view"
+      },
+      "alt_text_template": "Gourmet picnic package with artisan foods on pristine Fraser Island beach",
+      "seo_keywords": ["gourmet picnic", "beach dining", "luxury picnic", "Fraser Island food"],
+      "fallback_searches": ["luxury beach picnic", "gourmet outdoor dining", "beach food spread"]
+    }
+  ],
+  "implementation_notes": {
+    "pexels_api_usage": {
+      "rate_limits": "200 requests per hour for free tier",
+      "orientation": "landscape preferred for most images",
+      "size": "large or original for best quality",
+      "per_page": "15-20 results recommended",
+      "caching": "Cache results for 24 hours to minimize API calls"
+    },
+    "image_selection_criteria": {
+      "relevance": "Must match addon category and Australian 4WD tour context",
+      "quality": "High resolution, professional photography only",
+      "licensing": "Pexels free license - attribution appreciated but not required",
+      "context": "Prefer Australian locations or similar coastal/beach environments",
+      "composition": "Avoid cluttered images, prefer clean hero shots"
+    },
+    "fallback_strategy": {
+      "primary": "Use primary Pexels search terms",
+      "secondary": "If insufficient results, use fallback searches",
+      "tertiary": "Use broader category terms (e.g., 'beach', '4wd', 'camping')",
+      "placeholder": "Use generic category placeholder if all searches fail"
+    },
+    "seo_optimization": {
+      "alt_text": "Use provided templates with specific location keywords",
+      "file_naming": "Use handle + descriptive keyword (e.g., addon-glamping-tent-beach.jpg)",
+      "image_title": "Combine title + location for image title attribute",
+      "structured_data": "Implement ImageObject schema for all addon images"
+    },
+    "performance": {
+      "format": "Convert to WebP for 60-70% size reduction",
+      "dimensions": "1200x800px recommended for addon cards",
+      "lazy_loading": "Implement for below-fold addon images",
+      "cdn": "Serve from CDN for optimal delivery"
+    }
+  },
+  "category_default_searches": {
+    "food": ["australian beach food", "outdoor dining beach", "coastal cuisine"],
+    "connectivity": ["technology beach", "digital nomad outdoor", "mobile connectivity"],
+    "photography": ["adventure photography", "beach photography", "travel memories"],
+    "accommodation": ["beach camping luxury", "coastal accommodation", "outdoor comfort"],
+    "activities": ["beach activities australia", "water sports", "adventure sports beach"]
+  }
+}

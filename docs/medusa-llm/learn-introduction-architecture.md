@@ -1,0 +1,74 @@
+# Medusa's Architecture
+
+In this chapter, you'll learn about the architectural layers in Medusa.
+
+Find the full architectural diagram at the [end of this chapter](#full-diagram-of-medusas-architecture).
+
+## HTTP, Workflow, and Module Layers
+
+Medusa is a headless commerce platform. So, storefronts, admin dashboards, and other clients consume Medusa's functionalities through its API routes.
+
+In a common Medusa application, requests go through four layers in the stack. In order of entry, those are:
+
+1. API Routes (HTTP): Our API Routes are the typical entry point. The Medusa server is based on Express.js, which handles incoming requests. It can also connect to a Redis database that stores the server session data.
+2. Workflows: API Routes consume workflows that hold the opinionated business logic of your application.
+3. Modules: Workflows use domain-specific modules for resource management.
+4. Data store: Modules query the underlying datastore, which is a PostgreSQL database in common cases.
+
+These layers of stack can be implemented within [plugins](https://docs.medusajs.com/learn/fundamentals/plugins).
+
+![Medusa application architecture diagram illustrating the HTTP layer flow: External clients (storefront and admin) send requests to API routes, which execute workflows containing business logic, which then interact with modules to perform data operations on PostgreSQL databases](https://res.cloudinary.com/dza7lstvk/image/upload/v1759761784/Medusa%20Book/http-layer-new_hu0r3h.jpg)
+
+***
+
+## Database Layer
+
+The Medusa application injects into each module, including your [custom modules](https://docs.medusajs.com/learn/fundamentals/modules), a connection to the configured PostgreSQL database. Modules use that connection to read and write data to the database.
+
+Modules can be implemented within [plugins](https://docs.medusajs.com/learn/fundamentals/plugins).
+
+![Database layer architecture diagram showing how Medusa modules establish connections to PostgreSQL databases through injected database connections, enabling data persistence and retrieval operations](https://res.cloudinary.com/dza7lstvk/image/upload/v1759761866/Medusa%20Book/db-layer-new_faeksx.jpg)
+
+***
+
+## Third-Party Integrations Layer
+
+Third-party services and systems are integrated through Medusa's Commerce and Infrastructure Modules. You also create custom third-party integrations through a [custom module](https://docs.medusajs.com/learn/fundamentals/modules).
+
+Modules can be implemented within [plugins](https://docs.medusajs.com/learn/fundamentals/plugins).
+
+### Commerce Modules
+
+[Commerce Modules](https://docs.medusajs.com/resources/commerce-modules) integrate third-party services relevant for commerce or user-facing features. For example, you can integrate [Stripe](https://docs.medusajs.com/resources/commerce-modules/payment/payment-provider/stripe) through a Payment Module Provider, or [ShipStation](https://docs.medusajs.com/resources/integrations/guides/shipstation) through a Fulfillment Module Provider.
+
+You can also integrate third-party services for custom functionalities. For example, you can integrate [Sanity](https://docs.medusajs.com/resources/integrations/guides/sanity) for rich CMS capabilities, or [Odoo](https://docs.medusajs.com/resources/recipes/erp/odoo) to sync your Medusa application with your ERP system.
+
+You can replace any of the third-party services mentioned above to build your preferred commerce ecosystem.
+
+![Diagram illustrating the Commerce Modules integration to third-party services](https://res.cloudinary.com/dza7lstvk/image/upload/v1727175357/Medusa%20Book/service-commerce_qcbdsl.jpg)
+
+### Infrastructure Modules
+
+[Infrastructure Modules](https://docs.medusajs.com/resources/infrastructure-modules) integrate third-party services and systems that customize Medusa's infrastructure. Medusa has the following Infrastructure Modules:
+
+- [Analytics Module](https://docs.medusajs.com/resources/infrastructure-modules/analytics): Tracks and analyzes user interactions and system events with third-party analytic providers. You can integrate [PostHog](https://docs.medusajs.com/resources/infrastructure-modules/analytics/posthog) as the analytics provider.
+- [Caching Module](https://docs.medusajs.com/resources/infrastructure-modules/caching): Caches data that require heavy computation. You can integrate a custom module to handle the caching with services like Memcached, or use the existing [Redis Caching Module Provider](https://docs.medusajs.com/resources/infrastructure-modules/caching/providers/redis).
+- [Event Module](https://docs.medusajs.com/resources/infrastructure-modules/event): A pub/sub system that allows you to subscribe to events and trigger them. You can integrate [Redis](https://docs.medusajs.com/resources/infrastructure-modules/event/redis) as the pub/sub system.
+- [File Module](https://docs.medusajs.com/resources/infrastructure-modules/file): Manages file uploads and storage, such as upload of product images. You can integrate [AWS S3](https://docs.medusajs.com/resources/infrastructure-modules/file/s3) for file storage.
+- [Locking Module](https://docs.medusajs.com/resources/infrastructure-modules/locking): Manages access to shared resources by multiple processes or threads, preventing conflict between processes and ensuring data consistency. You can integrate [Redis](https://docs.medusajs.com/resources/infrastructure-modules/locking/redis) for locking.
+- [Notification Module](https://docs.medusajs.com/resources/infrastructure-modules/notification): Sends notifications to customers and users, such as for order updates or newsletters. You can integrate [SendGrid](https://docs.medusajs.com/resources/infrastructure-modules/notification/sendgrid) for sending emails.
+- [Workflow Engine Module](https://docs.medusajs.com/resources/infrastructure-modules/workflow-engine): Orchestrates workflows that hold the business logic of your application. You can integrate [Redis](https://docs.medusajs.com/resources/infrastructure-modules/workflow-engine/redis) to orchestrate workflows.
+
+All of the third-party services mentioned above can be replaced to help you build your preferred architecture and ecosystem.
+
+The Caching Module was introduced in [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0) to replace the deprecated Cache Module.
+
+![Diagram illustrating the Infrastructure Modules integration to third-party services and systems](https://res.cloudinary.com/dza7lstvk/image/upload/v1759762284/Medusa%20Book/service-infra_k3fcy0.jpg)
+
+***
+
+## Full Diagram of Medusa's Architecture
+
+The following diagram illustrates Medusa's architecture including all its layers.
+
+![Complete Medusa architecture overview showing the full technology stack: client applications (storefront and admin) connecting through HTTP layer to workflows, which coordinate with commerce and Infrastructure Modules to manage data operations, third-party integrations, and database persistence](https://res.cloudinary.com/dza7lstvk/image/upload/v1759762329/Medusa%20Book/diagram-full-new_znssjy.jpg)

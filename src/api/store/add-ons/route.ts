@@ -4,7 +4,7 @@
  */
 
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { Modules } from "@medusajs/framework/utils"
+import { Modules, QueryContext } from "@medusajs/framework/utils"
 import { Product, ProductVariant, ProductPrice, AddOnsResponse, AddOnProduct } from "../../../lib/types/product"
 import { logger } from "../../../lib/logger"
 import { handleAPIError } from "../../../lib/errors/error-handler"
@@ -18,11 +18,17 @@ export async function GET(
 
   try {
     const productModuleService = req.scope.resolve(Modules.PRODUCT)
+    const query = req.scope.resolve("query")
 
-    requestLogger.debug('Fetching add-ons collection')
+    // Get region_id and currency_code from query params for pricing context
+    const region_id = req.query.region_id as string
+    const currency_code = req.query.currency_code as string || "aud"
+    const tour_handle = req.query.tour_handle as string | undefined
+
+    requestLogger.debug('Fetching add-ons collection', { region_id, currency_code, tour_handle })
 
     // Get add-ons collection
-    const [collections] = await productModuleService.listProductCollections({
+    const collections = await productModuleService.listProductCollections({
       handle: "add-ons",
     })
 
@@ -38,20 +44,55 @@ export async function GET(
 
     const collectionId = collections[0].id
 
-    requestLogger.debug('Fetching products in add-ons collection', { collectionId })
+    requestLogger.debug('Fetching products in add-ons collection with calculated prices', { collectionId })
 
-    // Get all products in add-ons collection with metadata.addon = true
-    const [products] = await productModuleService.listProducts({
-      collection_id: collectionId,
-      status: "published",
-    }, {
-      relations: ["variants", "variants.prices"],
+    // Get all products in add-ons collection with calculated prices
+    // Use query.graph to get variants with calculated_price based on region/currency context
+    const { data: products } = await query.graph({
+      entity: "product",
+      fields: [
+        "*",
+        "variants.*",
+        "variants.calculated_price.*",
+      ],
+      filters: {
+        collection_id: collectionId,
+        status: "published",
+      },
+      context: region_id || currency_code ? {
+        variants: {
+          calculated_price: QueryContext({
+            ...(region_id && { region_id }),
+            ...(currency_code && { currency_code }),
+          }),
+        },
+      } : undefined,
     })
 
     // Filter for products with addon metadata (with proper typing)
-    const addons = (products as Product[])?.filter(
+    // MEDUSA BEST PRACTICE: Server-side filtering for better performance
+    let addons = (products as Product[])?.filter(
       (product: Product) => product.metadata?.addon === true
     ) || []
+
+    // Server-side filter by tour handle if provided
+    if (tour_handle) {
+      addons = addons.filter((product: Product) => {
+        const applicableTours = product.metadata?.applicable_tours as string[] | undefined
+
+        if (!applicableTours || applicableTours.length === 0) {
+          return false // Not applicable if no tours specified
+        }
+
+        // Include if wildcard or tour handle matches
+        return applicableTours.includes('*') || applicableTours.includes(tour_handle)
+      })
+
+      requestLogger.debug('Filtered add-ons by tour', {
+        tour_handle,
+        count: addons.length
+      })
+    }
 
     const responseTime = Date.now() - startTime
 
@@ -61,14 +102,20 @@ export async function GET(
         handle: product.handle,
         title: product.title,
         metadata: product.metadata || {},
-        variants: (product.variants || []).map((variant: ProductVariant) => ({
+        variants: (product.variants || []).map((variant: any) => ({
           id: variant.id,
           title: variant.title,
           sku: variant.sku,
-          prices: (variant.prices || []).map((price: ProductPrice) => ({
-            amount: price.amount,
-            currency_code: price.currency_code,
-          })),
+          // Include both calculated_price (Medusa v2) and prices array for backwards compatibility
+          calculated_price: variant.calculated_price ? {
+            calculated_amount: variant.calculated_price.calculated_amount,
+            currency_code: variant.calculated_price.currency_code,
+            is_calculated_price_tax_inclusive: variant.calculated_price.is_calculated_price_tax_inclusive,
+          } : undefined,
+          prices: variant.calculated_price ? [{
+            amount: variant.calculated_price.calculated_amount,
+            currency_code: variant.calculated_price.currency_code,
+          }] : [],
         })),
       })),
       count: addons.length,

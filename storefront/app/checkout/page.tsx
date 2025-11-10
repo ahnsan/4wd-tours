@@ -2,58 +2,73 @@
 
 import React, { useState, useEffect } from 'react';
 
-// Force dynamic rendering since this page requires cart state
-export const dynamicParams = true;
-export const revalidate = 0;
+// NOTE: Route segment config (dynamicParams, revalidate) removed because they only work in Server Components.
+// Client Components cannot export Next.js route config. This page requires client-side features (useState, useEffect, etc.)
+// so it must remain a Client Component. Dynamic rendering happens automatically since we use hooks and browser APIs.
 import { useRouter } from 'next/navigation';
 import styles from './checkout.module.css';
 import CustomerForm, { type CustomerData } from '../../components/Checkout/CustomerForm';
 import PaymentForm, { type PaymentData } from '../../components/Checkout/PaymentForm';
-import PriceSummary, { type Tour } from '../../components/Checkout/PriceSummary';
-import { type AddOn } from '../../lib/utils/pricing';
-import { useCart } from '../../lib/hooks/useCart';
+import BookingSummary from '../../components/Checkout/BookingSummary';
+import { useCartContext } from '@/lib/context/CartContext';
 import {
   createCart,
-  setShippingAddress,
-  setBillingAddress,
-  setCartEmail,
+  getCart,
+  updateCart,
   addShippingMethod,
   getShippingOptions,
   initializePaymentSessions,
   setPaymentSession,
   completeCart,
+  addLineItem,
+  validateCartForCheckout,
   type AddressPayload,
 } from '../../lib/data/cart-service';
+import {
+  saveFormData,
+  loadFormData,
+  clearAllCheckoutData,
+} from '../../lib/utils/form-persistence';
 
 interface BookingData {
-  tour: Tour;
-  addOns: AddOn[];
   customer: CustomerData;
   payment: PaymentData;
 }
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const { cart } = useCart();
+  const { cart } = useCartContext();
   const [isLoading, setIsLoading] = useState(false);
   const [customerValid, setCustomerValid] = useState(false);
   const [paymentValid, setPaymentValid] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [shippingOptions, setShippingOptions] = useState<any[]>([]);
   const [selectedShippingOption, setSelectedShippingOption] = useState<string>('');
+  const [itemsSynced, setItemsSynced] = useState(false);
 
   // Check if cart has items, redirect if empty
   useEffect(() => {
-    if (!cart.tour) {
-      console.warn('[Checkout] No tour in cart, redirecting to tours page');
-      router.push('/tours');
+    console.log('[Checkout] Cart state check - isLoading:', cart.isLoading, 'tour_booking:', !!cart.tour_booking, 'cart_id:', cart.cart_id);
+
+    // Don't redirect while cart is loading
+    if (cart.isLoading) {
+      console.log('[Checkout] Cart is still loading, waiting...');
+      return;
     }
-  }, [cart.tour, router]);
+
+    // Only redirect if cart is loaded AND no tour
+    if (!cart.isLoading && !cart.tour_booking) {
+      console.warn('[Checkout] No tour in cart after loading complete, redirecting to tours page');
+      router.push('/tours');
+    } else if (!cart.isLoading && cart.tour_booking) {
+      console.log('[Checkout] Cart loaded successfully with tour:', cart.tour_booking.tour.title);
+    }
+  }, [cart.tour_booking, cart.isLoading, cart.cart_id, router]);
 
   // Initialize Medusa cart if not already created
   useEffect(() => {
     const initializeMedusaCart = async () => {
-      if (!cart.medusa_cart_id && cart.tour) {
+      if (!cart.cart_id && cart.tour_booking) {
         try {
           console.log('[Checkout] Creating Medusa cart...');
           const medusaCart = await createCart();
@@ -67,20 +82,127 @@ export default function CheckoutPage() {
     };
 
     initializeMedusaCart();
-  }, [cart.medusa_cart_id, cart.tour]);
+  }, [cart.cart_id, cart.tour_booking]);
+
+  // Sync tour and add-ons from React state to Medusa cart as line items
+  // CRITICAL: This must happen BEFORE payment initialization to avoid "cart has no items" error
+  useEffect(() => {
+    const syncItemsToCart = async () => {
+      // Skip if already synced or no cart ID
+      if (itemsSynced || !cart.cart_id) {
+        return;
+      }
+
+      // Skip if no tour booking (nothing to sync)
+      if (!cart.tour_booking) {
+        console.log('[Checkout] No tour booking to sync');
+        return;
+      }
+
+      // Skip if cart already has a line item ID (already synced to Medusa)
+      if (cart.tour_booking.line_item_id) {
+        console.log('[Checkout] Tour already synced to Medusa cart (has line_item_id)');
+        setItemsSynced(true);
+        return;
+      }
+
+      try {
+        console.log('[Checkout] Starting cart items sync...');
+        console.log('[Checkout] Tour booking:', cart.tour_booking);
+        console.log('[Checkout] Addons:', cart.addons);
+
+        // Sync tour as line item
+        const tourVariantId = cart.tour_booking.tour.variant_id;
+
+        if (!tourVariantId) {
+          console.warn('[Checkout] Tour has no variant_id. Cannot add to cart.');
+        } else {
+          console.log('[Checkout] Adding tour to cart:', {
+            cart_id: cart.cart_id,
+            variant_id: tourVariantId,
+            participants: cart.tour_booking.participants,
+            start_date: cart.tour_booking.start_date,
+          });
+
+          await addLineItem(
+            cart.cart_id,
+            tourVariantId,
+            cart.tour_booking.participants,
+            {
+              type: 'tour',
+              start_date: cart.tour_booking.start_date,
+            }
+          );
+
+          console.log('[Checkout] Tour added to cart successfully');
+        }
+
+        // Sync add-ons as line items
+        if (cart.addons && cart.addons.length > 0) {
+          console.log('[Checkout] Adding addons to cart:', cart.addons.length);
+
+          for (const cartAddon of cart.addons) {
+            const addonVariantId = cartAddon.addon.variant_id;
+
+            if (!addonVariantId) {
+              console.warn('[Checkout] Addon has no variant_id:', cartAddon.addon.title);
+              continue;
+            }
+
+            console.log('[Checkout] Adding addon:', {
+              title: cartAddon.addon.title,
+              variant_id: addonVariantId,
+              quantity: cartAddon.quantity,
+            });
+
+            await addLineItem(
+              cart.cart_id,
+              addonVariantId,
+              cartAddon.quantity,
+              {
+                type: 'addon',
+              }
+            );
+          }
+
+          console.log('[Checkout] All addons added to cart successfully');
+        } else {
+          console.log('[Checkout] No addons to sync');
+        }
+
+        // Mark as synced
+        setItemsSynced(true);
+        console.log('[Checkout] Cart items sync complete');
+      } catch (error) {
+        console.error('[Checkout] Error syncing items to cart:', error);
+
+        // CRITICAL FIX: Show error to user instead of silent failure
+        const errorMessage = error instanceof Error ? error.message : 'Failed to add items to cart';
+        setError(`Unable to add booking items to cart: ${errorMessage}. Please try refreshing the page or start over.`);
+        setItemsSynced(false);
+
+        console.error('[Checkout] Cart sync failed - blocking checkout to prevent empty cart submission');
+      }
+    };
+
+    syncItemsToCart();
+  }, [cart.cart_id, cart.tour_booking, cart.addons, itemsSynced]);
 
   // Fetch shipping options when cart has shipping address
   useEffect(() => {
     const fetchShippingOptions = async () => {
-      if (cart.medusa_cart_id && customerValid) {
+      if (cart.cart_id && customerValid) {
         try {
           console.log('[Checkout] Fetching shipping options...');
-          const options = await getShippingOptions(cart.medusa_cart_id);
+          const options = await getShippingOptions(cart.cart_id);
           setShippingOptions(options);
 
-          // Auto-select first option if available
-          if (options.length > 0 && !selectedShippingOption) {
+          // Auto-select first option if available (with bounds check)
+          if (options.length > 0 && options[0]?.id && !selectedShippingOption) {
+            console.log('[Checkout] Auto-selecting first shipping option:', options[0].id);
             setSelectedShippingOption(options[0].id);
+          } else if (options.length > 0 && !options[0]?.id) {
+            console.error('[Checkout] Shipping option missing ID:', options[0]);
           }
         } catch (error) {
           console.error('[Checkout] Error fetching shipping options:', error);
@@ -90,66 +212,63 @@ export default function CheckoutPage() {
     };
 
     fetchShippingOptions();
-  }, [cart.medusa_cart_id, customerValid, selectedShippingOption]);
+  }, [cart.cart_id, customerValid, selectedShippingOption]);
 
-  // Transform cart data to match PriceSummary component interface
-  const tourData: Tour | null = cart.tour ? {
-    id: cart.tour.id,
-    name: cart.tour.title,
-    date: cart.tour_start_date || new Date().toISOString(),
-    participants: cart.participants,
-    basePrice: cart.tour.base_price,
-  } : null;
-
-  // Transform cart add-ons to match PriceSummary component interface
-  const addOnsData: AddOn[] = cart.selected_addons.map((addon) => ({
-    id: addon.id,
-    name: addon.title,
-    price: addon.total_price / addon.quantity, // Get unit price
-    quantity: addon.quantity,
-  }));
-
-  const [customerData, setCustomerData] = useState<CustomerData>({
-    fullName: '',
-    email: '',
-    phone: '',
-    emergencyContact: '',
-    emergencyPhone: '',
-    dietaryRequirements: '',
-    specialRequests: '',
+  // Initialize customer data with persistence restore
+  const [customerData, setCustomerData] = useState<CustomerData>(() => {
+    const restored = loadFormData<CustomerData>('customer-info');
+    return restored || {
+      fullName: '',
+      email: '',
+      phone: '',
+      emergencyContact: '',
+      emergencyPhone: '',
+      dietaryRequirements: '',
+      specialRequests: '',
+    };
   });
 
-  const [paymentData, setPaymentData] = useState<PaymentData>({
-    method: 'card',
-    cardNumber: '',
-    cardName: '',
-    cardExpiry: '',
-    cardCVV: '',
-    termsAccepted: false,
+  // Initialize payment data with persistence restore (sensitive fields excluded automatically)
+  const [paymentData, setPaymentData] = useState<PaymentData>(() => {
+    const restored = loadFormData<PaymentData>('payment-info');
+    return restored || {
+      method: 'card',
+      cardNumber: '',
+      cardName: '',
+      cardExpiry: '',
+      cardCVV: '',
+      termsAccepted: false,
+    };
   });
 
-  // Load data from localStorage on mount (for demo purposes)
+  // Restore selected shipping option from persistence
   useEffect(() => {
-    const savedCustomerData = localStorage.getItem('checkout_customer');
-    if (savedCustomerData) {
-      try {
-        setCustomerData(JSON.parse(savedCustomerData));
-      } catch (error) {
-        console.error('Failed to load saved customer data:', error);
-      }
+    const restoredShippingOption = loadFormData<{ selectedShippingOption: string }>('shipping-option');
+    if (restoredShippingOption?.selectedShippingOption) {
+      setSelectedShippingOption(restoredShippingOption.selectedShippingOption);
+      console.log('[Checkout] Restored shipping option:', restoredShippingOption.selectedShippingOption);
     }
   }, []);
+
+  // Persist selected shipping option when it changes
+  useEffect(() => {
+    if (selectedShippingOption) {
+      saveFormData('shipping-option', { selectedShippingOption });
+    }
+  }, [selectedShippingOption]);
 
   const handleCustomerDataChange = (data: CustomerData, isValid: boolean) => {
     setCustomerData(data);
     setCustomerValid(isValid);
-    // Save to localStorage for demo
-    localStorage.setItem('checkout_customer', JSON.stringify(data));
+    // Save to sessionStorage with debouncing (500ms default)
+    saveFormData('customer-info', data);
   };
 
   const handlePaymentDataChange = (data: PaymentData, isValid: boolean) => {
     setPaymentData(data);
     setPaymentValid(isValid);
+    // Save to sessionStorage with debouncing (sensitive fields auto-filtered)
+    saveFormData('payment-info', data);
   };
 
   const handleCompleteBooking = async () => {
@@ -158,8 +277,14 @@ export default function CheckoutPage() {
       return;
     }
 
-    if (!cart.medusa_cart_id) {
+    if (!cart.cart_id) {
       setError('Cart not initialized. Please refresh the page.');
+      return;
+    }
+
+    // CRITICAL FIX: Prevent checkout if items failed to sync
+    if (!itemsSynced) {
+      setError('Cart items are still being added. Please wait a moment and try again.');
       return;
     }
 
@@ -191,38 +316,80 @@ export default function CheckoutPage() {
         },
       };
 
-      // OPTIMIZATION: Parallelize independent API calls (Phase 1)
-      // These calls don't depend on each other, so run them in parallel
-      console.log('[Checkout] Setting email and addresses (parallel)...');
-      await Promise.all([
-        setCartEmail(cart.medusa_cart_id, customerData.email),
-        setShippingAddress(cart.medusa_cart_id, addressPayload),
-        setBillingAddress(cart.medusa_cart_id, addressPayload),
-      ]);
-      console.log('[Checkout] Email and addresses set successfully');
+      // CRITICAL FIX: Update cart fields in single request to prevent race conditions
+      // Previous implementation used Promise.all() which caused parallel updates to same resource
+      console.log('[Checkout] Updating cart with email and addresses (single atomic operation)...');
+      await updateCart(cart.cart_id, {
+        email: customerData.email,
+        shipping_address: addressPayload,
+        billing_address: addressPayload,
+      });
+      console.log('[Checkout] Cart updated successfully');
 
-      // OPTIMIZATION: Run shipping method if needed (Phase 2)
-      if (selectedShippingOption) {
-        console.log('[Checkout] Adding shipping method...');
-        await addShippingMethod(cart.medusa_cart_id, selectedShippingOption);
+      // VALIDATION: Ensure shipping method is selected (REQUIRED for Medusa v2)
+      if (!selectedShippingOption) {
+        throw new Error('Please select a shipping method before proceeding to payment.');
       }
 
-      // OPTIMIZATION: Parallelize payment initialization (Phase 3)
-      // Initialize and set payment session can potentially be combined
-      console.log('[Checkout] Initializing payment...');
-      await initializePaymentSessions(cart.medusa_cart_id);
+      console.log('[Checkout] Adding shipping method (REQUIRED)...');
+      await addShippingMethod(cart.cart_id, selectedShippingOption);
 
-      console.log('[Checkout] Setting payment session...');
-      await setPaymentSession(cart.medusa_cart_id, 'manual');
+      // VALIDATION: Verify cart is ready for payment (Phase 2)
+      console.log('[Checkout] Validating cart before payment initialization...');
+      console.log('[Checkout] - Items synced:', itemsSynced);
+      console.log('[Checkout] - Cart ID:', cart.cart_id);
+      console.log('[Checkout] - Email:', customerData.email);
+      console.log('[Checkout] - Shipping method:', selectedShippingOption);
+
+      // Get fresh cart state to validate
+      const cartBeforePayment = await getCart(cart.cart_id);
+      const validation = validateCartForCheckout(cartBeforePayment);
+
+      if (!validation.valid) {
+        console.error('[Checkout] Cart validation failed:', validation.errors);
+        throw new Error(`Cart is not ready for payment: ${validation.errors.join(', ')}`);
+      }
+
+      console.log('[Checkout] Cart validation passed. Cart state:');
+      console.log('[Checkout] - Items:', cartBeforePayment.items?.length || 0);
+      console.log('[Checkout] - Has email:', !!cartBeforePayment.email);
+      console.log('[Checkout] - Has shipping address:', !!cartBeforePayment.shipping_address);
+      console.log('[Checkout] - Has billing address:', !!cartBeforePayment.billing_address);
+      console.log('[Checkout] - Shipping methods:', cartBeforePayment.shipping_methods?.length || 0);
+
+      // Verify items are synced before payment
+      if (!itemsSynced) {
+        console.warn('[Checkout] Items not synced yet. Waiting for sync to complete...');
+        throw new Error('Please wait for cart items to sync before completing checkout.');
+      }
+
+      // CRITICAL: Initialize payment with provider (Medusa v2)
+      // This now creates payment collection AND initializes payment sessions
+      //
+      // TODO: FOR PRODUCTION - Implement Stripe Elements integration
+      // Current: Using system provider for testing/development
+      // Future: Switch to 'pp_stripe_stripe' and implement Stripe Elements in PaymentForm
+      // Reference: https://docs.medusajs.com/resources/storefront-development/checkout/payment
+      // Required: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY environment variable
+      console.log('[Checkout] ========================================');
+      console.log('[Checkout] INITIALIZING PAYMENT (MEDUSA V2)');
+      console.log('[Checkout] Using system provider for testing');
+      console.log('[Checkout] ========================================');
+      await initializePaymentSessions(cart.cart_id, 'pp_system_default');
+
+      // Note: setPaymentSession may be redundant in Medusa v2 since the payment
+      // session is already created with the provider. It's been updated to handle
+      // v2 gracefully and will fall back to returning the cart if the endpoint doesn't exist.
 
       // Final step: Complete cart and create order (must be last)
       console.log('[Checkout] Completing cart...');
-      const order = await completeCart(cart.medusa_cart_id);
+      const order = await completeCart(cart.cart_id);
 
       console.log('[Checkout] Order created successfully:', order.id);
 
-      // Clear checkout data from localStorage
-      localStorage.removeItem('checkout_customer');
+      // Clear all persisted checkout data from sessionStorage
+      clearAllCheckoutData();
+      console.log('[Checkout] Cleared all persisted form data');
 
       // Redirect to confirmation page with REAL order ID
       router.push(`/checkout/confirmation?bookingId=${order.id}`);
@@ -241,13 +408,30 @@ export default function CheckoutPage() {
 
   const isFormComplete = customerValid && paymentValid;
 
-  // Show loading state while checking cart
-  if (!cart.tour) {
+  // Show loading state while cart is loading
+  if (cart.isLoading) {
     return (
       <div className={styles.checkoutPage}>
         <div className={styles.container}>
           <div className={styles.emptyState}>
-            <p>Redirecting to tours page...</p>
+            <p>Loading your cart...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show empty state if no tour after loading
+  if (!cart.tour_booking) {
+    return (
+      <div className={styles.checkoutPage}>
+        <div className={styles.container}>
+          <div className={styles.emptyState}>
+            <h1>No Tour Selected</h1>
+            <p>Please select a tour before proceeding to checkout.</p>
+            <a href="/tours" style={{ marginTop: '1rem', display: 'inline-block', padding: '0.5rem 1rem', backgroundColor: '#667eea', color: 'white', borderRadius: '0.375rem', textDecoration: 'none' }}>
+              Browse Tours
+            </a>
           </div>
         </div>
       </div>
@@ -328,7 +512,13 @@ export default function CheckoutPage() {
 
           {/* Right Column - Summary */}
           <div className={styles.summaryColumn}>
-            {tourData && <PriceSummary tour={tourData} addOns={addOnsData} />}
+            <BookingSummary
+              cart={cart}
+              showEditLinks={true}
+              currentStep="checkout"
+              onEditTour={() => router.push('/tours')}
+              onEditAddons={() => router.push('/checkout/add-ons-flow')}
+            />
           </div>
         </div>
       </div>

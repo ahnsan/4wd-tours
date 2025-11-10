@@ -343,18 +343,49 @@ Message 4: Write "file.js"
 
 ### 📚 Official Medusa Documentation Sources
 
-**Primary LLM-Optimized Documentation:**
+**🔴 CRITICAL: ALWAYS USE LOCAL DOCUMENTATION FIRST**
+
+**Local Documentation (PREFERRED):**
+- Location: `/docs/medusa-llm/`
+- Full documentation: `docs/medusa-llm/medusa-llms-full.txt` (5.4MB - MOST COMPREHENSIVE)
+- Concise version: `docs/medusa-llm/medusa-llms.txt`
+- Key guides: `docs/medusa-llm/learn-*.md`
+- Update script: `scripts/update-medusa-docs.sh`
+- Auto-updates: Weekly (Mondays 9:00 AM)
+
+**Why Local First:**
+- Works offline
+- No network restrictions
+- Faster access
+- Consistent availability
+- Versioned and backed up
+
+**Online Documentation (Fallback):**
 - Full text version: https://docs.medusajs.com/llms-full.txt
 - Concise version: https://docs.medusajs.com/llms.txt
 - Any page as Markdown: Append `/index.html.md` to any docs URL
   - Example: https://docs.medusajs.com/learn/introduction/build-with-llms-ai/index.html.md
 
-**When to Use:**
+**Documentation Workflow:**
+1. **ALWAYS** check `docs/medusa-llm/medusa-llms-full.txt` FIRST
+2. Search local docs: `grep -i "keyword" docs/medusa-llm/medusa-llms-full.txt`
+3. Check specific guides in `docs/medusa-llm/learn-*.md`
+4. If documentation older than 7 days, run `./scripts/update-medusa-docs.sh`
+5. Only consult online docs if absolutely necessary
+
+**When to Use Documentation:**
 - BEFORE creating any Medusa routes, services, or workflows
 - BEFORE modifying Medusa configuration files
 - BEFORE implementing commerce features (products, carts, orders, etc.)
 - WHEN debugging Medusa-specific errors
 - WHEN extending Medusa functionality
+- WHEN unsure about Medusa patterns or best practices
+
+**Documentation Maintenance:**
+- Check freshness: `cat docs/medusa-llm/metadata.json`
+- Manual update: `bash scripts/update-medusa-docs.sh`
+- Setup auto-updates: `bash scripts/setup-weekly-docs-update.sh`
+- View update log: `cat docs/medusa-llm/update-log.txt`
 
 ### 🎯 Medusa Development Workflow
 

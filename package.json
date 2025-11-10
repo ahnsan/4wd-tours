@@ -15,6 +15,7 @@
   "scripts": {
     "build": "medusa build",
     "seed": "medusa exec ./src/scripts/seed.ts",
+    "test:addons": "medusa exec ./scripts/test-addon-associations.ts",
     "start": "medusa start",
     "dev": "medusa develop",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest --runInBand --forceExit",

@@ -4,6 +4,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { BlogPost, PaginatedResponse, BlogFilters } from '../types/blog';
 
+// Environment configuration
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:9000';
+const PUBLISHABLE_API_KEY = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY;
+
 // MANDATORY: Use coordination hooks before API calls
 const useCoordinationHook = (operation: string) => {
   useEffect(() => {
@@ -13,6 +17,19 @@ const useCoordinationHook = (operation: string) => {
     }
   }, [operation]);
 };
+
+// Build request headers with publishable API key
+function buildHeaders(): HeadersInit {
+  const headers: HeadersInit = {
+    'Content-Type': 'application/json',
+  };
+
+  if (PUBLISHABLE_API_KEY) {
+    headers['x-publishable-api-key'] = PUBLISHABLE_API_KEY;
+  }
+
+  return headers;
+}
 
 export function useBlogPosts(filters?: BlogFilters) {
   const [posts, setPosts] = useState<BlogPost[]>([]);
@@ -36,19 +53,24 @@ export function useBlogPosts(filters?: BlogFilters) {
       if (filters?.per_page) params.append('per_page', filters.per_page.toString());
 
       // MANDATORY: Use Medusa API endpoint pattern
-      const response = await fetch(`/api/blog/posts?${params.toString()}`, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      const response = await fetch(`${API_BASE_URL}/store/blog/posts?${params.toString()}`, {
+        headers: buildHeaders(),
       });
 
       if (!response.ok) {
         throw new Error(`Failed to fetch posts: ${response.statusText}`);
       }
 
-      const data: PaginatedResponse<BlogPost> = await response.json();
-      setPosts(data.data);
-      setMeta(data.meta);
+      const apiResponse = await response.json();
+
+      // Transform Medusa API response to match PaginatedResponse format
+      setPosts(apiResponse.posts || []);
+      setMeta({
+        page: filters?.page || 1,
+        per_page: filters?.per_page || apiResponse.limit || 20,
+        total: apiResponse.count || 0,
+        total_pages: Math.ceil((apiResponse.count || 0) / (apiResponse.limit || 20)),
+      });
     } catch (err) {
       setError(err instanceof Error ? err : new Error('Unknown error'));
       console.error('[useBlogPosts] Error fetching posts:', err);
@@ -78,10 +100,8 @@ export function useBlogPost(slug: string) {
         setError(null);
 
         // MANDATORY: Use Medusa API endpoint pattern
-        const response = await fetch(`/api/blog/posts/${slug}`, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
+        const response = await fetch(`${API_BASE_URL}/store/blog/posts/${slug}`, {
+          headers: buildHeaders(),
         });
 
         if (!response.ok) {
@@ -119,10 +139,8 @@ export function useRelatedPosts(postId: string, limit: number = 3) {
         setIsLoading(true);
         setError(null);
 
-        const response = await fetch(`/api/blog/posts/${postId}/related?limit=${limit}`, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
+        const response = await fetch(`${API_BASE_URL}/store/blog/posts/${postId}/related?limit=${limit}`, {
+          headers: buildHeaders(),
         });
 
         if (!response.ok) {
@@ -160,10 +178,8 @@ export function useCategories() {
         setIsLoading(true);
         setError(null);
 
-        const response = await fetch('/api/blog/categories', {
-          headers: {
-            'Content-Type': 'application/json',
-          },
+        const response = await fetch(`${API_BASE_URL}/store/blog/categories`, {
+          headers: buildHeaders(),
         });
 
         if (!response.ok) {

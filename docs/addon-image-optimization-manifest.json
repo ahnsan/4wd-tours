@@ -1,0 +1,489 @@
+{
+  "task": "Image Sourcing & Optimization Agent",
+  "status": "Infrastructure Complete - Ready for Execution",
+  "created_at": "2025-11-09T00:00:00Z",
+  "agent": "IMAGE_SOURCING_OPTIMIZATION",
+  "summary": {
+    "infrastructure_complete": true,
+    "ready_to_execute": true,
+    "requires_api_key": true,
+    "addons_mapped": 19,
+    "expected_output_files": 248,
+    "expected_disk_usage_mb": "40-60 MB",
+    "estimated_execution_time": "5-10 minutes",
+    "pexels_api_calls": 19,
+    "performance_target": "PageSpeed 90+"
+  },
+  "deliverables_created": {
+    "core_infrastructure": [
+      {
+        "file": "/docs/addon-image-mapping.json",
+        "type": "Data",
+        "description": "Comprehensive mapping of 19 addons with Pexels search terms, image requirements, and SEO optimization",
+        "size_kb": 15,
+        "addons_mapped": 19,
+        "categories_covered": 5,
+        "search_terms_total": 95
+      },
+      {
+        "file": "/storefront/scripts/download-optimize-addon-images.js",
+        "type": "Script",
+        "description": "Main execution script - downloads from Pexels, optimizes with Sharp, generates manifests",
+        "size_kb": 12,
+        "features": [
+          "Pexels API integration",
+          "Multi-format optimization (WebP, AVIF, JPEG)",
+          "Responsive size generation (6 sizes)",
+          "SEO alt text generation",
+          "Attribution tracking",
+          "Rate limiting",
+          "Error handling"
+        ]
+      },
+      {
+        "file": "/storefront/scripts/validate-image-setup.js",
+        "type": "Script",
+        "description": "Pre-flight validation script - checks all prerequisites before execution",
+        "size_kb": 8,
+        "checks": [
+          "Pexels API key presence",
+          "Required files exist",
+          "Sharp library installed",
+          "Node.js version",
+          "Directory structure",
+          "Write permissions",
+          "Disk space"
+        ]
+      }
+    ],
+    "documentation": [
+      {
+        "file": "/docs/IMAGE-SOURCING-SETUP.md",
+        "type": "Documentation",
+        "description": "Complete setup instructions and usage guide",
+        "size_kb": 18,
+        "sections": [
+          "Prerequisites",
+          "Quick Start",
+          "File Structure",
+          "What Script Does",
+          "Add-on Requirements",
+          "Manifest Structure",
+          "Using Images in Components",
+          "Performance Impact",
+          "Licensing & Attribution",
+          "Troubleshooting"
+        ]
+      },
+      {
+        "file": "/docs/IMAGE-OPTIMIZATION-COMPLETE.md",
+        "type": "Documentation",
+        "description": "Full technical specification and deliverables report",
+        "size_kb": 24,
+        "sections": [
+          "Executive Summary",
+          "Deliverables Created",
+          "19 Add-ons Covered",
+          "Technical Specifications",
+          "Performance Impact",
+          "SEO Optimization",
+          "Licensing & Attribution",
+          "Script Features",
+          "Output File Structure",
+          "Usage Examples",
+          "Troubleshooting",
+          "Monitoring & Validation"
+        ]
+      },
+      {
+        "file": "/docs/QUICK-START-IMAGE-OPTIMIZATION.md",
+        "type": "Documentation",
+        "description": "Quick reference guide for immediate execution",
+        "size_kb": 6,
+        "sections": [
+          "3-Step Process",
+          "What You'll Get",
+          "Verify Results",
+          "Add-ons Being Processed",
+          "Troubleshooting",
+          "After Completion"
+        ]
+      }
+    ],
+    "samples_and_templates": [
+      {
+        "file": "/docs/addon-images-manifest-sample.json",
+        "type": "Sample",
+        "description": "Example output structure showing what the generated manifest will look like",
+        "size_kb": 8,
+        "shows_structure_for": "all 19 addons"
+      }
+    ]
+  },
+  "future_outputs": {
+    "description": "Files that will be generated when script is executed",
+    "requires": "Pexels API key",
+    "files": [
+      {
+        "file": "/docs/addon-images-manifest.json",
+        "type": "Manifest",
+        "description": "Complete manifest with Pexels attribution, file paths, and metadata",
+        "estimated_size_kb": 15,
+        "contains": [
+          "19 addon image records",
+          "Pexels photo IDs",
+          "Photographer names and URLs",
+          "Source URLs",
+          "File format lists",
+          "SEO alt text",
+          "License information"
+        ]
+      },
+      {
+        "file": "/storefront/public/images/addons/metadata.json",
+        "type": "Metadata",
+        "description": "Pexels licensing and photographer attribution data",
+        "estimated_size_kb": 8,
+        "contains": [
+          "Pexels license information",
+          "Photographer attribution",
+          "Download timestamps",
+          "Photo IDs and URLs"
+        ]
+      },
+      {
+        "directory": "/storefront/public/images/addons/",
+        "type": "Images",
+        "description": "Optimized image files for all addons",
+        "estimated_files": 247,
+        "estimated_size_mb": "40-60",
+        "file_types": {
+          "webp": 114,
+          "avif": 114,
+          "jpg": 19
+        },
+        "responsive_widths": [640, 750, 828, 1080, 1200, 1920],
+        "naming_convention": "{addon-handle}-{width}w.{format}"
+      }
+    ]
+  },
+  "addons_mapped": {
+    "total": 19,
+    "by_category": {
+      "Food & Beverage": 5,
+      "Connectivity": 2,
+      "Photography": 4,
+      "Accommodation & Comfort": 3,
+      "Activities & Equipment": 5
+    },
+    "list": [
+      {
+        "id": 1,
+        "handle": "addon-gourmet-bbq",
+        "title": "Gourmet Beach BBQ",
+        "category": "food",
+        "price_aud": 180,
+        "search_terms_count": 5
+      },
+      {
+        "id": 2,
+        "handle": "addon-picnic-hamper",
+        "title": "Picnic Hamper",
+        "category": "food",
+        "price_aud": 85,
+        "search_terms_count": 5
+      },
+      {
+        "id": 3,
+        "handle": "addon-seafood-platter",
+        "title": "Seafood Platter",
+        "category": "food",
+        "price_aud": 150,
+        "search_terms_count": 5
+      },
+      {
+        "id": 4,
+        "handle": "addon-bbq",
+        "title": "BBQ on the Beach",
+        "category": "food",
+        "price_aud": 120,
+        "search_terms_count": 5
+      },
+      {
+        "id": 5,
+        "handle": "addon-picnic",
+        "title": "Gourmet Picnic Package",
+        "category": "food",
+        "price_aud": 95,
+        "search_terms_count": 5
+      },
+      {
+        "id": 6,
+        "handle": "addon-internet",
+        "title": "Always-on High-Speed Internet",
+        "category": "connectivity",
+        "price_aud": 30,
+        "search_terms_count": 5
+      },
+      {
+        "id": 7,
+        "handle": "addon-starlink",
+        "title": "Starlink Satellite Internet",
+        "category": "connectivity",
+        "price_aud": 50,
+        "search_terms_count": 5
+      },
+      {
+        "id": 8,
+        "handle": "addon-drone-photography",
+        "title": "Aerial Photography Package",
+        "category": "photography",
+        "price_aud": 200,
+        "search_terms_count": 5
+      },
+      {
+        "id": 9,
+        "handle": "addon-gopro",
+        "title": "GoPro Package",
+        "category": "photography",
+        "price_aud": 75,
+        "search_terms_count": 5
+      },
+      {
+        "id": 10,
+        "handle": "addon-photo-album",
+        "title": "Professional Photo Album",
+        "category": "photography",
+        "price_aud": 150,
+        "search_terms_count": 5
+      },
+      {
+        "id": 11,
+        "handle": "addon-camera",
+        "title": "Professional Camera Rental",
+        "category": "photography",
+        "price_aud": 100,
+        "search_terms_count": 5
+      },
+      {
+        "id": 12,
+        "handle": "addon-glamping",
+        "title": "Glamping Setup",
+        "category": "accommodation",
+        "price_aud": 250,
+        "search_terms_count": 5
+      },
+      {
+        "id": 13,
+        "handle": "addon-beach-cabana",
+        "title": "Beach Cabana",
+        "category": "accommodation",
+        "price_aud": 180,
+        "search_terms_count": 5
+      },
+      {
+        "id": 14,
+        "handle": "addon-eco-lodge",
+        "title": "Eco-Lodge Upgrade",
+        "category": "accommodation",
+        "price_aud": 300,
+        "search_terms_count": 5
+      },
+      {
+        "id": 15,
+        "handle": "addon-fishing",
+        "title": "Fishing Equipment",
+        "category": "activities",
+        "price_aud": 65,
+        "search_terms_count": 5
+      },
+      {
+        "id": 16,
+        "handle": "addon-sandboarding",
+        "title": "Sandboarding Gear",
+        "category": "activities",
+        "price_aud": 45,
+        "search_terms_count": 5
+      },
+      {
+        "id": 17,
+        "handle": "addon-bodyboarding",
+        "title": "Bodyboarding Set",
+        "category": "activities",
+        "price_aud": 35,
+        "search_terms_count": 5
+      },
+      {
+        "id": 18,
+        "handle": "addon-paddleboarding",
+        "title": "Paddleboarding Package",
+        "category": "activities",
+        "price_aud": 55,
+        "search_terms_count": 5
+      },
+      {
+        "id": 19,
+        "handle": "addon-kayaking",
+        "title": "Kayaking Adventure",
+        "category": "activities",
+        "price_aud": 75,
+        "search_terms_count": 5
+      }
+    ]
+  },
+  "optimization_specifications": {
+    "formats": {
+      "avif": {
+        "quality": 80,
+        "use_case": "Modern browsers (Chrome 85+, Firefox 93+)",
+        "size_reduction": "60-70% vs JPEG"
+      },
+      "webp": {
+        "quality": 85,
+        "use_case": "Wide support (Chrome 23+, Firefox 65+, Safari 14+)",
+        "size_reduction": "40-50% vs JPEG"
+      },
+      "jpeg": {
+        "quality": 90,
+        "use_case": "Universal fallback",
+        "size_reduction": "Baseline"
+      }
+    },
+    "responsive_sizes": [
+      {
+        "width": 640,
+        "use_case": "Mobile portrait"
+      },
+      {
+        "width": 750,
+        "use_case": "Mobile landscape"
+      },
+      {
+        "width": 828,
+        "use_case": "Tablet portrait"
+      },
+      {
+        "width": 1080,
+        "use_case": "Tablet landscape"
+      },
+      {
+        "width": 1200,
+        "use_case": "Desktop small"
+      },
+      {
+        "width": 1920,
+        "use_case": "Desktop large/retina"
+      }
+    ],
+    "files_per_addon": {
+      "webp": 6,
+      "avif": 6,
+      "jpeg": 1,
+      "total": 13
+    },
+    "estimated_sizes": {
+      "per_addon_mb": "2-3",
+      "total_mb": "40-60"
+    }
+  },
+  "performance_targets": {
+    "pagespeed_mobile": "90+",
+    "pagespeed_desktop": "90+",
+    "lcp": "< 2.5s",
+    "fid": "< 100ms",
+    "cls": "< 0.1",
+    "features": [
+      "Modern format support (WebP, AVIF)",
+      "Responsive srcset generation",
+      "Lazy loading attributes",
+      "Explicit dimensions (prevent CLS)",
+      "Fallback for older browsers"
+    ]
+  },
+  "seo_optimization": {
+    "alt_text_template": "{Addon Name} - Premium {category context} for 4WD tours on Sunshine Coast",
+    "location_keywords": [
+      "Fraser Island",
+      "Rainbow Beach",
+      "Sunshine Coast",
+      "Queensland",
+      "Australian adventure tourism"
+    ],
+    "structured_data": "ImageObject schema ready",
+    "file_naming": "{handle}-{width}w.{format}"
+  },
+  "licensing": {
+    "source": "Pexels",
+    "license": "Pexels Free License",
+    "license_url": "https://www.pexels.com/license/",
+    "commercial_use": true,
+    "modification_allowed": true,
+    "attribution_required": false,
+    "attribution_appreciated": true,
+    "tracked_in": [
+      "/docs/addon-images-manifest.json",
+      "/storefront/public/images/addons/metadata.json"
+    ]
+  },
+  "execution_requirements": {
+    "pexels_api_key": {
+      "required": true,
+      "get_from": "https://www.pexels.com/api/",
+      "free_tier": "200 requests/hour, 20,000/month",
+      "cost": "Free"
+    },
+    "dependencies": {
+      "sharp": {
+        "version": "^0.34.5",
+        "status": "Installed",
+        "purpose": "Image optimization"
+      },
+      "node": {
+        "minimum_version": "18.x",
+        "recommended": "20.x or later"
+      }
+    },
+    "disk_space": "~60 MB free",
+    "internet_connection": "Required for Pexels API"
+  },
+  "validation": {
+    "script": "/storefront/scripts/validate-image-setup.js",
+    "checks": [
+      "Pexels API key set",
+      "addon-image-mapping.json exists and valid",
+      "Sharp library installed",
+      "Node.js version compatible",
+      "Directory structure correct",
+      "Write permissions granted",
+      "Sufficient disk space"
+    ],
+    "run_before_execution": true
+  },
+  "next_steps": {
+    "immediate": [
+      "Get Pexels API key from https://www.pexels.com/api/",
+      "Run validation: node scripts/validate-image-setup.js",
+      "Execute script: PEXELS_API_KEY=key node scripts/download-optimize-addon-images.js"
+    ],
+    "after_execution": [
+      "Review generated images in public/images/addons/",
+      "Check addon-images-manifest.json for attribution",
+      "Test images in development environment",
+      "Update components to use new image paths",
+      "Run PageSpeed test to verify performance",
+      "Validate in multiple browsers"
+    ]
+  },
+  "coordination_hooks": {
+    "pre_task": "Executed",
+    "notify": "Executed - Infrastructure complete",
+    "post_task": "Executed - Task ID: image-sourcing-infrastructure"
+  },
+  "completion_status": {
+    "infrastructure": "100% Complete",
+    "documentation": "100% Complete",
+    "validation_tools": "100% Complete",
+    "awaiting": "Pexels API key + Script execution",
+    "estimated_completion_time": "10-15 minutes after API key obtained"
+  }
+}

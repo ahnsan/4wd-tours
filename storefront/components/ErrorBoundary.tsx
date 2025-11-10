@@ -53,6 +53,11 @@ export class ErrorBoundary extends Component<Props, State> {
     this.setState({
       errorInfo,
     });
+
+    // Check if this is a cart context error
+    if (error.message?.includes('useCart') || error.message?.includes('CartProvider')) {
+      console.error('[ErrorBoundary] Cart context error detected:', error.message);
+    }
   }
 
   handleReset = (): void => {
@@ -74,6 +79,34 @@ export class ErrorBoundary extends Component<Props, State> {
       // Custom fallback provided
       if (this.props.fallback) {
         return this.props.fallback;
+      }
+
+      // Check if this is a cart context error
+      const isCartError = this.state.error?.message?.includes('useCart') ||
+                         this.state.error?.message?.includes('CartProvider');
+
+      // Special handling for cart errors - show user-friendly message
+      if (isCartError) {
+        return (
+          <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+            <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
+              <div className="text-center">
+                <h1 className="text-2xl font-bold text-gray-900 mb-2">
+                  No Tour Selected
+                </h1>
+                <p className="text-gray-600 mb-6">
+                  Please select a tour before accessing this page.
+                </p>
+                <a
+                  href="/tours"
+                  className="inline-block px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                >
+                  Browse Tours
+                </a>
+              </div>
+            </div>
+          </div>
+        );
       }
 
       // Default fallback UI

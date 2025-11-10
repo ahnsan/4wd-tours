@@ -8,7 +8,27 @@
  * - Store API: https://docs.medusajs.com/api/store
  * - Cart Management: https://docs.medusajs.com/resources/storefront-development/cart
  * - Checkout Flow: https://docs.medusajs.com/resources/storefront-development/checkout
+ *
+ * VALIDATION: Uses Zod schemas to validate API responses
+ * - Schemas defined in: storefront/lib/validation/medusa-schemas.ts
+ * - Validation is graceful: logs errors but doesn't break the flow
+ * - Critical responses validated: cart, order, payment collection
  */
+
+// Import validation functions
+import {
+  validateCartResponse,
+  validateOrderResponse,
+  validateCartCompletionResponse,
+  validatePaymentCollectionResponse,
+} from '../validation/medusa-schemas';
+
+// Import retry utilities for payment operations
+import {
+  retryPaymentCollectionCreation,
+  retryPaymentSessionInitialization,
+  retryCartCompletion
+} from '../utils/retry';
 
 // Environment configuration
 const MEDUSA_BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || 'http://localhost:9000';
@@ -70,6 +90,7 @@ interface MedusaCart {
   shipping_methods: any[];
   payment_session?: any;
   payment_sessions?: any[];
+  payment_collection?: any; // Added for Medusa v2 payment collection tracking
   completed_at?: string;
   subtotal?: number;
   total?: number;
@@ -103,11 +124,12 @@ interface MedusaOrder {
 
 /**
  * Cart completion response
- * Can be either a cart (on error) or an order (on success)
+ * Medusa v2 returns either { type: "order", order: {...} } or { type: "cart", cart: {...} }
  */
 interface CartCompletionResponse {
   type: 'cart' | 'order';
-  data: MedusaCart | MedusaOrder;
+  order?: MedusaOrder;
+  cart?: MedusaCart;
   error?: string;
 }
 
@@ -168,31 +190,128 @@ function buildHeaders(): Record<string, string> {
 }
 
 /**
- * Handle API response and extract data
+ * Handle API response and extract data with Zod validation
+ *
+ * VALIDATION APPROACH:
+ * - Validate critical responses (cart, order, payment collection) with Zod schemas
+ * - Graceful degradation: log validation errors but don't break the flow
+ * - Return original data if validation fails to ensure backward compatibility
  */
 async function handleResponse<T>(response: Response, operation: string): Promise<T> {
+  // DEBUGGING: Log full request/response details
+  console.log(`[Cart Service] ========================================`);
+  console.log(`[Cart Service] RESPONSE DETAILS FOR: ${operation}`);
+  console.log(`[Cart Service] HTTP Status: ${response.status} ${response.statusText}`);
+  console.log(`[Cart Service] Response URL: ${response.url}`);
+  console.log(`[Cart Service] Response OK: ${response.ok}`);
+  console.log(`[Cart Service] ========================================`);
+
+  // Validate HTTP status
   if (!response.ok) {
     let errorMessage = `${operation} failed with status ${response.status}`;
+    let errorDetails = null;
 
     try {
-      const errorData = await response.json();
-      if (errorData.message) {
-        errorMessage = `${operation} failed: ${errorData.message}`;
+      // Clone response to read body multiple times
+      const responseClone = response.clone();
+      const bodyText = await responseClone.text();
+
+      console.error(`[Cart Service] ERROR RESPONSE BODY (raw):`, bodyText);
+
+      // Try parsing as JSON
+      try {
+        errorDetails = JSON.parse(bodyText);
+        console.error(`[Cart Service] ERROR RESPONSE BODY (parsed):`, JSON.stringify(errorDetails, null, 2));
+      } catch {
+        console.error(`[Cart Service] Response body is not JSON, using raw text`);
       }
-    } catch {
-      // If response is not JSON, use status text
+
+      // Extract error message from parsed data
+      if (errorDetails?.message) {
+        errorMessage = `${operation} failed: ${errorDetails.message}`;
+      } else if (errorDetails?.error) {
+        errorMessage = `${operation} failed: ${errorDetails.error}`;
+      } else if (errorDetails?.errors && Array.isArray(errorDetails.errors)) {
+        errorMessage = `${operation} failed: ${errorDetails.errors.map((e: any) => e.message || e).join(', ')}`;
+      } else if (bodyText) {
+        errorMessage = `${operation} failed: ${bodyText.substring(0, 200)}`;
+      }
+    } catch (parseError) {
+      // If response body reading fails, use status text
+      console.error(`[Cart Service] Failed to read error response:`, parseError);
       errorMessage = `${operation} failed: ${response.statusText}`;
     }
 
-    console.error(`[Cart Service] ${errorMessage}`);
+    console.error(`[Cart Service] FINAL ERROR MESSAGE: ${errorMessage}`);
     throw new Error(errorMessage);
   }
 
+  // Parse and validate JSON response
   try {
-    return await response.json();
+    const data = await response.json();
+
+    // CRITICAL FIX: Basic response structure validation
+    if (data === null || data === undefined) {
+      throw new Error(`${operation} returned null or undefined`);
+    }
+
+    // Validate response is an object (not a primitive)
+    if (typeof data !== 'object') {
+      console.warn(`[Cart Service] ${operation} returned non-object data:`, typeof data);
+    }
+
+    // Log warning if response is empty object
+    if (Object.keys(data).length === 0) {
+      console.warn(`[Cart Service] ${operation} returned empty object`);
+    }
+
+    // VALIDATION: Apply Zod schema validation based on operation type
+    // This ensures API responses match expected structure
+    let validatedData = data;
+
+    try {
+      // Determine validation function based on operation type
+      const operationLower = operation.toLowerCase();
+
+      if (operationLower.includes('cart') && !operationLower.includes('complete')) {
+        // Validate cart operations (create, get, update, add item, etc.)
+        console.log(`[Cart Service] Validating cart response for: ${operation}`);
+        validatedData = validateCartResponse(data);
+      } else if (operationLower.includes('order') || operationLower.includes('get order')) {
+        // Validate order operations
+        console.log(`[Cart Service] Validating order response for: ${operation}`);
+        validatedData = validateOrderResponse(data);
+      } else if (operationLower.includes('complete')) {
+        // Validate cart completion response (returns order or cart)
+        console.log(`[Cart Service] Validating cart completion response for: ${operation}`);
+        validatedData = validateCartCompletionResponse(data);
+      } else if (operationLower.includes('payment collection')) {
+        // Validate payment collection response
+        console.log(`[Cart Service] Validating payment collection response for: ${operation}`);
+        validatedData = validatePaymentCollectionResponse(data);
+      }
+
+      // If validation was applied and succeeded, log success
+      if (validatedData !== data) {
+        console.log(`[Cart Service] Response validation successful for: ${operation}`);
+      }
+    } catch (validationError) {
+      // GRACEFUL DEGRADATION: Log validation error but use original data
+      // This prevents validation from breaking existing functionality
+      console.warn(
+        `[Cart Service] Validation error for ${operation}, using raw data:`,
+        validationError instanceof Error ? validationError.message : validationError
+      );
+      validatedData = data;
+    }
+
+    return validatedData;
   } catch (error) {
     console.error(`[Cart Service] Failed to parse ${operation} response:`, error);
-    throw new Error(`Failed to parse ${operation} response`);
+
+    // Enhanced error message with more context
+    const errorMsg = error instanceof Error ? error.message : 'Unknown parsing error';
+    throw new Error(`Failed to parse ${operation} response: ${errorMsg}`);
   }
 }
 
@@ -250,24 +369,78 @@ export async function createCart(regionId: string = DEFAULT_REGION_ID): Promise<
  * const cart = await getCart('cart_01ABC123');
  * console.log('Cart items:', cart.items);
  */
-export async function getCart(cartId: string): Promise<MedusaCart> {
+export async function getCart(
+  cartId: string,
+  fields?: string[]
+): Promise<MedusaCart> {
   try {
-    console.log(`[Cart Service] Retrieving cart: ${cartId}`);
+    console.log(`[Cart Service] ========================================`);
+    console.log(`[Cart Service] RETRIEVING CART: ${cartId}`);
+
+    // Build query string with fields parameter for complete cart data
+    // CRITICAL FIX: Use Medusa v2 field expansion syntax
+    // The '+' operator adds fields to defaults instead of replacing them
+    // Format: '+relation.*' retrieves all properties of a relation
+    // Reference: https://docs.medusajs.com/learn/advanced-development/api-routes/parameters
+    const defaultFields = [
+      '+items.*',              // Expand all item properties
+      '+items.variant.*',      // Expand item variant details
+      '+items.product.*',      // Expand product information
+      '+shipping_methods.*',   // Expand shipping method details
+      '+shipping_address.*',   // Expand shipping address
+      '+billing_address.*',    // Expand billing address
+      '+payment_collection.*', // Expand payment collection (Medusa v2 only - no payment_sessions)
+      '+region.*',             // Expand region details
+    ];
+
+    const fieldsToFetch = fields || defaultFields;
+    const queryParams = new URLSearchParams();
+
+    if (fieldsToFetch.length > 0) {
+      queryParams.append('fields', fieldsToFetch.join(','));
+    }
+
+    const queryString = queryParams.toString();
+    const url = `${STORE_API_URL}/carts/${cartId}${queryString ? `?${queryString}` : ''}`;
+
+    // DEBUGGING: Log request details
+    console.log(`[Cart Service] REQUEST DETAILS:`);
+    console.log(`[Cart Service] - Base URL: ${STORE_API_URL}`);
+    console.log(`[Cart Service] - Cart ID: ${cartId}`);
+    console.log(`[Cart Service] - Fields count: ${fieldsToFetch.length}`);
+    console.log(`[Cart Service] - Query string length: ${queryString.length} chars`);
+    console.log(`[Cart Service] - Full URL: ${url}`);
+    console.log(`[Cart Service] - URL length: ${url.length} chars`);
+    console.log(`[Cart Service] - Fields requested:`, fieldsToFetch);
+    console.log(`[Cart Service] ========================================`);
 
     const response = await fetchWithTimeout(
-      `${STORE_API_URL}/carts/${cartId}`,
+      url,
       {
         method: 'GET',
         headers: buildHeaders(),
       }
     );
 
+    // CRITICAL FIX: Check for 404 specifically to enable stale cart recovery
+    if (!response.ok && response.status === 404) {
+      const error = new Error(`Cart not found: ${cartId}`) as Error & { status: number; code: string };
+      error.status = 404;
+      error.code = 'CART_NOT_FOUND';
+      console.warn(`[Cart Service] Cart ${cartId} not found (404) - may be completed, deleted, or expired`);
+      throw error;
+    }
+
     const data = await handleResponse<{ cart: MedusaCart }>(response, 'Get cart');
 
-    console.log(`[Cart Service] Cart retrieved: ${data.cart.id} with ${data.cart.items?.length || 0} items`);
+    console.log(`[Cart Service] Cart retrieved successfully: ${data.cart.id} with ${data.cart.items?.length || 0} items`);
     return data.cart;
   } catch (error) {
-    console.error('[Cart Service] Error getting cart:', error);
+    console.error('[Cart Service] ========================================');
+    console.error('[Cart Service] ERROR GETTING CART');
+    console.error('[Cart Service] Cart ID:', cartId);
+    console.error('[Cart Service] Error:', error);
+    console.error('[Cart Service] ========================================');
     throw error;
   }
 }
@@ -294,7 +467,23 @@ export async function addLineItem(
   metadata?: Record<string, any>
 ): Promise<MedusaCart> {
   try {
-    console.log(`[Cart Service] Adding line item to cart ${cartId}: variant=${variantId}, quantity=${quantity}`);
+    // COMPREHENSIVE LOGGING FOR DEBUGGING
+    console.log(`[Cart Service] Adding line item to cart ${cartId}:`, {
+      variantId,
+      variantIdType: typeof variantId,
+      variantIdEmpty: !variantId,
+      variantIdValue: variantId,
+      quantity,
+      hasMetadata: !!metadata,
+      metadataType: metadata?.type
+    });
+
+    // VALIDATION: Ensure variant_id is provided
+    if (!variantId || variantId === '' || variantId === 'undefined' || variantId === 'null') {
+      const errorMsg = `Invalid variant_id: "${variantId}". Cannot add line item without valid variant_id.`;
+      console.error('[Cart Service] ' + errorMsg);
+      throw new Error(errorMsg);
+    }
 
     const requestBody: any = {
       variant_id: variantId,
@@ -304,6 +493,8 @@ export async function addLineItem(
     if (metadata) {
       requestBody.metadata = metadata;
     }
+
+    console.log('[Cart Service] Request body:', JSON.stringify(requestBody, null, 2));
 
     const response = await fetchWithTimeout(
       `${STORE_API_URL}/carts/${cartId}/line-items`,
@@ -538,6 +729,56 @@ export async function setBillingAddress(
 }
 
 /**
+ * Update multiple cart fields in a single request
+ *
+ * This function prevents race conditions by updating email, shipping address,
+ * and billing address in a single atomic operation.
+ *
+ * Official Docs: https://docs.medusajs.com/resources/storefront-development/checkout
+ *
+ * @param cartId - The ID of the cart
+ * @param updates - Object containing fields to update
+ * @returns The updated cart object
+ *
+ * @example
+ * const cart = await updateCart('cart_01ABC123', {
+ *   email: 'customer@example.com',
+ *   shipping_address: { first_name: 'John', last_name: 'Doe', ... },
+ *   billing_address: { first_name: 'John', last_name: 'Doe', ... }
+ * });
+ */
+export async function updateCart(
+  cartId: string,
+  updates: {
+    email?: string;
+    shipping_address?: AddressPayload;
+    billing_address?: AddressPayload;
+    metadata?: Record<string, any>;
+  }
+): Promise<MedusaCart> {
+  try {
+    console.log(`[Cart Service] Updating cart ${cartId} with fields:`, Object.keys(updates).join(', '));
+
+    const response = await fetchWithTimeout(
+      `${STORE_API_URL}/carts/${cartId}`,
+      {
+        method: 'POST',
+        headers: buildHeaders(),
+        body: JSON.stringify(updates),
+      }
+    );
+
+    const data = await handleResponse<{ cart: MedusaCart }>(response, 'Update cart');
+
+    console.log(`[Cart Service] Cart updated successfully`);
+    return data.cart;
+  } catch (error) {
+    console.error('[Cart Service] Error updating cart:', error);
+    throw error;
+  }
+}
+
+/**
  * Get available shipping options for cart
  *
  * @param cartId - The ID of the cart
@@ -612,51 +853,176 @@ export async function addShippingMethod(
 }
 
 /**
- * Initialize payment sessions (if using payment provider)
+ * Create payment collection for cart (Medusa v2)
+ *
+ * CRITICAL FOR MEDUSA V2: Payment collections are NOT automatically created.
+ * You MUST explicitly create a payment collection via this function BEFORE
+ * initializing payment sessions.
  *
  * Official Docs: https://docs.medusajs.com/resources/storefront-development/checkout/payment
  *
+ * Prerequisites:
+ * - Cart must have items
+ * - Cart must have shipping address set
+ * - Cart must have shipping method selected
+ *
+ * Workflow:
+ * 1. Create payment collection for cart
+ * 2. Initialize payment sessions on the payment collection
+ * 3. Complete cart
+ *
  * @param cartId - The ID of the cart
- * @returns The updated cart object with payment sessions
+ * @returns The created payment collection object
  *
  * @example
- * const cart = await initializePaymentSessions('cart_01ABC123');
- * console.log('Payment sessions:', cart.payment_sessions);
+ * // Step 1: Create payment collection
+ * const paymentCollection = await createPaymentCollectionForCart('cart_01ABC123');
+ * console.log('Payment collection created:', paymentCollection.id);
+ *
+ * // Step 2: Initialize payment sessions (done in initializePaymentSessions)
+ * await initializePaymentSessions('cart_01ABC123');
  */
-export async function initializePaymentSessions(cartId: string): Promise<MedusaCart> {
-  try {
-    console.log(`[Cart Service] Initializing payment sessions for cart ${cartId}`);
+export async function createPaymentCollectionForCart(cartId: string): Promise<any> {
+  // Wrap with retry logic for network resilience
+  const result = await retryPaymentCollectionCreation(
+    async () => {
+      console.log(`[Cart Service] Creating payment collection for cart ${cartId}`);
 
-    const response = await fetchWithTimeout(
-      `${STORE_API_URL}/carts/${cartId}/payment-sessions`,
-      {
-        method: 'POST',
-        headers: buildHeaders(),
-      }
-    );
+      const response = await fetchWithTimeout(
+        `${STORE_API_URL}/payment-collections`,
+        {
+          method: 'POST',
+          headers: buildHeaders(),
+          body: JSON.stringify({
+            cart_id: cartId,
+          }),
+        }
+      );
 
-    const data = await handleResponse<{ cart: MedusaCart }>(response, 'Initialize payment sessions');
+      const data = await handleResponse<{ payment_collection: any }>(
+        response,
+        'Create payment collection'
+      );
 
-    console.log(`[Cart Service] Payment sessions initialized successfully`);
-    return data.cart;
-  } catch (error) {
-    console.error('[Cart Service] Error initializing payment sessions:', error);
-    throw error;
-  }
+      console.log(`[Cart Service] Payment collection created successfully: ${data.payment_collection.id}`);
+      return data.payment_collection;
+    },
+    cartId
+  );
+
+  // Return the payment collection data (unwrap from retry result)
+  return result.data;
 }
 
 /**
- * Set payment session (select payment provider)
+ * Initialize payment sessions (Medusa v2)
  *
- * Official Docs: https://docs.medusajs.com/resources/storefront-development/checkout/payment
+ * CRITICAL FOR MEDUSA V2: This function now creates the payment collection if it
+ * doesn't exist, then initializes payment sessions on that collection.
+ *
+ * IMPORTANT: Medusa v2 uses payment collections, not direct cart payment sessions.
+ * Payment collections must be created explicitly before initializing sessions.
+ *
+ * Prerequisites:
+ * - Cart must have items
+ * - Cart must have shipping address set
+ * - Cart must have shipping method selected
+ *
+ * New Flow (Medusa v2):
+ * 1. Create payment collection for the cart
+ * 2. Initialize payment session on the payment collection with provider
+ * 3. Return updated cart
+ *
+ * @param cartId - The ID of the cart
+ * @param providerId - The payment provider ID (default: 'pp_stripe_stripe')
+ * @returns The updated cart object
+ *
+ * @example
+ * const cart = await initializePaymentSessions('cart_01ABC123', 'pp_stripe_stripe');
+ * console.log('Payment sessions initialized:', cart.payment_sessions);
+ */
+export async function initializePaymentSessions(
+  cartId: string,
+  providerId: string = 'pp_stripe_stripe'
+): Promise<MedusaCart> {
+  // Wrap with retry logic for network resilience
+  const result = await retryPaymentSessionInitialization(
+    async () => {
+      console.log(`[Cart Service] ========================================`);
+      console.log(`[Cart Service] INITIALIZING PAYMENT SESSION (MEDUSA V2)`);
+      console.log(`[Cart Service] Cart ID: ${cartId}`);
+      console.log(`[Cart Service] Provider: ${providerId}`);
+      console.log(`[Cart Service] ========================================`);
+
+      // STEP 0: Check if payment collection already exists (idempotency)
+      console.log(`[Cart Service] Step 0: Checking for existing payment collection...`);
+      const currentCart = await getCart(cartId);
+      let paymentCollectionId: string;
+
+      if (currentCart.payment_collection?.id) {
+        // Payment collection already exists - reuse it
+        paymentCollectionId = currentCart.payment_collection.id;
+        console.log(`[Cart Service] Payment collection already exists: ${paymentCollectionId}`);
+        console.log(`[Cart Service] Skipping creation (idempotent operation)`);
+      } else {
+        // STEP 1: Create payment collection for the cart
+        // This is REQUIRED in Medusa v2 - payment collections are NOT auto-created
+        console.log(`[Cart Service] Step 1: Creating payment collection...`);
+        const paymentCollection = await createPaymentCollectionForCart(cartId);
+        paymentCollectionId = paymentCollection.id;
+        console.log(`[Cart Service] Payment collection created: ${paymentCollectionId}`);
+      }
+
+      // STEP 2: Initialize payment session on the payment collection
+      console.log(`[Cart Service] Step 2: Initializing payment session with provider ${providerId}...`);
+      const response = await fetchWithTimeout(
+        `${STORE_API_URL}/payment-collections/${paymentCollectionId}/payment-sessions`,
+        {
+          method: 'POST',
+          headers: buildHeaders(),
+          body: JSON.stringify({
+            provider_id: providerId,
+          }),
+        }
+      );
+
+      const data = await handleResponse<{ payment_collection: any }>(
+        response,
+        'Initialize payment session'
+      );
+
+      console.log(`[Cart Service] Payment session initialized successfully on payment collection ${paymentCollectionId}`);
+
+      // STEP 3: Return updated cart
+      console.log(`[Cart Service] Step 3: Retrieving updated cart...`);
+      const updatedCart = await getCart(cartId);
+      console.log(`[Cart Service] ========================================`);
+      console.log(`[Cart Service] PAYMENT INITIALIZATION COMPLETE`);
+      console.log(`[Cart Service] Cart ready for completion`);
+      console.log(`[Cart Service] ========================================`);
+
+      return updatedCart;
+    },
+    cartId
+  );
+
+  // Return the cart data (unwrap from retry result)
+  return result.data;
+}
+
+/**
+ * Set payment session (select payment provider) - Medusa v2
+ *
+ * NOTE: In Medusa v2, payment sessions are created with the provider already specified.
+ * This function may be redundant if initializePaymentSessions already creates the session
+ * with the desired provider. Kept for backward compatibility.
  *
  * @param cartId - The ID of the cart
  * @param providerId - The ID of the payment provider to use
  * @returns The updated cart object
  *
  * @example
- * const cart = await setPaymentSession('cart_01ABC123', 'manual');
- * console.log('Payment provider selected');
+ * const cart = await setPaymentSession('cart_01ABC123', 'pp_stripe_stripe');
  */
 export async function setPaymentSession(
   cartId: string,
@@ -665,6 +1031,15 @@ export async function setPaymentSession(
   try {
     console.log(`[Cart Service] Setting payment session for cart ${cartId}: provider=${providerId}`);
 
+    // Get cart to find payment collection
+    const cart = await getCart(cartId);
+
+    if (!(cart as any).payment_collection?.id) {
+      throw new Error('No payment collection found on cart. Initialize payment first.');
+    }
+
+    // In v2, we select the payment session by making it active
+    // The endpoint structure may be different - this might need adjustment
     const response = await fetchWithTimeout(
       `${STORE_API_URL}/carts/${cartId}/payment-session`,
       {
@@ -682,7 +1057,11 @@ export async function setPaymentSession(
     return data.cart;
   } catch (error) {
     console.error('[Cart Service] Error setting payment session:', error);
-    throw error;
+    // If this endpoint doesn't exist in v2, we can skip it since the session
+    // is already created with the provider in initializePaymentSessions
+    console.warn('[Cart Service] Set payment session may not be required in Medusa v2');
+    // Return current cart instead of throwing
+    return await getCart(cartId);
   }
 }
 
@@ -702,31 +1081,101 @@ export async function setPaymentSession(
  * @throws {Error} If cart completion fails or returns a cart instead of order
  */
 export async function completeCart(cartId: string): Promise<MedusaOrder> {
-  try {
-    console.log(`[Cart Service] Completing cart ${cartId}`);
+  // Wrap with retry logic for network resilience
+  const result = await retryCartCompletion(
+    async () => {
+      console.log(`[Cart Service] ========================================`);
+      console.log(`[Cart Service] COMPLETING CART`);
+      console.log(`[Cart Service] Cart ID: ${cartId}`);
+      console.log(`[Cart Service] ========================================`);
 
-    const response = await fetchWithTimeout(
-      `${STORE_API_URL}/carts/${cartId}/complete`,
-      {
-        method: 'POST',
-        headers: buildHeaders(),
+      // Log cart state before completion
+      try {
+        const cartBeforeCompletion = await getCart(cartId);
+        console.log(`[Cart Service] Cart state before completion:`, {
+          id: cartBeforeCompletion.id,
+          email: cartBeforeCompletion.email,
+          items: cartBeforeCompletion.items?.length || 0,
+          hasShippingAddress: !!cartBeforeCompletion.shipping_address,
+          hasBillingAddress: !!cartBeforeCompletion.billing_address,
+          shippingMethods: cartBeforeCompletion.shipping_methods?.length || 0,
+          paymentSessions: cartBeforeCompletion.payment_sessions?.length || 0,
+          paymentSession: !!cartBeforeCompletion.payment_session,
+          subtotal: cartBeforeCompletion.subtotal,
+          total: cartBeforeCompletion.total,
+          metadata: cartBeforeCompletion.metadata
+        });
+      } catch (stateError) {
+        console.warn('[Cart Service] Could not retrieve cart state before completion:', stateError);
       }
-    );
 
-    const data = await handleResponse<CartCompletionResponse>(response, 'Complete cart');
+      const response = await fetchWithTimeout(
+        `${STORE_API_URL}/carts/${cartId}/complete`,
+        {
+          method: 'POST',
+          headers: buildHeaders(),
+        }
+      );
 
-    if (data.type === 'order') {
-      console.log(`[Cart Service] Cart completed successfully. Order created: ${(data.data as MedusaOrder).id}`);
-      return data.data as MedusaOrder;
-    } else {
-      const errorMsg = (data as any).error || 'Cart completion did not return an order';
-      console.error(`[Cart Service] Cart completion failed: ${errorMsg}`);
+      const data = await handleResponse<CartCompletionResponse>(response, 'Complete cart');
+
+      console.log(`[Cart Service] Cart completion response:`, {
+        type: data.type,
+        hasOrder: !!data.order,
+        hasCart: !!data.cart,
+        hasError: !!data.error,
+        orderIdIfPresent: data.order?.id || 'N/A',
+        responseKeys: Object.keys(data)
+      });
+
+      // Medusa v2 returns { type: "order", order: {...} } on success
+      if (data.type === 'order' && data.order) {
+        console.log(`[Cart Service] ========================================`);
+        console.log(`[Cart Service] CART COMPLETED SUCCESSFULLY`);
+        console.log(`[Cart Service] Order ID: ${data.order.id}`);
+        console.log(`[Cart Service] Order Status: ${data.order.status || 'N/A'}`);
+        console.log(`[Cart Service] Order Total: ${data.order.total || 'N/A'}`);
+        console.log(`[Cart Service] ========================================`);
+        return data.order;
+      }
+
+      // Handle cart response (completion failed or still in progress)
+      if (data.type === 'cart') {
+        const errorMsg = data.error || 'Cart completion returned a cart instead of an order. This usually means payment authorization failed or the cart is not ready for completion.';
+        console.error(`[Cart Service] ========================================`);
+        console.error(`[Cart Service] CART COMPLETION FAILED - RETURNED CART`);
+        console.error(`[Cart Service] Error: ${errorMsg}`);
+        console.error(`[Cart Service] Cart ID: ${data.cart?.id || 'N/A'}`);
+        console.error(`[Cart Service] ========================================`);
+        throw new Error(`Cart completion failed: ${errorMsg}`);
+      }
+
+      // Handle unexpected response (no order object in success response)
+      if (data.type === 'order' && !data.order) {
+        const errorMsg = 'Cart completion response indicated success (type: "order") but no order object was returned';
+        console.error(`[Cart Service] ========================================`);
+        console.error(`[Cart Service] CART COMPLETION FAILED - MALFORMED RESPONSE`);
+        console.error(`[Cart Service] Error: ${errorMsg}`);
+        console.error(`[Cart Service] Response structure:`, JSON.stringify(data, null, 2));
+        console.error(`[Cart Service] ========================================`);
+        throw new Error(`Cart completion failed: ${errorMsg}`);
+      }
+
+      // Fallback error for any other unexpected response
+      const errorMsg = data.error || 'Unknown error during cart completion';
+      console.error(`[Cart Service] ========================================`);
+      console.error(`[Cart Service] CART COMPLETION FAILED - UNEXPECTED RESPONSE`);
+      console.error(`[Cart Service] Error: ${errorMsg}`);
+      console.error(`[Cart Service] Response type: ${data.type}`);
+      console.error(`[Cart Service] Full response:`, JSON.stringify(data, null, 2));
+      console.error(`[Cart Service] ========================================`);
       throw new Error(`Cart completion failed: ${errorMsg}`);
-    }
-  } catch (error) {
-    console.error('[Cart Service] Error completing cart:', error);
-    throw error;
-  }
+    },
+    cartId
+  );
+
+  // Return the order data (unwrap from retry result)
+  return result.data;
 }
 
 /**

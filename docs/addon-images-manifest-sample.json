@@ -1,0 +1,256 @@
+{
+  "description": "SAMPLE - This is a template of what addon-images-manifest.json will look like after running the script",
+  "generated_at": "2025-11-09T00:00:00.000Z",
+  "total_images": 8,
+  "pexels_license": "Pexels Free License - https://www.pexels.com/license/",
+  "images": [
+    {
+      "addon_id": "addon-1",
+      "addon_handle": "gourmet-picnic-lunch",
+      "addon_name": "Gourmet Picnic Lunch",
+      "category": "Food & Beverage",
+      "source_url": "https://www.pexels.com/photo/sample-123456",
+      "pexels_id": 123456,
+      "photographer": "Sample Photographer",
+      "photographer_url": "https://www.pexels.com/@sample",
+      "formats": {
+        "webp": [
+          "gourmet-picnic-lunch-640w.webp",
+          "gourmet-picnic-lunch-750w.webp",
+          "gourmet-picnic-lunch-828w.webp",
+          "gourmet-picnic-lunch-1080w.webp",
+          "gourmet-picnic-lunch-1200w.webp",
+          "gourmet-picnic-lunch-1920w.webp"
+        ],
+        "avif": [
+          "gourmet-picnic-lunch-640w.avif",
+          "gourmet-picnic-lunch-750w.avif",
+          "gourmet-picnic-lunch-828w.avif",
+          "gourmet-picnic-lunch-1080w.avif",
+          "gourmet-picnic-lunch-1200w.avif",
+          "gourmet-picnic-lunch-1920w.avif"
+        ],
+        "original": "gourmet-picnic-lunch-original.jpg"
+      },
+      "alt_text": "Gourmet Picnic Lunch - Premium dining experience for 4WD tours on Sunshine Coast",
+      "license": "Pexels Free License"
+    },
+    {
+      "addon_id": "addon-2",
+      "addon_handle": "professional-photography-package",
+      "addon_name": "Professional Photography Package",
+      "category": "Photography",
+      "source_url": "https://www.pexels.com/photo/sample-123457",
+      "pexels_id": 123457,
+      "photographer": "Sample Photographer",
+      "photographer_url": "https://www.pexels.com/@sample",
+      "formats": {
+        "webp": [
+          "professional-photography-package-640w.webp",
+          "professional-photography-package-750w.webp",
+          "professional-photography-package-828w.webp",
+          "professional-photography-package-1080w.webp",
+          "professional-photography-package-1200w.webp",
+          "professional-photography-package-1920w.webp"
+        ],
+        "avif": [
+          "professional-photography-package-640w.avif",
+          "professional-photography-package-750w.avif",
+          "professional-photography-package-828w.avif",
+          "professional-photography-package-1080w.avif",
+          "professional-photography-package-1200w.avif",
+          "professional-photography-package-1920w.avif"
+        ],
+        "original": "professional-photography-package-original.jpg"
+      },
+      "alt_text": "Professional Photography Package - Premium photography service for 4WD tours on Sunshine Coast",
+      "license": "Pexels Free License"
+    },
+    {
+      "addon_id": "addon-3",
+      "addon_handle": "gopro-camera-rental",
+      "addon_name": "GoPro Camera Rental",
+      "category": "Equipment",
+      "source_url": "https://www.pexels.com/photo/sample-123458",
+      "pexels_id": 123458,
+      "photographer": "Sample Photographer",
+      "photographer_url": "https://www.pexels.com/@sample",
+      "formats": {
+        "webp": [
+          "gopro-camera-rental-640w.webp",
+          "gopro-camera-rental-750w.webp",
+          "gopro-camera-rental-828w.webp",
+          "gopro-camera-rental-1080w.webp",
+          "gopro-camera-rental-1200w.webp",
+          "gopro-camera-rental-1920w.webp"
+        ],
+        "avif": [
+          "gopro-camera-rental-640w.avif",
+          "gopro-camera-rental-750w.avif",
+          "gopro-camera-rental-828w.avif",
+          "gopro-camera-rental-1080w.avif",
+          "gopro-camera-rental-1200w.avif",
+          "gopro-camera-rental-1920w.avif"
+        ],
+        "original": "gopro-camera-rental-original.jpg"
+      },
+      "alt_text": "GoPro Camera Rental - Premium equipment rental for 4WD tours on Sunshine Coast",
+      "license": "Pexels Free License"
+    },
+    {
+      "addon_id": "addon-4",
+      "addon_handle": "camping-equipment-package",
+      "addon_name": "Camping Equipment Package",
+      "category": "Equipment",
+      "source_url": "https://www.pexels.com/photo/sample-123459",
+      "pexels_id": 123459,
+      "photographer": "Sample Photographer",
+      "photographer_url": "https://www.pexels.com/@sample",
+      "formats": {
+        "webp": [
+          "camping-equipment-package-640w.webp",
+          "camping-equipment-package-750w.webp",
+          "camping-equipment-package-828w.webp",
+          "camping-equipment-package-1080w.webp",
+          "camping-equipment-package-1200w.webp",
+          "camping-equipment-package-1920w.webp"
+        ],
+        "avif": [
+          "camping-equipment-package-640w.avif",
+          "camping-equipment-package-750w.avif",
+          "camping-equipment-package-828w.avif",
+          "camping-equipment-package-1080w.avif",
+          "camping-equipment-package-1200w.avif",
+          "camping-equipment-package-1920w.avif"
+        ],
+        "original": "camping-equipment-package-original.jpg"
+      },
+      "alt_text": "Camping Equipment Package - Premium equipment rental for 4WD tours on Sunshine Coast",
+      "license": "Pexels Free License"
+    },
+    {
+      "addon_id": "addon-5",
+      "addon_handle": "wildlife-spotting-binoculars",
+      "addon_name": "Wildlife Spotting Binoculars",
+      "category": "Equipment",
+      "source_url": "https://www.pexels.com/photo/sample-123460",
+      "pexels_id": 123460,
+      "photographer": "Sample Photographer",
+      "photographer_url": "https://www.pexels.com/@sample",
+      "formats": {
+        "webp": [
+          "wildlife-spotting-binoculars-640w.webp",
+          "wildlife-spotting-binoculars-750w.webp",
+          "wildlife-spotting-binoculars-828w.webp",
+          "wildlife-spotting-binoculars-1080w.webp",
+          "wildlife-spotting-binoculars-1200w.webp",
+          "wildlife-spotting-binoculars-1920w.webp"
+        ],
+        "avif": [
+          "wildlife-spotting-binoculars-640w.avif",
+          "wildlife-spotting-binoculars-750w.avif",
+          "wildlife-spotting-binoculars-828w.avif",
+          "wildlife-spotting-binoculars-1080w.avif",
+          "wildlife-spotting-binoculars-1200w.avif",
+          "wildlife-spotting-binoculars-1920w.avif"
+        ],
+        "original": "wildlife-spotting-binoculars-original.jpg"
+      },
+      "alt_text": "Wildlife Spotting Binoculars - Premium equipment rental for 4WD tours on Sunshine Coast",
+      "license": "Pexels Free License"
+    },
+    {
+      "addon_id": "addon-6",
+      "addon_handle": "sunset-champagne-experience",
+      "addon_name": "Sunset Champagne Experience",
+      "category": "Food & Beverage",
+      "source_url": "https://www.pexels.com/photo/sample-123461",
+      "pexels_id": 123461,
+      "photographer": "Sample Photographer",
+      "photographer_url": "https://www.pexels.com/@sample",
+      "formats": {
+        "webp": [
+          "sunset-champagne-experience-640w.webp",
+          "sunset-champagne-experience-750w.webp",
+          "sunset-champagne-experience-828w.webp",
+          "sunset-champagne-experience-1080w.webp",
+          "sunset-champagne-experience-1200w.webp",
+          "sunset-champagne-experience-1920w.webp"
+        ],
+        "avif": [
+          "sunset-champagne-experience-640w.avif",
+          "sunset-champagne-experience-750w.avif",
+          "sunset-champagne-experience-828w.avif",
+          "sunset-champagne-experience-1080w.avif",
+          "sunset-champagne-experience-1200w.avif",
+          "sunset-champagne-experience-1920w.avif"
+        ],
+        "original": "sunset-champagne-experience-original.jpg"
+      },
+      "alt_text": "Sunset Champagne Experience - Premium dining experience for 4WD tours on Sunshine Coast",
+      "license": "Pexels Free License"
+    },
+    {
+      "addon_id": "addon-7",
+      "addon_handle": "hotel-pickup-dropoff",
+      "addon_name": "Hotel Pickup & Drop-off",
+      "category": "Transport",
+      "source_url": "https://www.pexels.com/photo/sample-123462",
+      "pexels_id": 123462,
+      "photographer": "Sample Photographer",
+      "photographer_url": "https://www.pexels.com/@sample",
+      "formats": {
+        "webp": [
+          "hotel-pickup-dropoff-640w.webp",
+          "hotel-pickup-dropoff-750w.webp",
+          "hotel-pickup-dropoff-828w.webp",
+          "hotel-pickup-dropoff-1080w.webp",
+          "hotel-pickup-dropoff-1200w.webp",
+          "hotel-pickup-dropoff-1920w.webp"
+        ],
+        "avif": [
+          "hotel-pickup-dropoff-640w.avif",
+          "hotel-pickup-dropoff-750w.avif",
+          "hotel-pickup-dropoff-828w.avif",
+          "hotel-pickup-dropoff-1080w.avif",
+          "hotel-pickup-dropoff-1200w.avif",
+          "hotel-pickup-dropoff-1920w.avif"
+        ],
+        "original": "hotel-pickup-dropoff-original.jpg"
+      },
+      "alt_text": "Hotel Pickup & Drop-off - Premium transport service for 4WD tours on Sunshine Coast",
+      "license": "Pexels Free License"
+    },
+    {
+      "addon_id": "addon-8",
+      "addon_handle": "extended-travel-insurance",
+      "addon_name": "Extended Travel Insurance",
+      "category": "Insurance",
+      "source_url": "https://www.pexels.com/photo/sample-123463",
+      "pexels_id": 123463,
+      "photographer": "Sample Photographer",
+      "photographer_url": "https://www.pexels.com/@sample",
+      "formats": {
+        "webp": [
+          "extended-travel-insurance-640w.webp",
+          "extended-travel-insurance-750w.webp",
+          "extended-travel-insurance-828w.webp",
+          "extended-travel-insurance-1080w.webp",
+          "extended-travel-insurance-1200w.webp",
+          "extended-travel-insurance-1920w.webp"
+        ],
+        "avif": [
+          "extended-travel-insurance-640w.avif",
+          "extended-travel-insurance-750w.avif",
+          "extended-travel-insurance-828w.avif",
+          "extended-travel-insurance-1080w.avif",
+          "extended-travel-insurance-1200w.avif",
+          "extended-travel-insurance-1920w.avif"
+        ],
+        "original": "extended-travel-insurance-original.jpg"
+      },
+      "alt_text": "Extended Travel Insurance - Premium travel protection for 4WD tours on Sunshine Coast",
+      "license": "Pexels Free License"
+    }
+  ]
+}

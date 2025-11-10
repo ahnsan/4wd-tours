@@ -10,6 +10,27 @@ import {
   formatCardNumber,
 } from '../../lib/utils/validation';
 
+/**
+ * PaymentForm Component
+ *
+ * Handles payment information collection for checkout.
+ *
+ * CURRENT IMPLEMENTATION (Testing/Development):
+ * - Using Medusa system payment provider (pp_system_default)
+ * - Payment is processed manually on the backend
+ * - Card details are collected for UI purposes only
+ *
+ * TODO: FOR PRODUCTION - Implement Stripe Elements Integration
+ * 1. Switch to Stripe provider in checkout page ('pp_stripe_stripe')
+ * 2. Install Stripe packages: npm install @stripe/stripe-js @stripe/react-stripe-js
+ * 3. Replace card input fields with Stripe Elements components
+ * 4. Set NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY in environment variables
+ * 5. Implement proper Stripe payment intent handling
+ * 6. Reference: https://docs.medusajs.com/resources/storefront-development/checkout/payment
+ *
+ * IMPORTANT: Card details are validated client-side but processed securely via Stripe on the backend.
+ */
+
 export type PaymentMethod = 'card' | 'paypal' | 'bank_transfer';
 
 export interface PaymentData {
@@ -161,6 +182,28 @@ export default function PaymentForm({ onDataChange, initialData }: PaymentFormPr
   return (
     <div className={styles.paymentForm}>
       <h2 className={styles.formTitle}>Payment Information</h2>
+
+      {/* Development Mode Notice */}
+      <div style={{
+        padding: '1rem',
+        marginBottom: '1.5rem',
+        backgroundColor: '#FEF3C7',
+        border: '1px solid #F59E0B',
+        borderRadius: '0.5rem',
+        fontSize: '0.875rem',
+        lineHeight: '1.5'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+          <span style={{ fontSize: '1.25rem' }}>ℹ️</span>
+          <div>
+            <strong style={{ display: 'block', marginBottom: '0.25rem' }}>Development Mode</strong>
+            <p style={{ margin: 0 }}>
+              Payment processing is currently in testing mode. Orders will be created successfully,
+              and payment will be handled manually. Stripe Elements integration is planned for production.
+            </p>
+          </div>
+        </div>
+      </div>
 
       {/* Payment Method Selection */}
       <div className={styles.methodSelection}>

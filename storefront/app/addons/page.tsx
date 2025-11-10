@@ -3,10 +3,13 @@
 import React, { useState, useCallback, useMemo, memo, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { addOnsData, addOnCategories } from '../../lib/tours-data';
-import { useCart } from '../../contexts/CartContext';
+import { useCartContext } from '@/lib/context/CartContext';
+import type { Addon } from '@/lib/types/cart';
 import { useAnnouncer, useQuantityKeyboard } from '../../lib/hooks';
+import { getAddonImageByHandle, getAddonImageById, getFallbackAddonImage } from '../../lib/utils/addon-images';
 import styles from './addons.module.css';
 
 // Performance: Dynamic import for heavy components (lazy loading)
@@ -115,11 +118,15 @@ const AddOnCard = memo(({
   quantity,
   onAdd,
   onRemove,
-  onQuantityChange
+  onQuantityChange,
+  index
 }: any) => {
   const isAdded = quantity > 0;
   const priceId = `price-${addon.id}`;
   const descId = `desc-${addon.id}`;
+
+  // Get image data from manifest
+  const imageData = getAddonImageByHandle(addon.id) || getAddonImageById(addon.id, addon.name) || getFallbackAddonImage();
 
   return (
     <article
@@ -129,6 +136,21 @@ const AddOnCard = memo(({
       aria-labelledby={`addon-${addon.id}`}
       aria-describedby={descId}
     >
+      {/* Add-on Image */}
+      <div className={styles.addonImageWrapper}>
+        <Image
+          src={imageData.image_path}
+          alt={imageData.alt_text}
+          width={1200}
+          height={800}
+          loading={index < 4 ? "eager" : "lazy"}
+          priority={index < 4}
+          quality={85}
+          className={styles.addonImage}
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 90vw, 800px"
+        />
+      </div>
+
       <div className={styles.addonHeader}>
         <div>
           <h3 id={`addon-${addon.id}`} className={styles.addonName}>{addon.name}</h3>
@@ -181,10 +203,10 @@ AddOnCard.displayName = 'AddOnCard';
 
 export default function AddOnsPage() {
   const router = useRouter();
-  const { cart, addAddOn, removeAddOn, updateAddOnQuantity } = useCart();
+  const { cart, addAddonToCart, removeAddonFromCart, updateAddonQuantity } = useCartContext();
   const [selectedCategory, setSelectedCategory] = useState('All Add-ons');
   const { announceAddToCart, announceRemoveFromCart, announceTotalChange } = useAnnouncer();
-  const previousTotal = useRef(cart.total);
+  const previousTotal = useRef(cart.total_cents);
 
   // Performance: Memoize filtered add-ons to prevent recalculation on every render
   const filteredAddOns = useMemo(() => {
@@ -195,30 +217,53 @@ export default function AddOnsPage() {
 
   // Performance: Memoize callbacks to prevent re-creating functions on every render
   const getAddOnQuantity = useCallback((addOnId: string): number => {
-    const cartAddOn = cart.addOns.find((item) => item.addOn.id === addOnId);
-    return cartAddOn ? cartAddOn.quantity : 0;
-  }, [cart.addOns]);
+    const cartAddon = cart.addons.find((item) => item.addon.id === addOnId);
+    return cartAddon ? cartAddon.quantity : 0;
+  }, [cart.addons]);
 
-  const handleAddOn = useCallback((addOn: typeof addOnsData[0]) => {
-    addAddOn(addOn, 1);
-    announceAddToCart(addOn.name, 1);
-  }, [addAddOn, announceAddToCart]);
+  const handleAddOn = useCallback(async (addOn: typeof addOnsData[0]) => {
+    try {
+      // Convert old addon format to new Addon type
+      const addon: Addon = {
+        id: addOn.id,
+        variant_id: '', // Will be set by the backend
+        title: addOn.name,
+        description: addOn.description,
+        price_cents: Math.round(addOn.price * 100), // Convert dollars to cents
+        pricing_type: 'per_booking',
+        category: addOn.category,
+        available: true,
+      };
+      await addAddonToCart({ addon, quantity: 1 });
+      announceAddToCart(addOn.name, 1);
+    } catch (error) {
+      console.error('Error adding addon:', error);
+    }
+  }, [addAddonToCart, announceAddToCart]);
 
-  const handleRemoveAddOn = useCallback((addOnId: string) => {
+  const handleRemoveAddOn = useCallback(async (addOnId: string) => {
     const addon = addOnsData.find((a) => a.id === addOnId);
-    removeAddOn(addOnId);
-    if (addon) {
-      announceRemoveFromCart(addon.name);
+    try {
+      await removeAddonFromCart(addOnId);
+      if (addon) {
+        announceRemoveFromCart(addon.name);
+      }
+    } catch (error) {
+      console.error('Error removing addon:', error);
     }
-  }, [removeAddOn, announceRemoveFromCart]);
+  }, [removeAddonFromCart, announceRemoveFromCart]);
 
-  const handleQuantityChange = useCallback((addOnId: string, quantity: number) => {
-    if (quantity <= 0) {
-      removeAddOn(addOnId);
-    } else {
-      updateAddOnQuantity(addOnId, quantity);
+  const handleQuantityChange = useCallback(async (addOnId: string, quantity: number) => {
+    try {
+      if (quantity <= 0) {
+        await removeAddonFromCart(addOnId);
+      } else {
+        await updateAddonQuantity(addOnId, quantity);
+      }
+    } catch (error) {
+      console.error('Error updating addon quantity:', error);
     }
-  }, [removeAddOn, updateAddOnQuantity]);
+  }, [removeAddonFromCart, updateAddonQuantity]);
 
   const handleContinue = useCallback(() => {
     router.push('/checkout');
@@ -234,14 +279,23 @@ export default function AddOnsPage() {
 
   // Announce total changes
   useEffect(() => {
-    if (previousTotal.current !== cart.total && previousTotal.current !== 0) {
-      announceTotalChange(cart.total);
+    if (previousTotal.current !== cart.total_cents && previousTotal.current !== 0) {
+      announceTotalChange(cart.total_cents / 100); // Convert cents to dollars for announcement
     }
-    previousTotal.current = cart.total;
-  }, [cart.total, announceTotalChange]);
+    previousTotal.current = cart.total_cents;
+  }, [cart.total_cents, announceTotalChange]);
+
+  // Show loading state while cart is loading
+  if (cart.isLoading) {
+    return (
+      <main className={styles.noTour}>
+        <p>Loading cart...</p>
+      </main>
+    );
+  }
 
   // Check if user has selected a tour
-  if (!cart.tour) {
+  if (!cart.tour_booking) {
     return (
       <main className={styles.noTour}>
         <h1>No Tour Selected</h1>
@@ -265,7 +319,7 @@ export default function AddOnsPage() {
         <ol>
           <li><Link href="/">Home</Link></li>
           <li><Link href="/tours">Tours</Link></li>
-          <li><Link href={`/tours/${cart.tour.tour.id}`}>{cart.tour.tour.title}</Link></li>
+          <li><Link href={`/tours/${cart.tour_booking.tour.handle}`}>{cart.tour_booking.tour.title}</Link></li>
           <li aria-current="page">Add-ons</li>
         </ol>
       </nav>
@@ -294,7 +348,7 @@ export default function AddOnsPage() {
 
           {/* Add-ons Grid */}
           <section className={styles.addonsGrid} aria-label="Available add-ons" role="region">
-            {filteredAddOns.map((addon) => {
+            {filteredAddOns.map((addon, index) => {
               const quantity = getAddOnQuantity(addon.id);
 
               return (
@@ -302,6 +356,7 @@ export default function AddOnsPage() {
                   key={addon.id}
                   addon={addon}
                   quantity={quantity}
+                  index={index}
                   onAdd={() => handleAddOn(addon)}
                   onRemove={() => handleRemoveAddOn(addon.id)}
                   onQuantityChange={handleQuantityChange}
@@ -320,10 +375,10 @@ export default function AddOnsPage() {
             <h3>Tour</h3>
             <div className={styles.tourInfo}>
               <div>
-                <p className={styles.tourName}>{cart.tour.tour.title}</p>
+                <p className={styles.tourName}>{cart.tour_booking.tour.title}</p>
                 <p className={styles.tourMeta}>
-                  <time dateTime={cart.tour.date}>
-                    {new Date(cart.tour.date).toLocaleDateString('en-AU', {
+                  <time dateTime={cart.tour_booking.start_date}>
+                    {new Date(cart.tour_booking.start_date).toLocaleDateString('en-AU', {
                       weekday: 'short',
                       year: 'numeric',
                       month: 'short',
@@ -332,28 +387,28 @@ export default function AddOnsPage() {
                   </time>
                 </p>
                 <p className={styles.tourMeta}>
-                  {cart.tour.participants} participant{cart.tour.participants !== 1 ? 's' : ''}
+                  {cart.tour_booking.participants} participant{cart.tour_booking.participants !== 1 ? 's' : ''}
                 </p>
               </div>
-              <p className={styles.itemPrice} aria-label={`Tour price: ${cart.tour.subtotal} Australian dollars`}>
-                <span aria-hidden="true">AUD ${cart.tour.subtotal}</span>
+              <p className={styles.itemPrice} aria-label={`Tour price: ${(cart.tour_booking.total_price_cents / 100).toFixed(2)} Australian dollars`}>
+                <span aria-hidden="true">AUD ${(cart.tour_booking.total_price_cents / 100).toFixed(2)}</span>
               </p>
             </div>
           </div>
 
           {/* Add-ons Details */}
-          {cart.addOns.length > 0 && (
+          {cart.addons.length > 0 && (
             <div className={styles.addonsSummary}>
               <h3>Add-ons</h3>
               <ul className={styles.addonsList} role="list">
-                {cart.addOns.map((item) => (
-                  <li key={item.addOn.id} className={styles.addonItem}>
+                {cart.addons.map((item) => (
+                  <li key={item.addon.id} className={styles.addonItem}>
                     <div>
-                      <p className={styles.addonItemName}>{item.addOn.name}</p>
+                      <p className={styles.addonItemName}>{item.addon.title}</p>
                       <p className={styles.addonItemMeta}>Quantity: {item.quantity}</p>
                     </div>
-                    <p className={styles.itemPrice} aria-label={`Subtotal: ${item.subtotal} Australian dollars`}>
-                      <span aria-hidden="true">AUD ${item.subtotal}</span>
+                    <p className={styles.itemPrice} aria-label={`Subtotal: ${(item.calculated_price_cents / 100).toFixed(2)} Australian dollars`}>
+                      <span aria-hidden="true">AUD ${(item.calculated_price_cents / 100).toFixed(2)}</span>
                     </p>
                   </li>
                 ))}
@@ -365,8 +420,8 @@ export default function AddOnsPage() {
           <div className={styles.totalSection} role="status" aria-live="polite" aria-atomic="true">
             <div className={styles.totalRow}>
               <span>Total</span>
-              <span className={styles.totalAmount} aria-label={`Total: ${cart.total} Australian dollars`}>
-                <span aria-hidden="true">AUD ${cart.total}</span>
+              <span className={styles.totalAmount} aria-label={`Total: ${(cart.total_cents / 100).toFixed(2)} Australian dollars`}>
+                <span aria-hidden="true">AUD ${(cart.total_cents / 100).toFixed(2)}</span>
               </span>
             </div>
           </div>

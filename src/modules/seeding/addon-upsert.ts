@@ -14,6 +14,7 @@ export interface CollectionData {
 export interface ProductData {
   handle: string
   title: string
+  description?: string
   collection_handle: string
   status?: string
   metadata?: Record<string, any>
@@ -101,49 +102,22 @@ export async function upsertProductComplete(
     if (existingProducts && Array.isArray(existingProducts) && existingProducts.length > 0) {
       const product = existingProducts[0]
 
-      // Check if product has variants and prices
-      const variants = await productModuleService.listProductVariants({ product_id: product.id })
-
-      if (variants && variants.length > 0) {
-        const variant = variants[0]
-
-        // Check if variant has price set - skip link check for existing products
-        // Products created via Medusa admin already have price links
-        console.log(`✓ Product "${productData.handle}" already exists with prices (${product.id})`)
-        return product.id
-
-        if (!variantLinks || variantLinks.length === 0) {
-          // Product exists but has no price set - create one
-          console.log(`⚠️  Product "${productData.handle}" exists but has no price set, adding price...`)
-
-          const AUSTRALIA_REGION_ID = 'reg_01K9G4HA190556136E7RJQ4411'
-
-          const priceSets = await pricingModuleService.createPriceSets([{
-            prices: [{
-              amount: priceData.amount,
-              currency_code: priceData.currency_code,
-              rules: {
-                region_id: AUSTRALIA_REGION_ID,
-              },
-            }],
-          }])
-          const priceSet = priceSets[0]
-
-          await remoteLink.create([{
-            [Modules.PRODUCT]: {
-              variant_id: variant.id,
-            },
-            [Modules.PRICING]: {
-              price_set_id: priceSet.id,
-            },
-          }])
-
-          console.log(`✓ Added price set to product "${productData.handle}" (${product.id})`)
-          return product.id
-        }
+      // Update product with new description and metadata
+      const updateData: any = {}
+      if (productData.description && productData.description !== product.description) {
+        updateData.description = productData.description
+      }
+      if (productData.metadata && JSON.stringify(productData.metadata) !== JSON.stringify(product.metadata)) {
+        updateData.metadata = productData.metadata
       }
 
-      console.log(`✓ Product "${productData.handle}" already exists with prices (${product.id})`)
+      if (Object.keys(updateData).length > 0) {
+        await productModuleService.updateProducts(product.id, updateData)
+        console.log(`✓ Updated product "${productData.handle}" with new content (${product.id})`)
+      } else {
+        console.log(`✓ Product "${productData.handle}" already exists with prices (${product.id})`)
+      }
+
       return product.id
     }
 
@@ -162,6 +136,7 @@ export async function upsertProductComplete(
     const products = await productModuleService.createProducts([{
       handle: productData.handle,
       title: productData.title,
+      description: productData.description,
       status: productData.status || "published",
       collection_id: collectionId,
       metadata: productData.metadata || {},

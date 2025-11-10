@@ -1,14 +1,16 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Script from 'next/script';
 import TourGallery from '../../../components/Tours/TourGallery';
 import DatePicker from '../../../components/Tours/DatePicker';
+import TourAddOns from '../../../components/Tours/TourAddOns';
 import { useCart } from '../../../lib/hooks/useCart';
 import { getProductPrice, formatPrice } from '../../../lib/utils/pricing';
 import { ErrorLogger } from '../../../lib/utils/errorLogger';
+import type { Tour } from '@/lib/types/cart';
 import styles from './tour-detail.module.css';
 
 interface TourDetailClientProps {
@@ -25,8 +27,18 @@ export default function TourDetailClient({
   error,
 }: TourDetailClientProps) {
   const router = useRouter();
-  const { setTour, setTourStartDate } = useCart();
+  const { addTourToCart } = useCart();
   const tour = tourProduct;
+
+  // DEBUG: Log tour structure to understand what we're receiving
+  console.log('[TourDetailClient] Received tourProduct:', {
+    id: tour?.id,
+    title: tour?.title,
+    hasVariants: !!tour?.variants,
+    variantsLength: tour?.variants?.length,
+    firstVariantId: tour?.variants?.[0]?.id,
+    fullTourObject: tour,
+  });
 
   // Booking state
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -34,6 +46,9 @@ export default function TourDetailClient({
     tour.variants?.[0]?.id || ''
   );
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+
+  // Ref for DatePicker scroll functionality
+  const datePickerRef = useRef<HTMLDivElement>(null);
 
   // Log page load and data source
   useEffect(() => {
@@ -69,7 +84,7 @@ export default function TourDetailClient({
   };
 
   // Handle booking - Add to cart
-  const handleBookNow = () => {
+  const handleBookNow = async () => {
     try {
       // Validation errors
       if (!selectedDate) {
@@ -77,7 +92,14 @@ export default function TourDetailClient({
           tourHandle: handle,
           tourTitle: tour?.title,
         });
-        alert('Please select a tour date');
+
+        // Scroll to DatePicker instead of showing alert
+        if (datePickerRef.current) {
+          datePickerRef.current.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+          });
+        }
         return;
       }
 
@@ -102,19 +124,59 @@ export default function TourDetailClient({
         return;
       }
 
-      // Create tour object matching the new cart structure (Tour interface)
-      const cartTour = {
+      // CRITICAL: Validate variant ID exists (cannot be empty string)
+      if (!selectedVariantId || selectedVariantId === '') {
+        ErrorLogger.error('No variant ID available for tour', new Error('Variant missing'), {
+          tourHandle: handle,
+          tourId: tour.id,
+          variants: tour.variants,
+          selectedVariantId: selectedVariantId,
+        });
+        console.error('[Book Now] CRITICAL ERROR: Missing variant ID', {
+          tour: tour,
+          variants: tour.variants,
+          selectedVariantId: selectedVariantId,
+        });
+        alert('Tour configuration error: Missing product variant. Please refresh the page or contact support.');
+        return;
+      }
+
+      // Debug logging for troubleshooting
+      console.log('[Book Now] Tour booking details:', {
+        tourId: tour.id,
+        tourHandle: handle,
+        variantId: selectedVariantId,
+        variants: tour.variants,
+        priceAmount: priceAmount,
+        participants: 1,
+        startDate: selectedDate.toISOString(),
+      });
+
+      // Create tour object matching the Tour interface from cart types
+      const cartTour: Tour = {
         id: tour.id,
+        variant_id: selectedVariantId,        // Required for Medusa line item
+        handle: handle,                       // Required for tour identification
         title: tour.title,
         description: tour.description || '',
-        base_price: priceAmount / 100, // Convert cents to dollars
+        base_price_cents: priceAmount,        // Keep in cents, not dollars
         duration_days: parseInt(tour.metadata?.duration_days || '1'),
-        image_url: tour.thumbnail || '',
+        thumbnail: tour.thumbnail || '',      // Primary image field
+        image_url: tour.thumbnail || '',      // Fallback compatibility
+        metadata: {                           // Required for validation
+          difficulty: tour.metadata?.difficulty,
+          min_participants: tour.metadata?.min_participants ? parseInt(tour.metadata.min_participants) : undefined,
+          max_participants: tour.metadata?.max_participants ? parseInt(tour.metadata.max_participants) : undefined,
+          category: tour.metadata?.category,
+        },
       };
 
-      // Add tour to cart using new hook methods
-      setTour(cartTour);
-      setTourStartDate(selectedDate.toISOString());
+      // Add tour to cart using new CartContext API
+      await addTourToCart({
+        tour: cartTour,
+        participants: 1, // Default participants
+        start_date: selectedDate.toISOString(),
+      });
 
       // Store booking info in sessionStorage for compatibility
       const bookingInfo = {
@@ -139,8 +201,9 @@ export default function TourDetailClient({
         dataSource,
       });
 
-      // Navigate to add-ons page
-      router.push('/checkout/add-ons');
+      // Navigate directly to add-ons flow with tour handle in URL
+      // This avoids race condition where cart hasn't synced yet
+      router.push(`/checkout/add-ons-flow?tour=${encodeURIComponent(handle)}`);
     } catch (err) {
       ErrorLogger.error('Error during booking process', err instanceof Error ? err : new Error(String(err)), {
         tourHandle: handle,
@@ -193,14 +256,14 @@ export default function TourDetailClient({
     };
   };
 
-  // Generate gallery images with real 4WD photos
+  // Generate gallery images from Medusa product images
   const generateGalleryImages = () => {
-    // Use real photos from /public/images/tours/
-    const realImages = [
+    // Default fallback images if no Medusa images are available
+    const fallbackImages = [
       {
         id: '1',
-        url: '/images/tours/kgari-aerial.jpg',
-        alt: `${tour.title} - Aerial view of K'gari (Fraser Island) pristine coastline with turquoise waters`,
+        url: tour.thumbnail || '/images/tours/kgari-aerial.jpg',
+        alt: `${tour.title} - Tour image 1`,
       },
       {
         id: '2',
@@ -224,7 +287,29 @@ export default function TourDetailClient({
       },
     ];
 
-    return tour.images && tour.images.length > 0 ? tour.images : realImages;
+    // Use Medusa product images if available, otherwise use fallback
+    if (tour.images && tour.images.length > 0) {
+      return tour.images.map((img: any, index: number) => ({
+        id: img.id || `image-${index}`,
+        url: img.url,
+        alt: img.alt || `${tour.title} - Image ${index + 1}`,
+      }));
+    }
+
+    // If thumbnail exists but no images array, create single-image gallery
+    if (tour.thumbnail) {
+      return [
+        {
+          id: '1',
+          url: tour.thumbnail,
+          alt: tour.title,
+        },
+        ...fallbackImages.slice(1), // Add fallback images for additional gallery items
+      ];
+    }
+
+    // Use fallback images as last resort
+    return fallbackImages;
   };
 
   // Generate itinerary based on tour duration
@@ -422,6 +507,8 @@ export default function TourDetailClient({
                 height={80}
                 className={styles.thumbnailImage}
                 style={{ objectFit: 'cover' }}
+                loading={index > 2 ? 'lazy' : 'eager'}
+                quality={75}
               />
             </button>
           ))}
@@ -432,8 +519,8 @@ export default function TourDetailClient({
           {/* Left Column - Tour Information */}
           <div className={styles.mainContent}>
             {/* Tour Description */}
-            <section className={styles.section}>
-              <h2 className={styles.sectionTitle}>About This Tour</h2>
+            <section className={styles.section} aria-labelledby="tour-description-heading">
+              <h2 id="tour-description-heading" className={styles.sectionTitle}>Tour Overview</h2>
               <div className={styles.description}>
                 {tour.description || (
                   <p>
@@ -448,14 +535,34 @@ export default function TourDetailClient({
               </div>
             </section>
 
-            {/* Itinerary Section */}
-            <section className={styles.section}>
-              <h2 className={styles.sectionTitle}>Tour Itinerary</h2>
+            {/* About This Tour - New metadata field */}
+            {tour.metadata?.about_tour && (
+              <section className={styles.section} aria-labelledby="about-tour-heading">
+                <h2 id="about-tour-heading" className={styles.sectionTitle}>About This Tour</h2>
+                <div className={styles.contentBlock}>
+                  {typeof tour.metadata.about_tour === 'string' ? (
+                    <p>{tour.metadata.about_tour}</p>
+                  ) : Array.isArray(tour.metadata.about_tour) ? (
+                    <ul className={styles.contentList}>
+                      {tour.metadata.about_tour.map((item: string, index: number) => (
+                        <li key={index}>{item}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>{String(tour.metadata.about_tour)}</p>
+                  )}
+                </div>
+              </section>
+            )}
+
+            {/* Tour Itinerary - Can use metadata.tour_itinerary or fallback to generated */}
+            <section className={styles.section} aria-labelledby="itinerary-heading">
+              <h2 id="itinerary-heading" className={styles.sectionTitle}>Tour Itinerary</h2>
               <div className={styles.itinerary}>
-                {itinerary.map((item, index) => (
+                {(tour.metadata?.tour_itinerary || itinerary).map((item: any, index: number) => (
                   <div key={index} className={styles.itineraryItem}>
                     <div className={styles.itineraryTime}>
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                         <circle cx="12" cy="12" r="10" />
                         <polyline points="12 6 12 12 16 14" />
                       </svg>
@@ -470,23 +577,54 @@ export default function TourDetailClient({
               </div>
             </section>
 
+            {/* What to Expect - New metadata field */}
+            {tour.metadata?.what_to_expect && (
+              <section className={styles.section} aria-labelledby="what-to-expect-heading">
+                <h2 id="what-to-expect-heading" className={styles.sectionTitle}>What to Expect</h2>
+                <div className={styles.contentBlock}>
+                  {typeof tour.metadata.what_to_expect === 'string' ? (
+                    <div className={styles.expectationText}>
+                      <p>{tour.metadata.what_to_expect}</p>
+                    </div>
+                  ) : Array.isArray(tour.metadata.what_to_expect) ? (
+                    <ul className={styles.expectationList}>
+                      {tour.metadata.what_to_expect.map((item: string, index: number) => (
+                        <li key={index}>
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1a5f3f" strokeWidth="2" aria-hidden="true">
+                            <path d="M9 11l3 3L22 4" />
+                            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+                          </svg>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>{String(tour.metadata.what_to_expect)}</p>
+                  )}
+                </div>
+              </section>
+            )}
+
+            {/* Add-Ons Section - Optional extras to enhance the tour */}
+            <TourAddOns />
+
             {/* Inclusions & Exclusions */}
             {(tour.metadata?.inclusions || tour.metadata?.exclusions) && (
-              <section className={styles.section}>
-                <h2 className={styles.sectionTitle}>What to Expect</h2>
+              <section className={styles.section} aria-labelledby="inclusions-heading">
+                <h2 id="inclusions-heading" className={styles.sectionTitle}>What's Included</h2>
                 <div className={styles.inclusionsGrid}>
                   {tour.metadata?.inclusions && tour.metadata.inclusions.length > 0 && (
                     <div className={styles.inclusionsList}>
                       <h3 className={styles.inclusionsTitle}>
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1a5f3f" strokeWidth="2">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1a5f3f" strokeWidth="2" aria-hidden="true">
                           <polyline points="20 6 9 17 4 12" />
                         </svg>
-                        What's Included
+                        Included in Price
                       </h3>
                       <ul>
                         {tour.metadata.inclusions.map((item: string, index: number) => (
                           <li key={index}>
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1a5f3f" strokeWidth="2">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1a5f3f" strokeWidth="2" aria-hidden="true">
                               <polyline points="20 6 9 17 4 12" />
                             </svg>
                             {item}
@@ -499,7 +637,7 @@ export default function TourDetailClient({
                   {tour.metadata?.exclusions && tour.metadata.exclusions.length > 0 && (
                     <div className={styles.exclusionsList}>
                       <h3 className={styles.inclusionsTitle}>
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2" aria-hidden="true">
                           <line x1="18" y1="6" x2="6" y2="18" />
                           <line x1="6" y1="6" x2="18" y2="18" />
                         </svg>
@@ -508,7 +646,7 @@ export default function TourDetailClient({
                       <ul>
                         {tour.metadata.exclusions.map((item: string, index: number) => (
                           <li key={index}>
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2" aria-hidden="true">
                               <line x1="18" y1="6" x2="6" y2="18" />
                               <line x1="6" y1="6" x2="18" y2="18" />
                             </svg>
@@ -575,7 +713,7 @@ export default function TourDetailClient({
                 <h3 className={styles.bookingTitle}>Book Your Adventure</h3>
 
                 {/* Date Picker */}
-                <div className={styles.formGroup}>
+                <div className={styles.formGroup} ref={datePickerRef}>
                   <label className={styles.formLabel}>Select Date</label>
                   <DatePicker
                     selectedDate={selectedDate}
@@ -608,7 +746,6 @@ export default function TourDetailClient({
                 <button
                   className={styles.bookButton}
                   onClick={handleBookNow}
-                  disabled={!selectedDate}
                 >
                   {selectedDate ? 'Book Now' : 'Select a Date First'}
                 </button>

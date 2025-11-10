@@ -150,17 +150,19 @@ export default function ConfirmationPage() {
           </div>
 
           {/* Add-ons */}
-          {bookingData.cart.addOns.length > 0 && (
+          {bookingData.cart.addOns && bookingData.cart.addOns.length > 0 && (
             <div className={styles.addonsDetails}>
               <h3>Add-ons</h3>
               {bookingData.cart.addOns.map((item, index) => (
-                <div key={index} className={styles.addonItem}>
-                  <div>
-                    <span className={styles.addonName}>{item.addOn.name}</span>
-                    <span className={styles.addonQty}>× {item.quantity}</span>
+                item?.addOn ? (
+                  <div key={index} className={styles.addonItem}>
+                    <div>
+                      <span className={styles.addonName}>{item.addOn.name}</span>
+                      <span className={styles.addonQty}>× {item.quantity}</span>
+                    </div>
+                    <span className={styles.addonPrice}>AUD ${item.subtotal}</span>
                   </div>
-                  <span className={styles.addonPrice}>AUD ${item.subtotal}</span>
-                </div>
+                ) : null
               ))}
             </div>
           )}

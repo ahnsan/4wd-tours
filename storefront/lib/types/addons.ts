@@ -42,6 +42,7 @@ export interface AddOnMetadata {
   restrictions?: string[];
   seasonal_relevance?: number; // 0-100
   popularity_score?: number; // 0-100
+  applicable_tours?: string[]; // Tour handles this addon applies to, '*' for all tours
 }
 
 /**

@@ -37,7 +37,9 @@ export default function TourCard({ tour }: TourCardProps) {
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className={styles.tourImage}
             style={{ objectFit: 'cover' }}
-            unoptimized={!tour.thumbnail}
+            priority={false}
+            loading="lazy"
+            quality={85}
           />
           {tour.metadata?.featured && (
             <span className={styles.featuredBadge} aria-label="Featured tour">

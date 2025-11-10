@@ -1,0 +1,152 @@
+{
+  "status": "PREREQUISITES_NOT_MET",
+  "timestamp": "2025-11-09T15:10:00Z",
+  "agent": "PRODUCT_UPDATE_AGENT",
+  "task": "Update add-on products with optimized images",
+
+  "current_state": {
+    "addon_products_in_database": 0,
+    "tour_products_in_database": 5,
+    "addon_products_defined_in_seed": 6,
+    "addon_images_available": 2,
+    "backend_status": "running",
+    "backend_url": "http://localhost:9000"
+  },
+
+  "findings": {
+    "addon_products_exist": false,
+    "reason": "Addon products have not been seeded to the database yet",
+    "seed_script_location": "/Users/Karim/med-usa-4wd/.medusa/server/scripts/seed-addons.js",
+    "available_addon_images": [
+      "/Users/Karim/med-usa-4wd/storefront/public/images/addons/default-addon.jpg",
+      "/Users/Karim/med-usa-4wd/storefront/public/images/addons/default-addon.svg"
+    ],
+    "image_optimization_status": "Tour images optimized, but NO specific addon product images exist"
+  },
+
+  "addon_products_to_be_created": [
+    {
+      "handle": "addon-internet",
+      "title": "Always-on High-Speed Internet",
+      "category": "Connectivity",
+      "pricing": "$50 AUD per day",
+      "icon": "wifi",
+      "image_status": "No specific image - using default"
+    },
+    {
+      "handle": "addon-glamping",
+      "title": "Glamping Setup",
+      "category": "Equipment",
+      "pricing": "$250 AUD per booking",
+      "icon": "tent",
+      "image_status": "No specific image - using default"
+    },
+    {
+      "handle": "addon-bbq",
+      "title": "BBQ on the Beach",
+      "category": "Food & Beverage",
+      "pricing": "$180 AUD per day",
+      "icon": "utensils",
+      "image_status": "No specific image - using default"
+    },
+    {
+      "handle": "addon-camera",
+      "title": "Professional Camera Rental",
+      "category": "Photography",
+      "pricing": "$75 AUD per booking",
+      "icon": "camera",
+      "image_status": "No specific image - using default"
+    },
+    {
+      "handle": "addon-picnic",
+      "title": "Gourmet Picnic Package",
+      "category": "Food & Beverage",
+      "pricing": "$85 AUD per day",
+      "icon": "utensils",
+      "image_status": "No specific image - using default"
+    },
+    {
+      "handle": "addon-fishing",
+      "title": "Fishing Gear Package",
+      "category": "Equipment",
+      "pricing": "$65 AUD per day",
+      "icon": "star",
+      "image_status": "No specific image - using default"
+    }
+  ],
+
+  "prerequisites_required": [
+    {
+      "step": 1,
+      "action": "Run addon seeding script",
+      "command": "npx medusa exec /Users/Karim/med-usa-4wd/.medusa/server/scripts/seed-addons.js",
+      "description": "Create the 6 addon products in Medusa database",
+      "status": "NOT_COMPLETED"
+    },
+    {
+      "step": 2,
+      "action": "Create addon product images",
+      "description": "Create or source high-quality images for each addon product",
+      "required_images": [
+        "addon-internet.jpg - WiFi/connectivity themed image",
+        "addon-glamping.jpg - Luxury camping/glamping setup image",
+        "addon-bbq.jpg - Beach BBQ/grilling image",
+        "addon-camera.jpg - Professional camera equipment image",
+        "addon-picnic.jpg - Gourmet picnic spread image",
+        "addon-fishing.jpg - Beach fishing/fishing gear image"
+      ],
+      "optimization_requirements": {
+        "max_size": "200KB",
+        "format": "JPEG or WebP",
+        "dimensions": "1200x800px recommended",
+        "seo": "Descriptive alt text required"
+      },
+      "status": "NOT_COMPLETED"
+    },
+    {
+      "step": 3,
+      "action": "Optimize addon images",
+      "command": "./storefront/scripts/optimize-all-images.sh",
+      "description": "Ensure all addon images meet PageSpeed requirements (<200KB)",
+      "status": "NOT_COMPLETED"
+    },
+    {
+      "step": 4,
+      "action": "Upload images to Medusa",
+      "description": "Use Medusa file upload system to add images to each addon product",
+      "reference": "/Users/Karim/med-usa-4wd/docs/medusa-image-upload-guide.md",
+      "status": "NOT_COMPLETED"
+    }
+  ],
+
+  "next_steps": [
+    "STEP 1: Seed addon products to database",
+    "STEP 2: Create/source 6 addon product images",
+    "STEP 3: Optimize images to meet performance standards",
+    "STEP 4: Upload images via Medusa Admin API or exec script",
+    "STEP 5: Re-run this agent to complete product updates"
+  ],
+
+  "updated_products": [],
+  "backup_file": null,
+
+  "recommendations": {
+    "image_strategy": "Use consistent style matching tour images (beach/coastal theme)",
+    "seo_requirements": [
+      "Descriptive alt text for each image",
+      "Image dimensions in metadata",
+      "Open Graph tags for social sharing",
+      "Mobile-optimized sizes"
+    ],
+    "workflow_order": [
+      "1. Run addon seeding script first",
+      "2. Create addon images second",
+      "3. Optimize images third",
+      "4. Upload via Medusa script fourth",
+      "5. Verify with Medusa Admin API fifth"
+    ]
+  },
+
+  "error": null,
+  "completion_status": "BLOCKED - Prerequisites not met. Addon products must be seeded before images can be added."
+}

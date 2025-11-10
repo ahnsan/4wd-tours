@@ -5,7 +5,7 @@
  * No mock data fallbacks - fails fast if backend is unavailable.
  */
 
-import type { Tour } from '../../contexts/CartContext';
+import type { Tour } from '../types/cart';
 
 // Environment configuration
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:9000';
@@ -47,6 +47,27 @@ async function fetchWithTimeout(url: string, options: RequestInit, timeout: numb
 }
 
 /**
+ * Get tour image with fallback strategy
+ * 1. Use product thumbnail if available
+ * 2. Use first image from images array if available
+ * 3. Fallback to default tour image
+ */
+function getTourImage(product: any): string {
+  // 1. Use product thumbnail
+  if (product.thumbnail) {
+    return product.thumbnail;
+  }
+
+  // 2. Use first image if available
+  if (product.images && product.images.length > 0) {
+    return product.images[0].url;
+  }
+
+  // 3. Fallback to default
+  return '/images/tour_options.png';
+}
+
+/**
  * Convert Medusa product to Tour format
  *
  * In Medusa v2, prices are returned via calculated_price on variants
@@ -70,31 +91,40 @@ function convertProductToTour(product: any): Tour {
     }
   }
 
-  // Extract duration from metadata or handle
-  let duration = '1 day';
+  // Extract duration_days from metadata or handle
+  let duration_days = 1;
   if (product.metadata?.duration_days) {
-    const days = product.metadata.duration_days;
-    duration = days === 1 ? '1 Day' : `${days} Days`;
+    duration_days = product.metadata.duration_days;
   } else if (product.handle) {
-    // Parse duration from handle (e.g., "2d-fraser-rainbow" -> "2 Days")
+    // Parse duration from handle (e.g., "2d-fraser-rainbow" -> 2)
     const match = product.handle.match(/^(\d+)d-/);
     if (match) {
-      const days = parseInt(match[1]);
-      duration = days === 1 ? '1 Day' : `${days} Days`;
+      duration_days = parseInt(match[1]);
     }
   }
 
+  const imageUrl = getTourImage(product);
+
+  // Get variant_id from first variant
+  const variant_id = product.variants?.[0]?.id || '';
+
   return {
     id: product.id,
+    variant_id,
+    handle: product.handle || product.id,
     title: product.title,
     description: product.description || '',
-    price, // Price in cents
-    duration,
-    image: product.thumbnail || '/images/tour_options.png',
+    base_price_cents: price, // Price in cents
+    duration_days,
+    image_url: imageUrl,
+    image: imageUrl,
+    thumbnail: imageUrl,
+    images: product.images || [],
+    variants: product.variants || [],
+    options: product.options || [],
     category: product.metadata?.category || 'Tour',
     difficulty: product.metadata?.difficulty || 'Moderate',
-    maxParticipants: product.metadata?.max_participants || 20,
-    handle: product.handle || product.id,
+    metadata: product.metadata || {},
   };
 }
 
@@ -114,8 +144,9 @@ export async function fetchAllTours(): Promise<ToursResponse> {
     }
 
     // Fetch from API with region_id to get calculated prices
+    // Include images and variants in the response
     const response = await fetchWithTimeout(
-      `${API_BASE_URL}/store/products?region_id=${DEFAULT_REGION_ID}`,
+      `${API_BASE_URL}/store/products?region_id=${DEFAULT_REGION_ID}&fields=*images,*variants`,
       { headers, cache: 'no-store' },
       API_TIMEOUT
     );
@@ -161,8 +192,9 @@ export async function fetchTourByHandle(handle: string): Promise<TourResponse> {
     }
 
     // Fetch from API with region_id to get calculated prices
+    // Include images and variants in the response
     const response = await fetchWithTimeout(
-      `${API_BASE_URL}/store/products?handle=${handle}&region_id=${DEFAULT_REGION_ID}`,
+      `${API_BASE_URL}/store/products?handle=${handle}&region_id=${DEFAULT_REGION_ID}&fields=*images,*variants`,
       { headers, cache: 'no-store' },
       API_TIMEOUT
     );
@@ -178,11 +210,12 @@ export async function fetchTourByHandle(handle: string): Promise<TourResponse> {
       throw new Error('Product not found in API');
     }
 
-    const tour = convertProductToTour(product);
-    console.log(`[Tours Service] Fetched tour "${tour.title}" from API`);
+    // Return the Medusa product directly to preserve variant IDs
+    // No need to convert to Tour format and back - wastes data
+    console.log(`[Tours Service] Fetched tour "${product.title}" from API with ${product.variants?.length || 0} variants`);
 
     return {
-      tour,
+      tour: product,  // Return product directly instead of converting
       source: 'api',
     };
   } catch (error) {
@@ -194,61 +227,59 @@ export async function fetchTourByHandle(handle: string): Promise<TourResponse> {
 
 /**
  * Convert Tour to format expected by tour detail page (with variants, images, etc.)
+ * Note: This is a compatibility function for the old Tour interface
+ * Medusa products already have the correct structure
  */
 export function convertTourToProduct(tour: Tour): any {
-  // Extract duration_days as a number from the duration string
-  let durationDays = 1;
-  const durationMatch = tour.duration.match(/(\d+)/);
-  if (durationMatch && durationMatch[1]) {
-    durationDays = parseInt(durationMatch[1], 10);
-  }
+  // Tour already has duration_days as a number
+  const durationDays = tour.duration_days || tour.metadata?.duration_days || 1;
 
   return {
     id: tour.id,
     title: tour.title,
     description: tour.description,
-    thumbnail: tour.image,
+    thumbnail: tour.thumbnail || tour.image || tour.image_url,
     handle: tour.handle,
-    images: [
+    images: tour.images || [
       {
         id: '1',
-        url: tour.image,
+        url: tour.thumbnail || tour.image || tour.image_url || '',
         alt: tour.title,
       },
     ],
-    variants: [
+    variants: tour.variants || [
       {
-        id: `${tour.id}-variant-1`,
+        id: tour.variant_id || `${tour.id}-variant-1`,
         title: 'Standard',
         prices: [
           {
-            amount: tour.price,
+            amount: tour.base_price_cents,
             currency_code: 'aud',
           },
         ],
         // Add calculated_price for compatibility with getProductPrice()
         calculated_price: {
-          calculated_amount: tour.price,
+          calculated_amount: tour.base_price_cents,
           currency_code: 'aud',
         },
         inventory_quantity: 100,
       },
     ],
     metadata: {
-      duration: tour.duration,
-      duration_days: durationDays, // Add as number for pricing calculations
-      category: tour.category,
-      difficulty: tour.difficulty,
-      max_participants: tour.maxParticipants,
-      min_participants: 1,
-      departure_times: ['8:00 AM'],
-      inclusions: [
+      ...tour.metadata,
+      duration_days: durationDays,
+      category: tour.category || tour.metadata?.category,
+      difficulty: tour.difficulty || tour.metadata?.difficulty,
+      max_participants: tour.metadata?.max_participants || 20,
+      min_participants: tour.metadata?.min_participants || 1,
+      departure_times: tour.metadata?.departure_times || ['8:00 AM'],
+      inclusions: tour.metadata?.inclusions || [
         'Professional 4WD guide',
         'All national park fees',
         'Safety equipment',
         'Complimentary water and snacks',
       ],
-      exclusions: [
+      exclusions: tour.metadata?.exclusions || [
         'Personal travel insurance',
         'Meals (unless specified)',
         'Alcoholic beverages',
