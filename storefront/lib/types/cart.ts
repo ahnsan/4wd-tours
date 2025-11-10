@@ -349,6 +349,7 @@ export function isAddon(obj: any): obj is Addon {
     typeof obj.variant_id === 'string' &&
     typeof obj.title === 'string' &&
     typeof obj.price_cents === 'number' &&
+    typeof obj.available === 'boolean' &&
     ['per_booking', 'per_day', 'per_person'].includes(obj.pricing_type)
   );
 }

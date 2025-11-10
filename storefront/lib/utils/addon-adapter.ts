@@ -53,6 +53,18 @@ export function productToAddon(product: HttpTypes.StoreProduct): Addon {
   const category = (metadata.category as string) || 'General'
   const pricingUnit = (metadata.unit as string) || 'per_booking'
 
+  // Defensive check: warn if product appears to have unexpected structure
+  if (process.env.NODE_ENV === 'development') {
+    if (!product.id || !product.variants?.length) {
+      console.warn(`[Addon Adapter] Product may have incomplete data:`, {
+        id: product.id,
+        handle: product.handle,
+        hasVariants: !!product.variants?.length,
+        variantCount: product.variants?.length || 0,
+      });
+    }
+  }
+
   return {
     // Core fields
     id: product.id,
@@ -69,8 +81,9 @@ export function productToAddon(product: HttpTypes.StoreProduct): Addon {
     price_cents: Math.round(calculatedPrice.calculated_amount * 100),
     currency_code: calculatedPrice.currency_code || 'aud',
 
-    // Availability - Store API only returns published products, so all products are available
-    // The backend endpoint filters to published status automatically
+    // Availability - CRITICAL: Store API only returns published products
+    // Medusa v2 Store API automatically filters to published products only
+    // Draft/archived products are never sent to storefront, so all products are available
     available: true,
 
     // Category and type - CRITICAL: Field name must be pricing_type (not pricingType)
