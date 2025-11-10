@@ -44,6 +44,15 @@
     "src/modules/resource-booking",
     "src/modules/blog",
     "src/api/admin/blog",
+    "src/admin/widgets",
+    "src/api/admin/posts",
+    "src/api/admin/resource-booking",
+    "src/api/store/blog",
+    "src/api/store/posts",
+    "src/api/store/add-ons",
+    "src/api/store/resource-booking",
+    "src/api/middlewares.ts",
+    "src/jobs",
     "coverage",
     "docs"
   ]

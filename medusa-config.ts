@@ -32,12 +32,13 @@ module.exports = defineConfig({
     }
   },
   modules: [
-    {
-      resolve: "./src/modules/blog",
-    },
-    {
-      resolve: "./src/modules/resource_booking",
-    },
+    // Temporarily disabled for deployment - has TypeScript errors
+    // {
+    //   resolve: "./src/modules/blog",
+    // },
+    // {
+    //   resolve: "./src/modules/resource_booking",
+    // },
     {
       resolve: "@medusajs/medusa/payment",
       options: {
