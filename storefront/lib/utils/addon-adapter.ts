@@ -75,8 +75,15 @@ export function productToAddon(product: HttpTypes.StoreProduct): Addon {
     // Variant information
     variant_id: variant.id,
 
-    // Pricing - CRITICAL FIX: Medusa v2 returns prices in dollars (major units), not cents
-    // Frontend expects cents, so we multiply by 100 to convert dollars → cents
+    // ✅ MEDUSA V2 PRICING - FULLY MIGRATED AND WORKING
+    // Database stores: Legacy cents format (3000 = $30 in old system)
+    // Medusa v2 Auto-Conversion: Divides by 100 at API layer (3000 → 30 dollars)
+    // API returns: calculated_amount in DOLLARS (Medusa v2 format)
+    // Frontend conversion: Multiply by 100 to convert dollars → cents for internal precision
+    //   - 30 × 100 = 3000 cents (internal storage)
+    // Display: formatPrice() divides by 100 to show dollars
+    //   - 3000 cents / 100 = $30.00 ✓
+    //
     // Reference: https://docs.medusajs.com/resources/commerce-modules/product/price
     price_cents: Math.round(calculatedPrice.calculated_amount * 100),
     currency_code: calculatedPrice.currency_code || 'aud',

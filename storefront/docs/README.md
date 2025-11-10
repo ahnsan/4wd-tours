@@ -53,7 +53,10 @@ Step-by-step tutorials:
 - [Integrating Payment Providers](guides/integrating-payment-providers.md)
 
 ### 🚀 Deployment
-Production deployment guides:
+**Production deployment guides:**
+- [**Deployment Runbook**](DEPLOYMENT-RUNBOOK.md) ⭐ **MASTER GUIDE** - Complete step-by-step deployment instructions
+- [**Quick Reference**](DEPLOYMENT-QUICK-REFERENCE.md) ⭐ **QUICK ACCESS** - Critical commands and quick fixes
+- [**Printable Checklist**](DEPLOYMENT-CHECKLIST-PRINTABLE.md) ⭐ **PRINT & USE** - Print this and check off during deployment
 - [Production Checklist](deployment/production-checklist.md)
 - [Environment Variables](deployment/environment-variables.md)
 - [Scaling Guide](deployment/scaling-guide.md)
@@ -115,6 +118,14 @@ docs/
 3. [Documentation Standards](standards/documentation-standards.md)
 4. [Page Speed Guidelines](performance/page-speed-guidelines.md) - **90+ score required**
 5. [SEO Best Practices](seo/seo-best-practices.md) - **Maximum visibility required**
+
+## ✅ Before Deployment
+
+**MANDATORY FOR PRODUCTION DEPLOYMENT:**
+1. [**Deployment Runbook**](DEPLOYMENT-RUNBOOK.md) - Complete step-by-step guide
+2. [**Quick Reference**](DEPLOYMENT-QUICK-REFERENCE.md) - Critical commands
+3. [**Printable Checklist**](DEPLOYMENT-CHECKLIST-PRINTABLE.md) - Print and use during deployment
+4. [Optimization Checklist](performance/optimization-checklist.md) - Pre-deployment verification
 
 **MANDATORY RULES:**
 - ✅ ALWAYS check Medusa official docs before implementing

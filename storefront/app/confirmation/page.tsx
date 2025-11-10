@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import styles from './confirmation.module.css';
@@ -36,7 +36,7 @@ interface BookingData {
   bookingDate: string;
 }
 
-export default function ConfirmationPage() {
+function ConfirmationPageContent() {
   const searchParams = useSearchParams();
   const bookingRef = searchParams.get('ref');
   const [bookingData, setBookingData] = useState<BookingData | null>(null);
@@ -290,5 +290,28 @@ export default function ConfirmationPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function ConfirmationPage() {
+  return (
+    <Suspense fallback={
+      <main className={styles.confirmationPage} style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{
+            width: '48px',
+            height: '48px',
+            border: '4px solid #e5e7eb',
+            borderTop: '4px solid #1a5f3f',
+            borderRadius: '50%',
+            animation: 'spin 1s linear infinite',
+            margin: '0 auto 1rem'
+          }}></div>
+          <p style={{ color: '#6b7280', fontSize: '1rem' }}>Loading confirmation...</p>
+        </div>
+      </main>
+    }>
+      <ConfirmationPageContent />
+    </Suspense>
   );
 }

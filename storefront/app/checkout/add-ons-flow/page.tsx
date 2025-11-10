@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useEffect, useState, useMemo, useCallback, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import { useCartContext } from '@/lib/context/CartContext';
@@ -84,17 +84,28 @@ const AddOnsFlowContent = React.memo(function AddOnsFlowContent() {
 
         console.log('[Add-ons Flow] Using tour handle:', tourHandle);
 
-        // Load steps filtered by tour using NEW service (server-side filtering)
+        // Load steps from API route (proper Next.js 14 pattern for client components)
         const startTime = performance.now();
-        const categorySteps = await getCategoryStepsV2(tourHandle);
+        const response = await fetch(`/api/category-steps?tour=${encodeURIComponent(tourHandle)}`);
+
+        if (!response.ok) {
+          throw new Error(`API responded with ${response.status}`);
+        }
+
+        const data = await response.json();
         const endTime = performance.now();
 
+        if (!data.success) {
+          throw new Error(data.error || 'Failed to load category steps');
+        }
+
+        const categorySteps = data.steps;
         console.log(`[Add-ons Flow] Loaded ${categorySteps.length} steps in ${(endTime - startTime).toFixed(2)}ms`);
 
         setSteps(categorySteps);
 
         // Show filter info
-        const totalAddons = categorySteps.reduce((sum, step) => sum + step.addons.length, 0);
+        const totalAddons = categorySteps.reduce((sum: number, step: any) => sum + step.addons.length, 0);
         const tourTitle = cart.tour_booking?.tour?.title || tourHandle;
         console.log(`[Add-ons Flow] Showing ${totalAddons} add-ons for tour "${tourTitle}"`);
       } catch (error) {
@@ -143,13 +154,17 @@ const AddOnsFlowContent = React.memo(function AddOnsFlowContent() {
     // Don't redirect while local data is loading
     if (isLoading) return;
 
-    // Only redirect if cart is loaded AND no tour
-    if (!cart.isLoading && !isLoading && !cart.tour_booking) {
+    // Check if tour handle is available from EITHER URL parameter or cart
+    // This prevents race condition where cart hasn't synced yet but URL param is available
+    const tourHandle = searchParams.get('tour') || cart.tour_booking?.tour?.handle;
+
+    // Only redirect if BOTH cart and URL have no tour information
+    if (!cart.isLoading && !isLoading && !tourHandle) {
       console.warn('[Add-ons Flow] No tour selected, redirecting to tours');
       showToast('Please select a tour first', 'error');
       router.push('/tours');
     }
-  }, [cart.tour_booking, cart.isLoading, router, isLoading, showToast]);
+  }, [cart.tour_booking, cart.isLoading, router, isLoading, showToast, searchParams]);
 
   // Tour change detection - remove incompatible addons
   useEffect(() => {
@@ -477,7 +492,14 @@ const AddOnsFlowContent = React.memo(function AddOnsFlowContent() {
 export default function AddOnsFlowPage() {
   return (
     <ToastProvider>
-      <AddOnsFlowContent />
+      <Suspense fallback={
+        <div className={styles.loadingContainer}>
+          <div className={styles.spinner}></div>
+          <p>Loading add-ons...</p>
+        </div>
+      }>
+        <AddOnsFlowContent />
+      </Suspense>
     </ToastProvider>
   );
 }

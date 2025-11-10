@@ -410,6 +410,43 @@ Message 4: Write "file.js"
 - Medusa admin customizations
 - Medusa's dependency injection container
 
+### 💰 PRICING - MANDATORY RULES
+
+**CRITICAL: Medusa v2 Pricing Format**
+
+Medusa v2 uses **dollars** (major currency units) for all prices:
+- Database stores prices in **dollars** (e.g., 200 = $200.00)
+- Store API returns prices in **dollars** (e.g., `calculated_amount: 200`)
+- **NEVER** use cents in backend seed data or database
+
+**Frontend Pricing Conventions**:
+- Internal state stores prices in **cents** for precision (e.g., 20000 cents = $200)
+- Adapter layer converts API dollars → frontend cents (`amount * 100`)
+- Display layer converts frontend cents → user dollars (`amount / 100`)
+
+**Required Reading**:
+1. **Migration Guide**: `/docs/MEDUSA-V2-PRICING-MIGRATION.md` - Complete migration history
+2. **Developer Guide**: `/docs/DEVELOPER-PRICING-GUIDE.md` - How to work with prices
+3. **Medusa v2 Pricing Docs**: https://docs.medusajs.com/resources/commerce-modules/product/price
+
+**Key Files**:
+- `/storefront/lib/utils/pricing.ts` - Price conversion utilities
+- `/storefront/lib/utils/addon-adapter.ts` - Dollar → cent conversion
+- `/storefront/components/Tours/PriceDisplay.tsx` - Price display component
+
+**Common Mistakes to AVOID**:
+- ❌ Storing cents in Medusa database (use dollars)
+- ❌ Storing dollars on frontend (use cents for precision)
+- ❌ Sending price values when creating cart items (Medusa calculates server-side)
+- ❌ Manual price calculations (use utility functions)
+- ❌ Floating-point arithmetic for money (always use integer cents)
+
+**Always**:
+- ✅ Use `formatPrice(cents)` for displaying prices
+- ✅ Use `getProductPrice(product)` to fetch prices (handles conversion)
+- ✅ Store all frontend prices in cents (integer precision)
+- ✅ Let Medusa calculate prices server-side (never override)
+
 ## 🚀 PERFORMANCE & SEO - MANDATORY RULES
 
 **ABSOLUTE REQUIREMENTS:**

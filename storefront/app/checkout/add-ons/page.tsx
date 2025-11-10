@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCartContext } from '../../../lib/context/CartContext';
 import { getCategorySteps } from '../../../lib/data/addon-flow-service';
@@ -105,5 +105,32 @@ function AddOnsPageContent() {
 }
 
 export default function AddOnsPage() {
-  return <AddOnsPageContent />;
+  return (
+    <Suspense fallback={
+      <div style={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)'
+      }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{
+            width: '48px',
+            height: '48px',
+            border: '4px solid #e5e7eb',
+            borderTop: '4px solid #667eea',
+            borderRadius: '50%',
+            animation: 'spin 1s linear infinite',
+            margin: '0 auto 1rem'
+          }}></div>
+          <p style={{ color: '#6b7280', fontSize: '1rem' }}>
+            Loading add-ons...
+          </p>
+        </div>
+      </div>
+    }>
+      <AddOnsPageContent />
+    </Suspense>
+  );
 }

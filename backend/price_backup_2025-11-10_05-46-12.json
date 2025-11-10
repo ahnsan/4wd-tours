@@ -1,0 +1,501 @@
+{
+  "backup_date": "2025-11-10T05:46:12.377Z",
+  "total_prices": 55,
+  "prices": [
+    {
+      "id": "price_01K9H2CNK5QTMW2M0HXYJPBBEB",
+      "price_set_id": "pset_01K9H2CNK6KA50PBWEF10Q8A1X",
+      "amount": 10,
+      "currency_code": "eur",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 0
+    },
+    {
+      "id": "price_01K9H2CNK5TQHAJQ40WYY94VM9",
+      "price_set_id": "pset_01K9H2CNK6KA50PBWEF10Q8A1X",
+      "amount": 10,
+      "currency_code": "usd",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 0
+    },
+    {
+      "id": "price_01K9H2CNK5VDFFPYPXWYGYQPP8",
+      "price_set_id": "pset_01K9H2CNK5PH129JMXAGB5BPGV",
+      "amount": 0,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9H2CNK5Y07EQPT0RA53T6CZ",
+      "price_set_id": "pset_01K9H2CNK5PH129JMXAGB5BPGV",
+      "amount": 0,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 0
+    },
+    {
+      "id": "price_01K9H2CNK6HBYY77240VEN2ZR4",
+      "price_set_id": "pset_01K9H2CNK6KA50PBWEF10Q8A1X",
+      "amount": 10,
+      "currency_code": "eur",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9H4B6E8YMJQXTVQWQP4PSCY",
+      "price_set_id": "pset_01K9H4B6E9JW5HYPP1SAN2TZMH",
+      "amount": 200000,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 0
+    },
+    {
+      "id": "price_01K9H4B6EVEVC2FNZB0Y3ED5KM",
+      "price_set_id": "pset_01K9H4B6EWNJHTJ3A5415D5PDS",
+      "amount": 400000,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 0
+    },
+    {
+      "id": "price_01K9H4B6FAN10FZBJEYZYY9BX5",
+      "price_set_id": "pset_01K9H4B6FAXZ21K0JJKZF35CH8",
+      "amount": 600000,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 0
+    },
+    {
+      "id": "price_01K9H4B6FQ3QB3M3X0CNM6CMMB",
+      "price_set_id": "pset_01K9H4B6FQSKCNKY3WV8EDZ47B",
+      "amount": 800000,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 0
+    },
+    {
+      "id": "price_01K9H4B6G4A26ZVYX81B52RY7W",
+      "price_set_id": "pset_01K9H4B6G43AC5RQX0DGPBDYVS",
+      "amount": 5000,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 0
+    },
+    {
+      "id": "price_01K9H4B6GJ43Y3QXKHB4EXY5MR",
+      "price_set_id": "pset_01K9H4B6GJEYZR371WMQF9MN1G",
+      "amount": 25000,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 0
+    },
+    {
+      "id": "price_01K9H4B6GYK6XYC3WV83RA8ZBF",
+      "price_set_id": "pset_01K9H4B6GYWP3B22HNQCFNPZ3B",
+      "amount": 18000,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 0
+    },
+    {
+      "id": "price_01K9H4ZAGZAS0TCP3SFYMJCQXY",
+      "price_set_id": "pset_01K9H4ZAH0RFC7VXFZ21JGMCFC",
+      "amount": 200000,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 0
+    },
+    {
+      "id": "price_01K9H4ZAJQBCFZXRPWNDYTP3SB",
+      "price_set_id": "pset_01K9H4ZAJQX92R6T3D66EE2MTG",
+      "amount": 200000,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 0
+    },
+    {
+      "id": "price_01K9H4ZAKEKAE2B1MRC6SJH5TN",
+      "price_set_id": "pset_01K9H4ZAKE55ZWZXHN1DYHVCBC",
+      "amount": 400000,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 0
+    },
+    {
+      "id": "price_01K9H4ZAKXYAQ47VACVSJG436J",
+      "price_set_id": "pset_01K9H4ZAKXHFQQBXGS4XXJ1GG7",
+      "amount": 600000,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 0
+    },
+    {
+      "id": "price_01K9H4ZAMFZ4C18TJ28JG3VDNH",
+      "price_set_id": "pset_01K9H4ZAMGM45MKE50SPSQTK64",
+      "amount": 800000,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 0
+    },
+    {
+      "id": "price_01K9H4ZAMZQY66ETH35RBWVZHT",
+      "price_set_id": "pset_01K9H4ZAMZQ2JN84FB3B6CXVTA",
+      "amount": 5000,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 0
+    },
+    {
+      "id": "price_01K9H4ZANDSATF3DT26CY6D0QX",
+      "price_set_id": "pset_01K9H4ZANE6X8SWBDFEGGHQWGE",
+      "amount": 25000,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 0
+    },
+    {
+      "id": "price_01K9H4ZANT3FK4JRRMYQSKQYPN",
+      "price_set_id": "pset_01K9H4ZANTGG6TWBJ21Y04NZC5",
+      "amount": 18000,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 0
+    },
+    {
+      "id": "price_01K9H5QDJ454R3JS9MRP10MYSV",
+      "price_set_id": "pset_01K9H5QDJ4DWJE8W2JQESBQ135",
+      "amount": 2500,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9H5QDKYV81FV4RWD7TH9XKN",
+      "price_set_id": "pset_01K9H5QDKYV9GEDG6Y70262SNW",
+      "amount": 24900,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9H5QDM92V1N9VEFXXGVXMCJ",
+      "price_set_id": "pset_01K9H5QDM9BEX8T15VZ6ZD97JV",
+      "amount": 2500,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9H5QDMKAD8GCRZ48KCRA7R7",
+      "price_set_id": "pset_01K9H5QDMKBA7VAXG26J4B00SE",
+      "amount": 2500,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9H5QDMZXJJKCBFKTRC472WT",
+      "price_set_id": "pset_01K9H5QDMZ4MDW1CXD0NVER4A8",
+      "amount": 3000,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9H5QDNBBYPYXKZFEVGQ87WT",
+      "price_set_id": "pset_01K9H5QDNB0DR4T80EKMDGS31W",
+      "amount": 8000,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9H5QDNK8E1H6EXRCA4M8E6J",
+      "price_set_id": "pset_01K9H5QDNKP85WVY5SN3BEC1FT",
+      "amount": 6500,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9H5QDNXYZH46J8YS2DSGCE9",
+      "price_set_id": "pset_01K9H5QDNXK3H6GHSECTCZPRN8",
+      "amount": 54900,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9H5QDP7GT3FP6AVTNX3W2V0",
+      "price_set_id": "pset_01K9H5QDP7HC7MNWYD95WWTG1Y",
+      "amount": 54900,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9H5QDPHNGQ52G5NX1GCC3HD",
+      "price_set_id": "pset_01K9H5QDPHQ7EJ09J7B6T4A38Q",
+      "amount": 54900,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9H5QDPRNJWDZB4VNX54605H",
+      "price_set_id": "pset_01K9H5QDPR6AMAQ2X9WG04BER9",
+      "amount": 54900,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9H8KY27AX04VY59VXJVXVE8",
+      "price_set_id": "pset_01K9H8KY27NSMS6CV7915GMYN5",
+      "amount": 200000,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9H8KY3XRSQNVDAQ6YQZARVX",
+      "price_set_id": "pset_01K9H8KY3XE5D8W9W2K8A7QW5F",
+      "amount": 200000,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9H8KY4W8MH4T3G84AB4F63R",
+      "price_set_id": "pset_01K9H8KY4W7GF3ZG0A8NYCVWFY",
+      "amount": 400000,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9H8KY5QRM7A899EWY5Y33ST",
+      "price_set_id": "pset_01K9H8KY5QFRFVERP4DXYMRD0G",
+      "amount": 600000,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9H8KY6HC6WGK74QT6T30D4G",
+      "price_set_id": "pset_01K9H8KY6HY860ZEY5WYETDEXS",
+      "amount": 800000,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9H8KY78C4VC0S4ADVEYV9RM",
+      "price_set_id": "pset_01K9H8KY7880M3317ZR1V6DVTD",
+      "amount": 3000,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9H8KY801NQ7N6P12C6F59TD",
+      "price_set_id": "pset_01K9H8KY80TDSJFWZAY44X5HZJ",
+      "amount": 8000,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9H8KY8VSNGAAX4221MPHBEP",
+      "price_set_id": "pset_01K9H8KY8V4TZE38224Y47WMRT",
+      "amount": 6500,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9HA5K7REHSK9P26RCH59GM2",
+      "price_set_id": "pset_01K9HA5K7RVE1ZA6Q6YRJQ9F68",
+      "amount": 18000,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9HA5K94XNHMA24EXQSNG59K",
+      "price_set_id": "pset_01K9HA5K94VCZ1T4JX6B88S91S",
+      "amount": 8500,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9HA5KA2C94J2TXBBTJ8KFFJ",
+      "price_set_id": "pset_01K9HA5KA2G194G5WVS69JA88R",
+      "amount": 15000,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9HA5KB9NVW1RR2DVGAKNQCH",
+      "price_set_id": "pset_01K9HA5KB94YN5X66W10CWSYM8",
+      "amount": 5000,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9HA5KC487GY5REQAMWHR8AZ",
+      "price_set_id": "pset_01K9HA5KC42FZE3SMGDNE5B3MN",
+      "amount": 20000,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9HA5KCYY8DTNSCE53K7BD18",
+      "price_set_id": "pset_01K9HA5KCYMCPQ6FCGYMFMRCBJ",
+      "amount": 7500,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9HA5KDZ7397EHVBKBB6AT0B",
+      "price_set_id": "pset_01K9HA5KDZ301Y370H0HSKDR1Z",
+      "amount": 15000,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9HA5KESWMJFKQ0N8Y45897X",
+      "price_set_id": "pset_01K9HA5KESNXPFN0R19SFEX2QB",
+      "amount": 18000,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9HA5KFB3QGSMN4C777TD3SM",
+      "price_set_id": "pset_01K9HA5KFB5H4YBX6YDK6FM72G",
+      "amount": 30000,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9HA5KFV1ADFYG14SC01YS68",
+      "price_set_id": "pset_01K9HA5KFV72GTWTJDP5AZCR2M",
+      "amount": 6500,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9HA5KGCFZZJKKTMMZVK7BX4",
+      "price_set_id": "pset_01K9HA5KGCMKN5CG17M5Y8XJTG",
+      "amount": 4500,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9HA5KGZYAG0E1XVQJKV5Y5S",
+      "price_set_id": "pset_01K9HA5KGZ0NYETK5XF987R6TJ",
+      "amount": 3500,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9HA5KHMPNAF7PSX4CJJQ3Z2",
+      "price_set_id": "pset_01K9HA5KHNJWK7DC1DQPK2MZB0",
+      "amount": 5500,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9HA5KJ9NHDHVZ13GHGN4946",
+      "price_set_id": "pset_01K9HA5KJ9ZP27NF9WYA1B5YFJ",
+      "amount": 7500,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9HKNPZJ9VTF9NG294XK4WPJ",
+      "price_set_id": "pset_01K9HKNPZJ1J6TJRR9AFDCFQR5",
+      "amount": 7500,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    },
+    {
+      "id": "price_01K9HKNQ4692TM35WJ44E2GG2Q",
+      "price_set_id": "pset_01K9HKNQ46ZNXGG2EXJCK7HG0G",
+      "amount": 8500,
+      "currency_code": "aud",
+      "min_quantity": null,
+      "max_quantity": null,
+      "rules_count": 1
+    }
+  ]
+}

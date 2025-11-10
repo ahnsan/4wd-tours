@@ -50,3 +50,35 @@ storefront/
 ## Integration with Medusa
 
 This storefront is designed to work alongside the Medusa backend running on port 9000.
+
+### Medusa v2 Pricing
+
+**IMPORTANT**: This project uses Medusa v2 pricing format.
+
+- **Backend**: Prices stored in **dollars** (major currency units)
+- **Frontend**: Prices stored in **cents** (integer precision)
+- **Conversion**: Happens automatically at adapter layer
+
+**Developer Resources**:
+- **Migration Guide**: `/docs/MEDUSA-V2-PRICING-MIGRATION.md`
+- **Developer Guide**: `/docs/DEVELOPER-PRICING-GUIDE.md`
+- **Official Docs**: https://docs.medusajs.com/resources/commerce-modules/product/price
+
+**Quick Reference**:
+
+```typescript
+// Adding a new product (backend)
+prices: [{
+  currency_code: "aud",
+  amount: 200  // $200 in DOLLARS (not cents)
+}]
+
+// Displaying price (frontend)
+import { formatPrice } from '@/lib/utils/pricing';
+formatPrice(product.price_cents)  // Expects CENTS
+```
+
+**Common Tasks**:
+- **Add Product**: See `/docs/DEVELOPER-PRICING-GUIDE.md#adding-new-products`
+- **Display Price**: Use `formatPrice(cents)` or `<PriceDisplay amount={cents} />`
+- **Troubleshooting**: Check `/docs/MEDUSA-V2-PRICING-MIGRATION.md#common-mistakes`

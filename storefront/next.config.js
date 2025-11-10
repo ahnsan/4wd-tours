@@ -123,11 +123,12 @@ const nextConfig = {
 
   // Experimental features for better performance
   experimental: {
-    // Optimize CSS - DISABLED: Requires 'critters' package
-    // TODO: Install critters package: npm install critters
+    // Optimize CSS - Enable when critters is installed
+    // Note: Install with: npm install --save-dev critters
     // optimizeCss: true,
-    // Optimize package imports
-    optimizePackageImports: ['react', 'react-dom'],
+
+    // Optimize package imports - reduces bundle size
+    optimizePackageImports: ['react', 'react-dom', '@medusajs/js-sdk'],
   },
 
   // Build output configuration

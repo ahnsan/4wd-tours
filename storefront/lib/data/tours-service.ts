@@ -80,9 +80,13 @@ function convertProductToTour(product: any): Tour {
   if (product.variants && product.variants.length > 0) {
     const variant = product.variants[0];
 
-    // Medusa v2 calculated_price (when currency_code provided in API call)
+    // ⚠️ MEDUSA v2 PRICING FORMAT (Post-Migration):
+    // After DB migration, Medusa v2 API returns prices in DOLLARS (major currency units)
+    // Frontend stores prices internally in CENTS for precision
+    // Conversion: API dollars → Frontend cents (multiply by 100)
+    // Display: formatPrice() converts cents → dollars (divide by 100)
     if (variant.calculated_price && variant.calculated_price.calculated_amount) {
-      price = variant.calculated_price.calculated_amount;
+      price = Math.round(variant.calculated_price.calculated_amount * 100);
     }
     // If no calculated price, use 0 (backend pricing not configured yet)
     else {

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import type { CartState } from '../../lib/types/cart';
-import { formatCurrency, type PricingContext } from '../../lib/utils/pricing';
+import { formatPrice, type PricingContext } from '../../lib/utils/pricing';
 import styles from './BookingSummary.module.css';
 
 interface BookingSummaryProps {
@@ -48,24 +48,28 @@ export default function BookingSummary({
     tour_base_price_cents: cart.tour_booking?.tour.base_price_cents || 0,
   };
 
-  // Calculate tour total (convert from cents to dollars)
-  const tourTotal = cart.tour_booking
-    ? (cart.tour_booking.tour.base_price_cents / 100) * cart.tour_booking.participants
+  // ⚠️ ALL CALCULATIONS IN CENTS (Medusa v2 Post-Migration)
+  // API returns dollars, frontend converts to cents internally
+  // formatPrice() handles conversion back to dollars for display
+
+  // Calculate tour total in CENTS
+  const tourTotalCents = cart.tour_booking
+    ? cart.tour_booking.tour.base_price_cents * cart.tour_booking.participants
     : 0;
 
-  // Calculate addons total (using real pricing logic from cart, convert from cents to dollars)
-  const addonsTotal = cart.addons?.reduce((sum, addon) => {
-    return sum + (addon.calculated_price_cents / 100);
+  // Calculate addons total in CENTS (already stored in cents)
+  const addonsTotalCents = cart.addons?.reduce((sum, addon) => {
+    return sum + addon.calculated_price_cents;
   }, 0) || 0;
 
-  // Subtotal (before tax)
-  const subtotal = tourTotal + addonsTotal;
+  // Subtotal in CENTS (before tax)
+  const subtotalCents = tourTotalCents + addonsTotalCents;
 
-  // Calculate GST (10% in Australia)
-  const gst = Math.round(subtotal * 0.1);
+  // Calculate GST in CENTS (10% in Australia)
+  const gstCents = Math.round(subtotalCents * 0.1);
 
-  // Grand total
-  const grandTotal = subtotal + gst;
+  // Grand total in CENTS
+  const grandTotalCents = subtotalCents + gstCents;
 
   // Format date for display
   const formatTourDate = (dateString: string | null) => {
@@ -141,7 +145,7 @@ export default function BookingSummary({
               )}
             </h2>
             <div className={styles.mobileTotal}>
-              {formatCurrency(grandTotal)}
+              {formatPrice(grandTotalCents)}
             </div>
           </div>
           <svg
@@ -209,7 +213,7 @@ export default function BookingSummary({
             <div className={styles.tourHeader}>
               <h4 className={styles.tourTitle}>{cart.tour_booking.tour.title}</h4>
               <div className={styles.tourPrice}>
-                {formatCurrency(tourTotal)}
+                {formatPrice(tourTotalCents)}
               </div>
             </div>
 
@@ -230,7 +234,7 @@ export default function BookingSummary({
               )}
               <div className={styles.tourDetail}>
                 <dt>Price per person:</dt>
-                <dd>{formatCurrency(cart.tour_booking.tour.base_price_cents / 100)}</dd>
+                <dd>{formatPrice(cart.tour_booking.tour.base_price_cents)}</dd>
               </div>
             </dl>
           </div>
@@ -262,16 +266,16 @@ export default function BookingSummary({
                     <span className={styles.addonName}>{cartAddon.addon.title}</span>
                     <span className={styles.addonMeta}>
                       {cartAddon.addon.pricing_type === 'per_day' &&
-                        `${formatCurrency(cartAddon.addon.price_cents / 100)}/day × ${cart.tour_booking?.tour.duration_days || 1} days`}
+                        `${formatPrice(cartAddon.addon.price_cents)}/day × ${cart.tour_booking?.tour.duration_days || 1} days`}
                       {cartAddon.addon.pricing_type === 'per_person' &&
-                        `${formatCurrency(cartAddon.addon.price_cents / 100)}/person × ${cart.tour_booking?.participants || 1} people`}
+                        `${formatPrice(cartAddon.addon.price_cents)}/person × ${cart.tour_booking?.participants || 1} people`}
                       {cartAddon.addon.pricing_type === 'per_booking' &&
                         'Per booking'}
                       {cartAddon.quantity > 1 && ` × ${cartAddon.quantity}`}
                     </span>
                   </div>
                   <div className={styles.addonPrice}>
-                    {formatCurrency(cartAddon.calculated_price_cents / 100)}
+                    {formatPrice(cartAddon.calculated_price_cents)}
                   </div>
                 </li>
               ))}
@@ -289,34 +293,34 @@ export default function BookingSummary({
             {/* Tour Subtotal */}
             <div className={styles.priceRow}>
               <dt>Tour Package:</dt>
-              <dd>{formatCurrency(tourTotal)}</dd>
+              <dd>{formatPrice(tourTotalCents)}</dd>
             </div>
 
             {/* Addons Subtotal */}
             {cart.addons?.length > 0 && (
               <div className={styles.priceRow}>
                 <dt>Add-ons Total:</dt>
-                <dd>{formatCurrency(addonsTotal)}</dd>
+                <dd>{formatPrice(addonsTotalCents)}</dd>
               </div>
             )}
 
             {/* Subtotal */}
             <div className={`${styles.priceRow} ${styles.subtotalRow}`}>
               <dt>Subtotal:</dt>
-              <dd>{formatCurrency(subtotal)}</dd>
+              <dd>{formatPrice(subtotalCents)}</dd>
             </div>
 
             {/* GST */}
             <div className={styles.priceRow}>
               <dt>GST (10%):</dt>
-              <dd>{formatCurrency(gst)}</dd>
+              <dd>{formatPrice(gstCents)}</dd>
             </div>
 
             {/* Grand Total */}
             <div className={`${styles.priceRow} ${styles.totalRow}`}>
               <dt>Total (AUD):</dt>
               <dd aria-live="polite" aria-atomic="true">
-                {formatCurrency(grandTotal)}
+                {formatPrice(grandTotalCents)}
               </dd>
             </div>
           </dl>

@@ -4,7 +4,7 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import styles from './confirmation.module.css';
-import { formatCurrency, calculatePriceBreakdown } from '../../../lib/utils/pricing';
+import { formatPrice, calculatePriceBreakdown } from '../../../lib/utils/pricing';
 import { getOrder, type MedusaOrder } from '../../../lib/data/cart-service';
 import BookingSummary from '../../../components/Checkout/BookingSummary';
 import type { CartState } from '../../../lib/types/cart';
@@ -292,7 +292,7 @@ function ConfirmationWithParams() {
                       <div>
                         <span className={styles.itemQuantity}>Qty: {item.quantity}</span>
                         <span className={styles.addOnPrice}>
-                          {formatCurrency(item.total || 0)}
+                          {formatPrice(item.total || 0)}
                         </span>
                       </div>
                     </div>
@@ -367,27 +367,27 @@ function ConfirmationWithParams() {
               <div className={styles.priceBreakdown}>
                 <div className={styles.priceRow}>
                   <span>Subtotal:</span>
-                  <span>{formatCurrency(order.subtotal)}</span>
+                  <span>{formatPrice(order.subtotal)}</span>
                 </div>
                 {order.discount_total > 0 && (
                   <div className={styles.priceRow}>
                     <span>Discount:</span>
-                    <span>-{formatCurrency(order.discount_total)}</span>
+                    <span>-{formatPrice(order.discount_total)}</span>
                   </div>
                 )}
                 {order.shipping_total > 0 && (
                   <div className={styles.priceRow}>
                     <span>Shipping:</span>
-                    <span>{formatCurrency(order.shipping_total)}</span>
+                    <span>{formatPrice(order.shipping_total)}</span>
                   </div>
                 )}
                 <div className={styles.priceRow}>
                   <span>Tax:</span>
-                  <span>{formatCurrency(order.tax_total)}</span>
+                  <span>{formatPrice(order.tax_total)}</span>
                 </div>
                 <div className={`${styles.priceRow} ${styles.totalRow}`}>
                   <span>Total Paid (AUD):</span>
-                  <span>{formatCurrency(order.total)}</span>
+                  <span>{formatPrice(order.total)}</span>
                 </div>
               </div>
             </div>

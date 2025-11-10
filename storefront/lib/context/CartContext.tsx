@@ -228,13 +228,25 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             description: item.description || '',
             price_cents: metadata.base_price_cents,
             pricing_type: metadata.pricing_type,
-            category: '', // Category not stored in metadata
+            category: metadata.category || '',
             available: true,
             thumbnail: item.thumbnail,
+            // Restore metadata from line item
+            metadata: {
+              applicable_tours: metadata.applicable_tours,
+              max_quantity: metadata.max_quantity,
+            },
           },
           quantity: item.quantity,
           calculated_price_cents: metadata.calculated_price_cents,
           line_item_id: item.id,
+        });
+
+        console.log('[CartContext] Restored addon metadata:', {
+          addon_id: metadata.addon_id,
+          category: metadata.category,
+          applicable_tours: metadata.applicable_tours,
+          max_quantity: metadata.max_quantity,
         });
       }
 
@@ -474,7 +486,18 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
               participants: cart.tour_booking.participants,
             },
             calculated_price_cents: calculatedPrice,
+            // Preserve addon metadata
+            applicable_tours: addon.metadata?.applicable_tours,
+            category: addon.category,
+            max_quantity: addon.metadata?.max_quantity,
           };
+
+          console.log('[CartContext] Storing addon metadata:', {
+            addon_id: addon.id,
+            category: metadata.category,
+            applicable_tours: metadata.applicable_tours,
+            max_quantity: metadata.max_quantity,
+          });
 
           await addLineItem(cartId, addon.variant_id, quantity, metadata);
         }

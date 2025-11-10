@@ -239,6 +239,12 @@ export default function RootLayout({
     <html lang="en-AU">
       <head>
         {/* Performance: DNS Prefetch and Preconnect for external resources */}
+        {process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL && (
+          <>
+            <link rel="preconnect" href={process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL} />
+            <link rel="dns-prefetch" href={process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL} />
+          </>
+        )}
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />

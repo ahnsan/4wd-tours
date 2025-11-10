@@ -285,6 +285,10 @@ export interface AddonLineItemMetadata {
     participants: number;
   };
   calculated_price_cents: number;
+  // Metadata preservation fields
+  applicable_tours?: string[];
+  category?: string;
+  max_quantity?: number;
 }
 
 // ============================================================================
