@@ -1,0 +1,37 @@
+{
+  "regular_variables": {
+    "JWT_SECRET": "1a4152381c352ab76c57543870da75fc800bb9a352d380b5a98f55f12510ef89c4e2ada2461a7e8a4b919af91c3a9b623a4165d0d82498b26ead7263fb4f1dcc",
+    "COOKIE_SECRET": "e34a0a6b81b603ea32daefa28a25f416c04771bc2150759b7f061f2097aab6371ac6373a70ad9061077784ac34b090b1614b8a4b88fdcd6471b33c282efabfc5",
+    "NODE_ENV": "production",
+    "STORE_CORS": "http://localhost:8000",
+    "ADMIN_CORS": "http://localhost:9000",
+    "AUTH_CORS": "http://localhost:9000",
+    "DB_NAME": "medusa-v2"
+  },
+  "service_references": {
+    "DATABASE_URL": {
+      "type": "reference",
+      "service": "Postgres",
+      "variable": "DATABASE_URL",
+      "note": "Add as Reference, not as regular variable"
+    },
+    "REDIS_URL": {
+      "type": "reference",
+      "service": "Redis",
+      "variable": "REDIS_URL",
+      "note": "Add as Reference, not as regular variable"
+    }
+  },
+  "instructions": {
+    "step_1": "Add all 'regular_variables' as normal environment variables (New Variable)",
+    "step_2": "Add 'service_references' as References (select Reference when adding)",
+    "step_3": "For DATABASE_URL: Variable Name = DATABASE_URL, Service = Postgres, Variable = DATABASE_URL",
+    "step_4": "For REDIS_URL: Variable Name = REDIS_URL, Service = Redis, Variable = REDIS_URL",
+    "step_5": "After adding all variables, Railway will auto-deploy"
+  },
+  "to_update_after_deployment": {
+    "STORE_CORS": "Update with Vercel storefront URL (https://your-storefront.vercel.app)",
+    "ADMIN_CORS": "Update with Railway backend URL (https://your-backend.railway.app)",
+    "AUTH_CORS": "Update with Railway backend URL (https://your-backend.railway.app)"
+  }
+}

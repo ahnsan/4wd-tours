@@ -38,7 +38,7 @@ const ResourceAllocation = model.define("resource_allocation", {
    * Date for which capacity is allocated (date-only)
    * Format: YYYY-MM-DD in Australia/Brisbane timezone
    */
-  date: model.date(),
+  date: model.dateTime(),
 
   /**
    * Number of capacity units allocated
@@ -65,7 +65,7 @@ const ResourceAllocation = model.define("resource_allocation", {
    * Immutable - allocations are never updated, only created
    * Used for audit trail and reporting
    */
-  created_at: model.dateTime().default(() => new Date()),
+  created_at: model.dateTime().defaultNow(),
 })
 
 // Note: Indexes defined in migrations

@@ -53,7 +53,7 @@ const ResourceHold = model.define("resource_hold", {
    * Date for which capacity is held (date-only)
    * Format: YYYY-MM-DD in Australia/Brisbane timezone
    */
-  date: model.date(),
+  date: model.dateTime(),
 
   /**
    * Number of capacity units being held

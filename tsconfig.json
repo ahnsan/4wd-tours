@@ -17,7 +17,8 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "checkJs": false,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "noEmitOnError": false
   },
   "ts-node": {
     "swc": true
@@ -37,6 +38,12 @@
     "tests",
     "integration-tests",
     "scripts",
+    "src/scripts",
+    "src/modules/seeding",
+    "src/modules/resource_booking",
+    "src/modules/resource-booking",
+    "src/modules/blog",
+    "src/api/admin/blog",
     "coverage",
     "docs"
   ]

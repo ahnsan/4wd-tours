@@ -253,9 +253,9 @@ class CapacityService extends MedusaService({
 
       // Iterate through each day in the blackout period that overlaps with range
       let current = DateTime.max(blackoutStart, rangeStart)
-      const end = DateTime.min(blackoutEnd, rangeEnd)
+      const endDate = DateTime.min(blackoutEnd, rangeEnd)
 
-      while (current <= end) {
+      while (current <= endDate) {
         blackedOutDates.add(current.toISODate()!)
         current = current.plus({ days: 1 })
       }

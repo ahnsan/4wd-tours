@@ -35,7 +35,7 @@ const ResourceCapacity = model.define("resource_capacity", {
    * Format: YYYY-MM-DD in Australia/Brisbane timezone
    * Indexed for date range queries and uniqueness
    */
-  date: model.date(),
+  date: model.dateTime(),
 
   /**
    * Maximum capacity available for this resource on this date

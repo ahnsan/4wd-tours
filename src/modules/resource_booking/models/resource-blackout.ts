@@ -35,14 +35,14 @@ const ResourceBlackout = model.define("resource_blackout", {
    * Start date of blackout period (date-only, inclusive)
    * Format: YYYY-MM-DD in Australia/Brisbane timezone
    */
-  start_date: model.date(),
+  start_date: model.dateTime(),
 
   /**
    * End date of blackout period (date-only, inclusive)
    * Format: YYYY-MM-DD in Australia/Brisbane timezone
    * Must be >= start_date
    */
-  end_date: model.date(),
+  end_date: model.dateTime(),
 
   /**
    * Human-readable reason for the blackout
