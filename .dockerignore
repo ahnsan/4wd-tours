@@ -1,0 +1,44 @@
+# Storefront (separate Next.js app)
+storefront/
+
+# Tests
+tests/
+integration-tests/
+coverage/
+playwright-report/
+test-results/
+
+# Development files
+*.log
+*.md
+!README.md
+.env*
+!.env.example
+.git/
+.github/
+.vscode/
+.idea/
+.husky/
+.swarm/
+.claude/
+.hive-mind/
+coordination/
+memory/
+docs/
+
+# Build artifacts
+.medusa/
+node_modules/.cache/
+.next/
+dist/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.swp
+*.swo
