@@ -8,6 +8,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getCategoryStepsV2 } from '@/lib/data/addon-flow-helpers'
 
+// Force dynamic rendering for this API route
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
