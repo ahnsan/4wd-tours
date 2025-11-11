@@ -74,6 +74,7 @@
   },
   "dependencies": {
     "@medusajs/js-sdk": "^2.11.3",
+    "@medusajs/types": "^2.0.3",
     "isomorphic-dompurify": "^2.14.0",
     "next": "^14.0.0",
     "react": "^18.2.0",
