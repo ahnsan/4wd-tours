@@ -21,15 +21,26 @@ if (process.env.JWT_SECRET.length < minSecretLength || process.env.COOKIE_SECRET
 
 module.exports = defineConfig({
   admin: {
-    // Disable admin panel in production (deployed separately if needed)
-    disable: process.env.DISABLE_ADMIN === "true",
+    // Admin panel disabled - deployed separately on Vercel
+    // The admin UI is served from a separate Vercel deployment
+    // Backend only provides API endpoints for admin operations
+    disable: true,
+    // Backend URL that admin will connect to (Railway)
+    backendUrl: process.env.BACKEND_URL || process.env.RAILWAY_PUBLIC_DOMAIN
+      ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`
+      : "http://localhost:9000",
   },
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
     redisUrl: process.env.REDIS_URL,
     http: {
+      // Store CORS - allows storefront domains
       storeCors: process.env.STORE_CORS!,
+      // Admin CORS - allows Vercel admin deployment domain
+      // CRITICAL: Must include the Vercel admin domain for admin API access
+      // Example: https://admin-4wd-tours.vercel.app
       adminCors: process.env.ADMIN_CORS!,
+      // Auth CORS - allows authentication from admin domain
       authCors: process.env.AUTH_CORS!,
       // SECURITY: No fallback secrets - must be set in environment
       jwtSecret: process.env.JWT_SECRET,

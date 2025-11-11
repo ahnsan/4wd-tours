@@ -1,0 +1,116 @@
+[
+  {
+    "handle": "addon-glamping",
+    "title": "Glamping Setup",
+    "description": "Luxury camping experience with comfortable bedding and premium amenities",
+    "metadata": {}
+  },
+  {
+    "handle": "addon-gopro",
+    "title": "GoPro Rental",
+    "description": "Rent a GoPro camera to capture your own adventure footage",
+    "metadata": {}
+  },
+  {
+    "handle": "addon-fishing",
+    "title": "Fishing Charter",
+    "description": "Guided fishing experience with all equipment and licenses included",
+    "metadata": {}
+  },
+  {
+    "handle": "addon-drone",
+    "title": "Drone Photography",
+    "description": "Stunning aerial photography and videography of your tour experience",
+    "metadata": {}
+  },
+  {
+    "handle": "addon-internet",
+    "title": "Always-on High-Speed Internet",
+    "description": "Portable wifi hotspot to keep you connected throughout your adventure",
+    "metadata": {}
+  },
+  {
+    "handle": "addon-photo-package",
+    "title": "Professional Photography Package",
+    "description": "Professional photographer captures your adventure with high-quality photos",
+    "metadata": {}
+  },
+  {
+    "handle": "addon-safari-tent",
+    "title": "Private Safari Tent",
+    "description": "Spacious private safari tent with comfortable bedding and exclusive location",
+    "metadata": {}
+  },
+  {
+    "handle": "addon-starlink",
+    "title": "Starlink Satellite Internet",
+    "description": "High-speed satellite internet via Starlink - works anywhere with clear sky view",
+    "metadata": {}
+  },
+  {
+    "handle": "addon-seafood-platter",
+    "title": "Seafood Platter",
+    "description": "Fresh local seafood platter featuring the best catches from Queensland waters",
+    "metadata": {}
+  },
+  {
+    "handle": "addon-action-camera",
+    "title": "Action Camera Bundle",
+    "description": "Complete action camera package with mounts, batteries, and accessories",
+    "metadata": {}
+  },
+  {
+    "handle": "addon-picnic-hamper",
+    "title": "Picnic Hamper",
+    "description": "Gourmet sandwiches, snacks, and drinks perfect for a beach picnic",
+    "metadata": {}
+  },
+  {
+    "handle": "addon-gourmet-bbq",
+    "title": "Gourmet Beach BBQ",
+    "description": "BBQ setup with premium meats and sides for an unforgettable beach dining experience",
+    "metadata": {}
+  },
+  {
+    "handle": "addon-eco-lodge",
+    "title": "Luxury Eco-Lodge",
+    "description": "Premium eco-lodge accommodation with modern amenities and stunning views",
+    "metadata": {}
+  },
+  {
+    "handle": "addon-bbq",
+    "title": "BBQ on the Beach",
+    "description": "Complete BBQ kit for beachside cooking experience. Fresh meals under the stars.",
+    "metadata": {}
+  },
+  {
+    "handle": "addon-airport-transfer",
+    "title": "Airport Transfer",
+    "description": "Convenient airport pickup and drop-off service",
+    "metadata": {}
+  },
+  {
+    "handle": "addon-kayak",
+    "title": "Kayak & Paddleboard Bundle",
+    "description": "Kayak and paddleboard rental for water exploration",
+    "metadata": {}
+  },
+  {
+    "handle": "addon-snorkeling",
+    "title": "Snorkeling Equipment",
+    "description": "Premium snorkeling gear including mask, snorkel, and fins",
+    "metadata": {}
+  },
+  {
+    "handle": "addon-vehicle-upgrade",
+    "title": "Vehicle Upgrade",
+    "description": "Upgrade to premium 4WD vehicle with enhanced comfort and features",
+    "metadata": {}
+  },
+  {
+    "handle": "addon-private-tour",
+    "title": "Private Tour",
+    "description": "Exclusive private tour experience for your group only",
+    "metadata": {}
+  }
+]

@@ -1,0 +1,39 @@
+{
+  "name": "medusa-admin-4wd-tours",
+  "version": "1.0.0",
+  "description": "Standalone Medusa Admin Dashboard for 4WD Tours - Deployed on Vercel",
+  "private": true,
+  "author": "4WD Tours Australia",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/med-usa-4wd"
+  },
+  "scripts": {
+    "build": "echo 'Admin built via medusa build --admin-only in parent project'",
+    "deploy": "vercel --prod",
+    "deploy:preview": "vercel",
+    "login": "vercel login",
+    "link": "vercel link",
+    "env:list": "vercel env ls",
+    "env:add": "vercel env add",
+    "logs": "vercel logs",
+    "domains": "vercel domains ls",
+    "inspect": "vercel inspect"
+  },
+  "devDependencies": {
+    "vercel": "^37.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "medusa",
+    "admin",
+    "dashboard",
+    "ecommerce",
+    "4wd-tours",
+    "vercel",
+    "railway"
+  ]
+}

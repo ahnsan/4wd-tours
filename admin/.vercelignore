@@ -1,0 +1,40 @@
+# Vercel Ignore File
+# These files/directories won't be uploaded to Vercel
+
+# Dependencies
+node_modules
+package-lock.json
+yarn.lock
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Version control
+.git
+.gitignore
+
+# Documentation
+*.md
+!README.md
+
+# Build scripts
+*.sh
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor directories
+.vscode
+.idea
+*.swp
+*.swo
+*~
