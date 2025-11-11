@@ -153,23 +153,34 @@ export default async function seedProductionData({ container }: ExecArgs) {
   logger.info("Finished seeding tax regions.");
 
   logger.info("Seeding stock location data...");
-  const { result: stockLocationResult} = await createStockLocationsWorkflow(
-    container
-  ).run({
-    input: {
-      locations: [
-        {
-          name: "Sunshine Coast Base",
-          address: {
-            city: "Sunshine Coast",
-            country_code: "AU",
-            address_1: "Queensland",
-          },
-        },
-      ],
-    },
+  const stockLocationModuleService = container.resolve(Modules.STOCK_LOCATION);
+  const existingStockLocations = await stockLocationModuleService.listStockLocations({
+    name: "Sunshine Coast Base",
   });
-  const stockLocation = stockLocationResult[0];
+
+  let stockLocation;
+  if (existingStockLocations.length > 0) {
+    stockLocation = existingStockLocations[0];
+    logger.info("Using existing Sunshine Coast Base stock location.");
+  } else {
+    const { result: stockLocationResult} = await createStockLocationsWorkflow(
+      container
+    ).run({
+      input: {
+        locations: [
+          {
+            name: "Sunshine Coast Base",
+            address: {
+              city: "Sunshine Coast",
+              country_code: "AU",
+              address_1: "Queensland",
+            },
+          },
+        ],
+      },
+    });
+    stockLocation = stockLocationResult[0];
+  }
 
   await updateStoresWorkflow(container).run({
     input: {
@@ -210,21 +221,31 @@ export default async function seedProductionData({ container }: ExecArgs) {
     shippingProfile = shippingProfileResult[0];
   }
 
-  const fulfillmentSet = await fulfillmentModuleService.createFulfillmentSets({
+  const existingFulfillmentSets = await fulfillmentModuleService.listFulfillmentSets({
     name: "Sunshine Coast Tours",
-    type: "shipping",
-    service_zones: [
-      {
-        name: "Australia",
-        geo_zones: [
-          {
-            country_code: "au",
-            type: "country",
-          },
-        ],
-      },
-    ],
   });
+
+  let fulfillmentSet;
+  if (existingFulfillmentSets.length > 0) {
+    fulfillmentSet = existingFulfillmentSets[0];
+    logger.info("Using existing Sunshine Coast Tours fulfillment set.");
+  } else {
+    fulfillmentSet = await fulfillmentModuleService.createFulfillmentSets({
+      name: "Sunshine Coast Tours",
+      type: "shipping",
+      service_zones: [
+        {
+          name: "Australia",
+          geo_zones: [
+            {
+              country_code: "au",
+              type: "country",
+            },
+          ],
+        },
+      ],
+    });
+  }
 
   await link.create({
     [Modules.STOCK_LOCATION]: {
@@ -235,44 +256,53 @@ export default async function seedProductionData({ container }: ExecArgs) {
     },
   });
 
-  await createShippingOptionsWorkflow(container).run({
-    input: [
-      {
-        name: "Tour Pickup - Sunshine Coast",
-        price_type: "flat",
-        provider_id: "manual_manual",
-        service_zone_id: fulfillmentSet.service_zones[0].id,
-        shipping_profile_id: shippingProfile.id,
-        type: {
-          label: "Pickup",
-          description: "Pickup from designated meeting point.",
-          code: "tour-pickup",
-        },
-        prices: [
-          {
-            currency_code: "aud",
-            amount: 0,
-          },
-          {
-            region_id: region.id,
-            amount: 0,
-          },
-        ],
-        rules: [
-          {
-            attribute: "enabled_in_store",
-            value: "true",
-            operator: "eq",
-          },
-          {
-            attribute: "is_return",
-            value: "false",
-            operator: "eq",
-          },
-        ],
-      },
-    ],
+  const existingShippingOptions = await fulfillmentModuleService.listShippingOptions({
+    name: "Tour Pickup - Sunshine Coast",
   });
+
+  if (existingShippingOptions.length === 0) {
+    await createShippingOptionsWorkflow(container).run({
+      input: [
+        {
+          name: "Tour Pickup - Sunshine Coast",
+          price_type: "flat",
+          provider_id: "manual_manual",
+          service_zone_id: fulfillmentSet.service_zones[0].id,
+          shipping_profile_id: shippingProfile.id,
+          type: {
+            label: "Pickup",
+            description: "Pickup from designated meeting point.",
+            code: "tour-pickup",
+          },
+          prices: [
+            {
+              currency_code: "aud",
+              amount: 0,
+            },
+            {
+              region_id: region.id,
+              amount: 0,
+            },
+          ],
+          rules: [
+            {
+              attribute: "enabled_in_store",
+              value: "true",
+              operator: "eq",
+            },
+            {
+              attribute: "is_return",
+              value: "false",
+              operator: "eq",
+            },
+          ],
+        },
+      ],
+    });
+    logger.info("Created Tour Pickup shipping option.");
+  } else {
+    logger.info("Using existing Tour Pickup shipping option.");
+  }
   logger.info("Finished seeding fulfillment data.");
 
   await linkSalesChannelsToStockLocationWorkflow(container).run({
@@ -284,20 +314,32 @@ export default async function seedProductionData({ container }: ExecArgs) {
   logger.info("Finished seeding stock location data.");
 
   logger.info("Seeding publishable API key data...");
-  const { result: publishableApiKeyResult } = await createApiKeysWorkflow(
-    container
-  ).run({
-    input: {
-      api_keys: [
-        {
-          title: "Webshop",
-          type: "publishable",
-          created_by: "",
-        },
-      ],
-    },
+  const apiKeyModuleService = container.resolve(Modules.API_KEY);
+  const existingApiKeys = await apiKeyModuleService.listApiKeys({
+    title: "Webshop",
   });
-  const publishableApiKey = publishableApiKeyResult[0];
+
+  let publishableApiKey;
+  if (existingApiKeys.length > 0) {
+    publishableApiKey = existingApiKeys[0];
+    logger.info("Using existing Webshop API key.");
+  } else {
+    const { result: publishableApiKeyResult } = await createApiKeysWorkflow(
+      container
+    ).run({
+      input: {
+        api_keys: [
+          {
+            title: "Webshop",
+            type: "publishable",
+            created_by: "",
+          },
+        ],
+      },
+    });
+    publishableApiKey = publishableApiKeyResult[0];
+    logger.info("Created Webshop API key.");
+  }
 
   await linkSalesChannelsToApiKeyWorkflow(container).run({
     input: {
