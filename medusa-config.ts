@@ -20,6 +20,10 @@ if (process.env.JWT_SECRET.length < minSecretLength || process.env.COOKIE_SECRET
 }
 
 module.exports = defineConfig({
+  admin: {
+    // Disable admin panel in production (deployed separately if needed)
+    disable: process.env.DISABLE_ADMIN === "true",
+  },
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
     redisUrl: process.env.REDIS_URL,
