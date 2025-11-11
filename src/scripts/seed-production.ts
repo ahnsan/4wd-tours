@@ -370,12 +370,21 @@ export default async function seedProductionData({ container }: ExecArgs) {
               url: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4",
             },
           ],
+          options: [
+            {
+              title: "Type",
+              values: ["Default"],
+            },
+          ],
           variants: [
             {
               title: "Default",
               sku: "TOUR-1D-RAINBOW-BEACH",
               manage_inventory: false,
               allow_backorder: false,
+              options: {
+                Type: "Default",
+              },
               prices: [
                 {
                   amount: 2000,
@@ -413,12 +422,21 @@ export default async function seedProductionData({ container }: ExecArgs) {
               url: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4",
             },
           ],
+          options: [
+            {
+              title: "Type",
+              values: ["Default"],
+            },
+          ],
           variants: [
             {
               title: "Default",
               sku: "TOUR-1D-FRASER-ISLAND",
               manage_inventory: false,
               allow_backorder: false,
+              options: {
+                Type: "Default",
+              },
               prices: [
                 {
                   amount: 2000,
@@ -456,12 +474,21 @@ export default async function seedProductionData({ container }: ExecArgs) {
               url: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4",
             },
           ],
+          options: [
+            {
+              title: "Type",
+              values: ["Default"],
+            },
+          ],
           variants: [
             {
               title: "Default",
               sku: "TOUR-2D-FRASER-RAINBOW",
               manage_inventory: false,
               allow_backorder: false,
+              options: {
+                Type: "Default",
+              },
               prices: [
                 {
                   amount: 4000,
@@ -499,12 +526,21 @@ export default async function seedProductionData({ container }: ExecArgs) {
               url: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4",
             },
           ],
+          options: [
+            {
+              title: "Type",
+              values: ["Default"],
+            },
+          ],
           variants: [
             {
               title: "Default",
               sku: "TOUR-3D-FRASER-RAINBOW",
               manage_inventory: false,
               allow_backorder: false,
+              options: {
+                Type: "Default",
+              },
               prices: [
                 {
                   amount: 6000,
@@ -542,12 +578,21 @@ export default async function seedProductionData({ container }: ExecArgs) {
               url: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4",
             },
           ],
+          options: [
+            {
+              title: "Type",
+              values: ["Default"],
+            },
+          ],
           variants: [
             {
               title: "Default",
               sku: "TOUR-4D-FRASER-RAINBOW",
               manage_inventory: false,
               allow_backorder: false,
+              options: {
+                Type: "Default",
+              },
               prices: [
                 {
                   amount: 8000,
@@ -576,12 +621,21 @@ export default async function seedProductionData({ container }: ExecArgs) {
             unit: "per_day",
             icon: "wifi",
           },
+          options: [
+            {
+              title: "Type",
+              values: ["Default"],
+            },
+          ],
           variants: [
             {
               title: "Default",
               sku: "ADDON-ADDON-INTERNET",
               manage_inventory: false,
               allow_backorder: false,
+              options: {
+                Type: "Default",
+              },
               prices: [
                 {
                   amount: 30,
@@ -610,12 +664,21 @@ export default async function seedProductionData({ container }: ExecArgs) {
             unit: "per_day",
             icon: "tent",
           },
+          options: [
+            {
+              title: "Type",
+              values: ["Default"],
+            },
+          ],
           variants: [
             {
               title: "Default",
               sku: "ADDON-ADDON-GLAMPING",
               manage_inventory: false,
               allow_backorder: false,
+              options: {
+                Type: "Default",
+              },
               prices: [
                 {
                   amount: 80,
@@ -644,12 +707,21 @@ export default async function seedProductionData({ container }: ExecArgs) {
             unit: "per_day",
             icon: "utensils",
           },
+          options: [
+            {
+              title: "Type",
+              values: ["Default"],
+            },
+          ],
           variants: [
             {
               title: "Default",
               sku: "ADDON-ADDON-BBQ",
               manage_inventory: false,
               allow_backorder: false,
+              options: {
+                Type: "Default",
+              },
               prices: [
                 {
                   amount: 65,
@@ -677,12 +749,21 @@ export default async function seedProductionData({ container }: ExecArgs) {
             category: "Food & Beverage",
             unit: "per_booking",
           },
+          options: [
+            {
+              title: "Type",
+              values: ["Default"],
+            },
+          ],
           variants: [
             {
               title: "Default",
               sku: "ADDON-ADDON-GOURMET-BBQ",
               manage_inventory: false,
               allow_backorder: false,
+              options: {
+                Type: "Default",
+              },
               prices: [
                 {
                   amount: 180,
@@ -710,12 +791,21 @@ export default async function seedProductionData({ container }: ExecArgs) {
             category: "Food & Beverage",
             unit: "per_booking",
           },
+          options: [
+            {
+              title: "Type",
+              values: ["Default"],
+            },
+          ],
           variants: [
             {
               title: "Default",
               sku: "ADDON-ADDON-PICNIC-HAMPER",
               manage_inventory: false,
               allow_backorder: false,
+              options: {
+                Type: "Default",
+              },
               prices: [
                 {
                   amount: 85,
@@ -743,12 +833,21 @@ export default async function seedProductionData({ container }: ExecArgs) {
             category: "Food & Beverage",
             unit: "per_booking",
           },
+          options: [
+            {
+              title: "Type",
+              values: ["Default"],
+            },
+          ],
           variants: [
             {
               title: "Default",
               sku: "ADDON-ADDON-SEAFOOD-PLATTER",
               manage_inventory: false,
               allow_backorder: false,
+              options: {
+                Type: "Default",
+              },
               prices: [
                 {
                   amount: 150,
@@ -776,12 +875,21 @@ export default async function seedProductionData({ container }: ExecArgs) {
             category: "Connectivity",
             unit: "per_day",
           },
+          options: [
+            {
+              title: "Type",
+              values: ["Default"],
+            },
+          ],
           variants: [
             {
               title: "Default",
               sku: "ADDON-ADDON-STARLINK",
               manage_inventory: false,
               allow_backorder: false,
+              options: {
+                Type: "Default",
+              },
               prices: [
                 {
                   amount: 120,
@@ -809,12 +917,21 @@ export default async function seedProductionData({ container }: ExecArgs) {
             category: "Accommodation",
             unit: "per_night",
           },
+          options: [
+            {
+              title: "Type",
+              values: ["Default"],
+            },
+          ],
           variants: [
             {
               title: "Default",
               sku: "ADDON-ADDON-ECO-LODGE",
               manage_inventory: false,
               allow_backorder: false,
+              options: {
+                Type: "Default",
+              },
               prices: [
                 {
                   amount: 200,
@@ -842,12 +959,21 @@ export default async function seedProductionData({ container }: ExecArgs) {
             category: "Accommodation",
             unit: "per_night",
           },
+          options: [
+            {
+              title: "Type",
+              values: ["Default"],
+            },
+          ],
           variants: [
             {
               title: "Default",
               sku: "ADDON-ADDON-SAFARI-TENT",
               manage_inventory: false,
               allow_backorder: false,
+              options: {
+                Type: "Default",
+              },
               prices: [
                 {
                   amount: 100,
@@ -875,12 +1001,21 @@ export default async function seedProductionData({ container }: ExecArgs) {
             category: "Photography & Memories",
             unit: "per_day",
           },
+          options: [
+            {
+              title: "Type",
+              values: ["Default"],
+            },
+          ],
           variants: [
             {
               title: "Default",
               sku: "ADDON-ADDON-PHOTO-PACKAGE",
               manage_inventory: false,
               allow_backorder: false,
+              options: {
+                Type: "Default",
+              },
               prices: [
                 {
                   amount: 250,
@@ -908,12 +1043,21 @@ export default async function seedProductionData({ container }: ExecArgs) {
             category: "Photography & Memories",
             unit: "per_booking",
           },
+          options: [
+            {
+              title: "Type",
+              values: ["Default"],
+            },
+          ],
           variants: [
             {
               title: "Default",
               sku: "ADDON-ADDON-DRONE",
               manage_inventory: false,
               allow_backorder: false,
+              options: {
+                Type: "Default",
+              },
               prices: [
                 {
                   amount: 400,
@@ -941,12 +1085,21 @@ export default async function seedProductionData({ container }: ExecArgs) {
             category: "Photography & Memories",
             unit: "per_day",
           },
+          options: [
+            {
+              title: "Type",
+              values: ["Default"],
+            },
+          ],
           variants: [
             {
               title: "Default",
               sku: "ADDON-ADDON-GOPRO",
               manage_inventory: false,
               allow_backorder: false,
+              options: {
+                Type: "Default",
+              },
               prices: [
                 {
                   amount: 45,
@@ -974,12 +1127,21 @@ export default async function seedProductionData({ container }: ExecArgs) {
             category: "Photography & Memories",
             unit: "per_day",
           },
+          options: [
+            {
+              title: "Type",
+              values: ["Default"],
+            },
+          ],
           variants: [
             {
               title: "Default",
               sku: "ADDON-ADDON-ACTION-CAMERA",
               manage_inventory: false,
               allow_backorder: false,
+              options: {
+                Type: "Default",
+              },
               prices: [
                 {
                   amount: 75,
@@ -1007,12 +1169,21 @@ export default async function seedProductionData({ container }: ExecArgs) {
             category: "Activities & Equipment",
             unit: "per_booking",
           },
+          options: [
+            {
+              title: "Type",
+              values: ["Default"],
+            },
+          ],
           variants: [
             {
               title: "Default",
               sku: "ADDON-ADDON-FISHING",
               manage_inventory: false,
               allow_backorder: false,
+              options: {
+                Type: "Default",
+              },
               prices: [
                 {
                   amount: 300,
@@ -1040,12 +1211,21 @@ export default async function seedProductionData({ container }: ExecArgs) {
             category: "Activities & Equipment",
             unit: "per_day",
           },
+          options: [
+            {
+              title: "Type",
+              values: ["Default"],
+            },
+          ],
           variants: [
             {
               title: "Default",
               sku: "ADDON-ADDON-KAYAK",
               manage_inventory: false,
               allow_backorder: false,
+              options: {
+                Type: "Default",
+              },
               prices: [
                 {
                   amount: 60,
@@ -1073,12 +1253,21 @@ export default async function seedProductionData({ container }: ExecArgs) {
             category: "Activities & Equipment",
             unit: "per_day",
           },
+          options: [
+            {
+              title: "Type",
+              values: ["Default"],
+            },
+          ],
           variants: [
             {
               title: "Default",
               sku: "ADDON-ADDON-SNORKELING",
               manage_inventory: false,
               allow_backorder: false,
+              options: {
+                Type: "Default",
+              },
               prices: [
                 {
                   amount: 40,
@@ -1106,12 +1295,21 @@ export default async function seedProductionData({ container }: ExecArgs) {
             category: "Other",
             unit: "per_day",
           },
+          options: [
+            {
+              title: "Type",
+              values: ["Default"],
+            },
+          ],
           variants: [
             {
               title: "Default",
               sku: "ADDON-ADDON-VEHICLE-UPGRADE",
               manage_inventory: false,
               allow_backorder: false,
+              options: {
+                Type: "Default",
+              },
               prices: [
                 {
                   amount: 100,
@@ -1139,12 +1337,21 @@ export default async function seedProductionData({ container }: ExecArgs) {
             category: "Other",
             unit: "per_booking",
           },
+          options: [
+            {
+              title: "Type",
+              values: ["Default"],
+            },
+          ],
           variants: [
             {
               title: "Default",
               sku: "ADDON-ADDON-PRIVATE-TOUR",
               manage_inventory: false,
               allow_backorder: false,
+              options: {
+                Type: "Default",
+              },
               prices: [
                 {
                   amount: 800,
@@ -1172,12 +1379,21 @@ export default async function seedProductionData({ container }: ExecArgs) {
             category: "Other",
             unit: "per_booking",
           },
+          options: [
+            {
+              title: "Type",
+              values: ["Default"],
+            },
+          ],
           variants: [
             {
               title: "Default",
               sku: "ADDON-ADDON-AIRPORT-TRANSFER",
               manage_inventory: false,
               allow_backorder: false,
+              options: {
+                Type: "Default",
+              },
               prices: [
                 {
                   amount: 50,
