@@ -197,7 +197,7 @@ export async function fetchAllAddOns(regionId?: string): Promise<AddOnsResponse>
 
     // Fetch from standard products API and filter for add-ons
     const response = await fetchWithTimeout(
-      `${API_BASE_URL}/store/products?region_id=${dynamicRegionId}&fields=*images,*variants`,
+      `${API_BASE_URL}/store/products?region_id=${dynamicRegionId}&fields=*images,*variants,+metadata`,
       { headers, cache: 'no-store' },
       API_TIMEOUT
     );
@@ -249,7 +249,7 @@ export async function fetchAddOnById(id: string, regionId?: string): Promise<Add
 
     // Fetch from API with region_id to get calculated prices
     const response = await fetchWithTimeout(
-      `${API_BASE_URL}/store/products/${id}?region_id=${dynamicRegionId}`,
+      `${API_BASE_URL}/store/products/${id}?region_id=${dynamicRegionId}&fields=*images,*variants,+metadata`,
       { headers, cache: 'no-store' },
       API_TIMEOUT
     );
