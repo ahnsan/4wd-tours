@@ -11,14 +11,18 @@ if [ "$DISABLE_ADMIN" != "true" ]; then
     echo "🏗️  Admin build files not found. Building admin dashboard..."
     npx medusa build --admin-only
 
-    # Verify build succeeded
-    if [ -f ".medusa/admin/dist/index.html" ]; then
-      echo "✅ Admin dashboard built successfully!"
+    # The build outputs to .medusa/admin/ but server expects .medusa/admin/dist/
+    # Move files to correct location
+    if [ -f ".medusa/admin/index.html" ]; then
+      echo "📂 Moving admin build files to dist directory..."
+      mkdir -p .medusa/admin/dist
+      mv .medusa/admin/index.html .medusa/admin/dist/
+      mv .medusa/admin/assets .medusa/admin/dist/ 2>/dev/null || true
+      echo "✅ Admin dashboard built and moved successfully!"
     else
-      echo "❌ ERROR: Admin build failed - index.html not found after build"
-      echo "📁 Checking build directory structure..."
+      echo "❌ ERROR: Admin build failed - index.html not found in .medusa/admin/"
+      echo "📁 Directory structure:"
       ls -la .medusa/admin/ || echo "No .medusa/admin directory"
-      ls -la .medusa/admin/dist/ || echo "No .medusa/admin/dist directory"
       exit 1
     fi
   else
