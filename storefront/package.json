@@ -60,7 +60,10 @@
     "test:checkout:complete": "npm run test:checkout:unit && npm run test:checkout:integration && npm run test:checkout:e2e",
     "validate": "npm run type-check && npm run lint && npm run test:ci",
     "playwright:install": "playwright install",
-    "prepare": "cd .. && husky"
+    "prepare": "cd .. && husky",
+    "seed:addons": "tsx scripts/seed-addons-production.ts",
+    "seed:addons:dry": "DRY_RUN=true tsx scripts/seed-addons-production.ts",
+    "seed:addons:verbose": "VERBOSE=true tsx scripts/seed-addons-production.ts"
   },
   "lint-staged": {
     "**/*.{ts,tsx}": [
@@ -101,6 +104,7 @@
     "jest-axe": "^8.0.0",
     "jest-environment-jsdom": "^29.7.0",
     "lint-staged": "^16.2.6",
+    "tsx": "^4.7.0",
     "typescript": "^5.0.0"
   }
 }

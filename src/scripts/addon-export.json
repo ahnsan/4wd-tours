@@ -1,0 +1,1038 @@
+{
+  "export_metadata": {
+    "timestamp": "2025-11-11T15:24:09.024Z",
+    "database_url": "postgres://localhost/medusa-4wd-tours",
+    "medusa_backend_url": "http://localhost:9000",
+    "total_addons": 19
+  },
+  "statistics": {
+    "total_addons": 19,
+    "by_category": {
+      "Connectivity": 2,
+      "Accommodation": 3,
+      "Food & Beverage": 5,
+      "Photography": 4,
+      "Activities": 5
+    },
+    "by_unit": {
+      "per_day": 12,
+      "per_booking": 7
+    },
+    "pricing_range": {
+      "min": 30,
+      "max": 300,
+      "average": 104.21052631578948
+    },
+    "universal_addons": 10,
+    "tour_specific_addons": 3
+  },
+  "addons": [
+    {
+      "id": "prod_01K9H8KY6YHAAP1THH4R7EB258",
+      "handle": "addon-internet",
+      "title": "Always-on High-Speed Internet",
+      "description": null,
+      "status": "published",
+      "metadata": {
+        "icon": "wifi",
+        "unit": "per_day",
+        "addon": true,
+        "best_for": [
+          "Digital nomads",
+          "Content creators",
+          "Families wanting to share memories",
+          "Remote workers"
+        ],
+        "category": "Connectivity",
+        "features": [
+          "Reliable 4G/5G portable hotspot device",
+          "Connect up to 10 devices simultaneously",
+          "Unlimited data throughout your tour",
+          "Full battery life for all-day coverage",
+          "Works in most coastal and island locations"
+        ],
+        "description": "Portable wifi hotspot to keep you connected throughout your adventure",
+        "testimonial": "Being able to share our Fraser Island photos in real-time made our families feel like they were there with us. Plus, I could check work emails during breaks - win-win! - David, Sydney",
+        "social_proof": "98% of our guests love staying connected to share their journey in real-time",
+        "category_intro": "Stay Connected",
+        "applicable_tours": [],
+        "persuasive_title": "Stay Connected in Paradise",
+        "value_proposition": "Share your once-in-a-lifetime moments as they happen - don't wait days to post those incredible photos and videos.",
+        "category_persuasion": "Don't let adventure mean disconnection. Share your journey, stay in touch with loved ones, and handle urgent matters while experiencing the trip of a lifetime.",
+        "persuasive_description": "Share your adventure in real-time with our portable high-speed wifi hotspot. Post those stunning sunset photos instantly, video call loved ones from Fraser Island, or keep up with work emails while exploring Rainbow Beach. Adventure doesn't mean disconnecting from what matters."
+      },
+      "variants": [
+        {
+          "id": "variant_01K9H8KY757A5BAY9CXF2AQB4F",
+          "title": "Default",
+          "sku": "ADDON-ADDON-INTERNET",
+          "allow_backorder": false,
+          "manage_inventory": false,
+          "prices": [
+            {
+              "amount": 30,
+              "currency_code": "aud",
+              "min_quantity": null,
+              "max_quantity": null
+            }
+          ]
+        }
+      ],
+      "images": [],
+      "collection_id": "pcol_01K9FWH3KMH96DNKKBBB0M51XA",
+      "created_at": "2025-11-08T08:16:40.670Z",
+      "updated_at": "2025-11-10T03:42:22.086Z"
+    },
+    {
+      "id": "prod_01K9H8KY7Q0BTC99B0FBQGTK9J",
+      "handle": "addon-glamping",
+      "title": "Glamping Setup",
+      "description": null,
+      "status": "published",
+      "metadata": {
+        "icon": "tent",
+        "unit": "per_day",
+        "addon": true,
+        "best_for": [
+          "First-time campers",
+          "Couples seeking romance",
+          "Families with young children",
+          "Anyone who values comfort"
+        ],
+        "category": "Accommodation",
+        "features": [
+          "Spacious safari-style tent with standing room",
+          "Queen-size bed with hotel-quality linens",
+          "Comfortable pillows and warm duvets",
+          "Solar-powered lighting and USB charging",
+          "Private outdoor seating area",
+          "Premium camping furniture and amenities"
+        ],
+        "description": "Luxury camping experience with comfortable bedding and premium amenities",
+        "testimonial": "We're not campers, but glamping changed our minds! Falling asleep to the sound of waves and waking up to sunrise over the ocean - pure magic. And we were SO comfortable! - Sophie & James, Melbourne",
+        "social_proof": "Rated 5-stars by 95% of glampers - 'Best of both worlds!'",
+        "urgency_text": "Limited availability - only 3 glamping setups per tour to ensure exclusivity",
+        "category_intro": "Elevate Your Comfort",
+        "applicable_tours": [
+          "2d-fraser-rainbow",
+          "3d-fraser-rainbow",
+          "4d-fraser-rainbow"
+        ],
+        "persuasive_title": "Sleep Under the Stars in 5-Star Comfort",
+        "value_proposition": "Enjoy the authentic wilderness experience with the comfort of a boutique hotel - no sleeping on the ground, no roughing it, just pure luxury in nature.",
+        "category_persuasion": "Multi-day adventures deserve proper rest. Our accommodation upgrades ensure you wake up refreshed and ready to explore, not sore and exhausted from basic camping.",
+        "persuasive_description": "Experience the magic of Fraser Island nights without sacrificing comfort. Our glamping setup combines the romance of sleeping under pristine starry skies with hotel-quality bedding, plush pillows, and premium camping amenities. Wake up to birdsong and ocean breezes in your private luxury tent - it's camping reimagined for the discerning adventurer."
+      },
+      "variants": [
+        {
+          "id": "variant_01K9H8KY7YT8P7TR46GBKYFY44",
+          "title": "Default",
+          "sku": "ADDON-ADDON-GLAMPING",
+          "allow_backorder": false,
+          "manage_inventory": false,
+          "prices": [
+            {
+              "amount": 80,
+              "currency_code": "aud",
+              "min_quantity": null,
+              "max_quantity": null
+            }
+          ]
+        }
+      ],
+      "images": [],
+      "collection_id": "pcol_01K9FWH3KMH96DNKKBBB0M51XA",
+      "created_at": "2025-11-08T08:16:40.695Z",
+      "updated_at": "2025-11-09T11:51:39.979Z"
+    },
+    {
+      "id": "prod_01K9H8KY8GVBMYZVB4CAN72EYW",
+      "handle": "addon-bbq",
+      "title": "BBQ on the Beach",
+      "description": null,
+      "status": "published",
+      "metadata": {
+        "icon": "utensils",
+        "unit": "per_day",
+        "addon": true,
+        "best_for": [
+          "Food lovers",
+          "Romantic occasions",
+          "Groups celebrating",
+          "Anyone wanting an unforgettable meal"
+        ],
+        "category": "Food & Beverage",
+        "features": [
+          "Premium grass-fed Australian beef and lamb",
+          "Fresh Queensland seafood from local catches",
+          "Gourmet sides and fresh salads",
+          "Professional BBQ setup with all equipment",
+          "Sunset timing for perfect ambiance",
+          "Cleanup included - you just enjoy"
+        ],
+        "description": "Complete BBQ kit for beachside cooking experience. Fresh meals under the stars.",
+        "social_proof": "Our beach BBQ is the #1 rated add-on by tour guests",
+        "urgency_text": "Limited to 2 BBQ setups per day to ensure premium quality and beachside ambiance",
+        "applicable_tours": [
+          "*"
+        ],
+        "persuasive_title": "Savor the Sunset with Premium Beachside BBQ",
+        "value_proposition": "Elevate your tour from memorable to extraordinary with a dining experience that rivals five-star restaurants, all in nature's most stunning setting.",
+        "persuasive_description": "Transform your adventure into a gourmet experience with our signature beach BBQ. Watch the sun set over pristine sands while enjoying premium Australian meats, fresh local seafood, and chef-prepared sides. Nothing beats the taste of flame-grilled perfection in paradise."
+      },
+      "variants": [
+        {
+          "id": "variant_01K9H8KY8RSBMRHZH3XYPPR50Y",
+          "title": "Default",
+          "sku": "ADDON-ADDON-BBQ",
+          "allow_backorder": false,
+          "manage_inventory": false,
+          "prices": [
+            {
+              "amount": 65,
+              "currency_code": "aud",
+              "min_quantity": null,
+              "max_quantity": null
+            }
+          ]
+        }
+      ],
+      "images": [],
+      "collection_id": "pcol_01K9FWH3KMH96DNKKBBB0M51XA",
+      "created_at": "2025-11-08T08:16:40.721Z",
+      "updated_at": "2025-11-09T11:55:40.020Z"
+    },
+    {
+      "id": "prod_01K9HA5K51X8EM3EGTQK53NG20",
+      "handle": "addon-gourmet-bbq",
+      "title": "Gourmet Beach BBQ",
+      "description": null,
+      "status": "published",
+      "metadata": {
+        "unit": "per_booking",
+        "addon": true,
+        "category": "Food & Beverage",
+        "features": [
+          "Premium grass-fed Australian beef and lamb",
+          "Fresh Queensland seafood from local catches",
+          "Gourmet sides including Caesar salad and garlic bread",
+          "Professional portable BBQ setup with ocean views",
+          "All cooking equipment and utensils provided"
+        ],
+        "description": "BBQ setup with premium meats and sides for an unforgettable beach dining experience",
+        "testimonial": "The beach BBQ was the highlight of our trip. Watching the sunset while eating perfectly cooked steaks on Rainbow Beach - absolutely unforgettable! - Sarah & Mike, Brisbane",
+        "urgency_text": "Limited to 2 BBQ setups per day to ensure premium quality and beachside ambiance",
+        "category_intro": "Fuel Your Adventure",
+        "applicable_tours": [],
+        "persuasive_title": "Savor the Sunset with Premium Beachside BBQ",
+        "value_proposition": "Elevate your tour from memorable to extraordinary with a dining experience that rivals five-star restaurants, all in nature's most stunning setting.",
+        "category_persuasion": "Great food creates great memories. Our culinary experiences are designed to complement your journey with flavors as spectacular as the landscapes you'll explore.",
+        "persuasive_description": "Transform your adventure into a gourmet experience with our signature beach BBQ. Watch the sun set over pristine sands while enjoying premium Australian meats, fresh local seafood, and chef-prepared sides. Nothing beats the taste of flame-grilled perfection in paradise."
+      },
+      "variants": [
+        {
+          "id": "variant_01K9HA5K7HKF35KB2B0KCP3WM0",
+          "title": "Default",
+          "sku": "ADDON-ADDON-GOURMET-BBQ",
+          "allow_backorder": false,
+          "manage_inventory": false,
+          "prices": [
+            {
+              "amount": 180,
+              "currency_code": "aud",
+              "min_quantity": null,
+              "max_quantity": null
+            }
+          ]
+        }
+      ],
+      "images": [],
+      "collection_id": "pcol_01K9FWH3KMH96DNKKBBB0M51XA",
+      "created_at": "2025-11-08T08:43:47.746Z",
+      "updated_at": "2025-11-10T03:42:05.189Z"
+    },
+    {
+      "id": "prod_01K9HA5K8TWEWM8Y2263V9G0TC",
+      "handle": "addon-picnic-hamper",
+      "title": "Picnic Hamper",
+      "description": null,
+      "status": "published",
+      "metadata": {
+        "unit": "per_booking",
+        "addon": true,
+        "category": "Food & Beverage",
+        "features": [
+          "Artisan sandwiches on fresh sourdough",
+          "Local Queensland cheeses and seasonal fruits",
+          "Premium snacks and gourmet treats",
+          "Refreshing beverages and bottled water",
+          "Eco-friendly packaging with reusable containers"
+        ],
+        "description": "Gourmet sandwiches, snacks, and drinks perfect for a beach picnic",
+        "testimonial": "So much better than bringing our own lunch! The quality was incredible and it saved us time we spent exploring instead of making sandwiches. - Emma, Sydney",
+        "category_intro": "Fuel Your Adventure",
+        "applicable_tours": [
+          "*"
+        ],
+        "persuasive_title": "Artisan Picnic Hamper - Taste the Sunshine Coast",
+        "value_proposition": "Enjoy restaurant-quality dining anywhere your adventure takes you, without the hassle of meal planning or prep.",
+        "category_persuasion": "Great food creates great memories. Our culinary experiences are designed to complement your journey with flavors as spectacular as the landscapes you'll explore.",
+        "persuasive_description": "Skip the ordinary packed lunch and indulge in our curated picnic experience. Featuring artisan breads, local cheeses, premium deli meats, and fresh seasonal fruit, every bite celebrates Queensland's finest produce. Perfect for scenic lakeside stops or beachfront breaks."
+      },
+      "variants": [
+        {
+          "id": "variant_01K9HA5K91J6EZ76RWV1RCNJ9E",
+          "title": "Default",
+          "sku": "ADDON-ADDON-PICNIC-HAMPER",
+          "allow_backorder": false,
+          "manage_inventory": false,
+          "prices": [
+            {
+              "amount": 85,
+              "currency_code": "aud",
+              "min_quantity": null,
+              "max_quantity": null
+            }
+          ]
+        }
+      ],
+      "images": [],
+      "collection_id": "pcol_01K9FWH3KMH96DNKKBBB0M51XA",
+      "created_at": "2025-11-08T08:43:47.867Z",
+      "updated_at": "2025-11-08T13:59:58.636Z"
+    },
+    {
+      "id": "prod_01K9HA5K9Q76EWK74NTZZP5WGH",
+      "handle": "addon-seafood-platter",
+      "title": "Seafood Platter",
+      "description": null,
+      "status": "published",
+      "metadata": {
+        "unit": "per_booking",
+        "addon": true,
+        "category": "Food & Beverage",
+        "features": [
+          "Locally caught seafood sourced daily",
+          "Premium selection: prawns, oysters, calamari, fish",
+          "Traditional condiments and fresh lemon",
+          "Crusty artisan bread and butter",
+          "Served on ice in premium presentation platter"
+        ],
+        "description": "Fresh local seafood platter featuring the best catches from Queensland waters",
+        "testimonial": "As a seafood lover, this was heaven! Everything was incredibly fresh and the beachfront setting made it taste even better. Worth every penny! - James, Melbourne",
+        "urgency_text": "Subject to daily catch availability - pre-order recommended to guarantee your platter",
+        "category_intro": "Fuel Your Adventure",
+        "applicable_tours": [
+          "*"
+        ],
+        "persuasive_title": "Ocean-Fresh Seafood Platter - From Boat to Beach",
+        "value_proposition": "Taste the ocean at its finest - seafood so fresh it was swimming this morning, served in the most spectacular beachfront setting imaginable.",
+        "category_persuasion": "Great food creates great memories. Our culinary experiences are designed to complement your journey with flavors as spectacular as the landscapes you'll explore.",
+        "persuasive_description": "Indulge in the freshest seafood Queensland has to offer. Our platter showcases today's catch from local fishermen - succulent prawns, tender calamari, fresh oysters, and premium fish. Served ocean-side with lemon, cocktail sauce, and crusty bread for the ultimate coastal feast."
+      },
+      "variants": [
+        {
+          "id": "variant_01K9HA5K9Y6R5CWFC50JQZ488V",
+          "title": "Default",
+          "sku": "ADDON-ADDON-SEAFOOD-PLATTER",
+          "allow_backorder": false,
+          "manage_inventory": false,
+          "prices": [
+            {
+              "amount": 150,
+              "currency_code": "aud",
+              "min_quantity": null,
+              "max_quantity": null
+            }
+          ]
+        }
+      ],
+      "images": [],
+      "collection_id": "pcol_01K9FWH3KMH96DNKKBBB0M51XA",
+      "created_at": "2025-11-08T08:43:47.895Z",
+      "updated_at": "2025-11-08T13:59:58.659Z"
+    },
+    {
+      "id": "prod_01K9HA5KAW90W1Q5A9VGNY7WY4",
+      "handle": "addon-starlink",
+      "title": "Starlink Satellite Internet",
+      "description": null,
+      "status": "published",
+      "metadata": {
+        "unit": "per_day",
+        "addon": true,
+        "category": "Connectivity",
+        "features": [
+          "High-speed satellite internet via Starlink",
+          "100+ Mbps speeds even in remote areas",
+          "Low latency suitable for video calls and streaming",
+          "Works anywhere with clear sky view",
+          "Priority support for connectivity issues"
+        ],
+        "description": "High-speed satellite connectivity even in the most remote locations",
+        "testimonial": "As a travel blogger, Starlink was a game-changer. I uploaded 4K videos from the middle of Fraser Island! Absolutely worth it for content creators. - Jessica, Content Creator",
+        "urgency_text": "Limited Starlink units available - book early to secure this premium connectivity option",
+        "category_intro": "Stay Connected",
+        "applicable_tours": [
+          "*"
+        ],
+        "persuasive_title": "Ultimate Connectivity - Even in Remote Paradise",
+        "value_proposition": "Never compromise on connectivity - enjoy blazing-fast internet speeds even 100km from civilization, comparable to home broadband.",
+        "category_persuasion": "Don't let adventure mean disconnection. Share your journey, stay in touch with loved ones, and handle urgent matters while experiencing the trip of a lifetime.",
+        "persuasive_description": "Experience cutting-edge Starlink satellite internet in the most remote corners of Fraser Island and beyond. Stream, upload, and work at high speeds from locations where traditional internet fails. Perfect for digital nomads, content creators, and those who need rock-solid connectivity anywhere."
+      },
+      "variants": [
+        {
+          "id": "variant_01K9HA5KB6DWF5723APCJHVEP9",
+          "title": "Default",
+          "sku": "ADDON-ADDON-STARLINK",
+          "allow_backorder": false,
+          "manage_inventory": false,
+          "prices": [
+            {
+              "amount": 50,
+              "currency_code": "aud",
+              "min_quantity": null,
+              "max_quantity": null
+            }
+          ]
+        }
+      ],
+      "images": [],
+      "collection_id": "pcol_01K9FWH3KMH96DNKKBBB0M51XA",
+      "created_at": "2025-11-08T08:43:47.933Z",
+      "updated_at": "2025-11-08T13:59:58.706Z"
+    },
+    {
+      "id": "prod_01K9HA5KBRGP9WYDWNPR9F995S",
+      "handle": "addon-drone-photography",
+      "title": "Aerial Photography Package",
+      "description": null,
+      "status": "published",
+      "metadata": {
+        "unit": "per_booking",
+        "addon": true,
+        "category": "Photography",
+        "features": [
+          "Licensed and insured professional drone pilots",
+          "4K aerial video footage of your entire journey",
+          "50+ high-resolution aerial photographs",
+          "Edited highlight reel (3-5 minutes)",
+          "All raw footage provided on USB drive",
+          "Same-day preview, full delivery within 48 hours"
+        ],
+        "description": "Professional drone photos and videos to capture your adventure from above",
+        "testimonial": "The drone footage made our trip look like a National Geographic documentary! We've watched the highlight reel a dozen times. Best $200 we spent on the entire trip. - Tom & Lisa, Perth",
+        "urgency_text": "Weather-dependent service - book early for best conditions and editing turnaround",
+        "category_intro": "Preserve Your Memories",
+        "applicable_tours": [
+          "*"
+        ],
+        "persuasive_title": "Capture Your Adventure from Above - Cinematic Drone Footage",
+        "value_proposition": "Own stunning aerial footage that transforms your adventure into a professional travel documentary worthy of social media stardom.",
+        "category_persuasion": "Years from now, you'll treasure these moments. Our photography packages ensure you capture every spectacular second of your adventure in stunning detail.",
+        "persuasive_description": "See your journey from a breathtaking new perspective with professional drone photography and videography. Soaring shots of your 4WD conquering Rainbow Beach, aerial views of pristine Fraser Island lakes, and epic coastal panoramas that make your friends say 'wow'. Our licensed drone pilots capture cinema-quality footage you'll treasure forever."
+      },
+      "variants": [
+        {
+          "id": "variant_01K9HA5KC0H5KHEE9GHKD8038M",
+          "title": "Default",
+          "sku": "ADDON-ADDON-DRONE-PHOTOGRAPHY",
+          "allow_backorder": false,
+          "manage_inventory": false,
+          "prices": [
+            {
+              "amount": 200,
+              "currency_code": "aud",
+              "min_quantity": null,
+              "max_quantity": null
+            }
+          ]
+        }
+      ],
+      "images": [],
+      "collection_id": "pcol_01K9FWH3KMH96DNKKBBB0M51XA",
+      "created_at": "2025-11-08T08:43:47.961Z",
+      "updated_at": "2025-11-08T13:59:58.726Z"
+    },
+    {
+      "id": "prod_01K9HA5KCH4JG82JW3Q3D1QGJ1",
+      "handle": "addon-gopro",
+      "title": "GoPro Package",
+      "description": null,
+      "status": "published",
+      "metadata": {
+        "unit": "per_booking",
+        "addon": true,
+        "category": "Photography",
+        "features": [
+          "Latest GoPro Hero camera with 4K capability",
+          "Multiple mounting options (helmet, chest, handlebar)",
+          "Waterproof housing for swimming and water activities",
+          "High-capacity SD card (128GB) included",
+          "Spare batteries for all-day recording",
+          "Quick tutorial on settings and operation"
+        ],
+        "description": "GoPro camera with mounts and SD card for capturing all the action",
+        "testimonial": "The GoPro captured everything our phones couldn't - the beach driving, underwater shots, all the action! And we didn't have to risk our own camera. Perfect! - Rachel, Gold Coast",
+        "category_intro": "Preserve Your Memories",
+        "applicable_tours": [],
+        "persuasive_title": "Capture Every Thrill - Professional GoPro Action Package",
+        "value_proposition": "Record hands-free POV footage of every thrilling moment - from beach driving to swimming in Lake McKenzie - without worrying about expensive equipment.",
+        "category_persuasion": "Years from now, you'll treasure these moments. Our photography packages ensure you capture every spectacular second of your adventure in stunning detail.",
+        "persuasive_description": "Don't just experience the adventure - capture every exhilarating second with our premium GoPro setup. Helmet mounts for 4WD action, chest mounts for beach walks, and waterproof housing for swimming in crystal lakes. Go home with action-packed footage your phone could never capture."
+      },
+      "variants": [
+        {
+          "id": "variant_01K9HA5KCVX54Y23S7A3SQNBJ2",
+          "title": "Default",
+          "sku": "ADDON-ADDON-GOPRO",
+          "allow_backorder": false,
+          "manage_inventory": false,
+          "prices": [
+            {
+              "amount": 75,
+              "currency_code": "aud",
+              "min_quantity": null,
+              "max_quantity": null
+            }
+          ]
+        }
+      ],
+      "images": [],
+      "collection_id": "pcol_01K9FWH3KMH96DNKKBBB0M51XA",
+      "created_at": "2025-11-08T08:43:47.985Z",
+      "updated_at": "2025-11-10T03:40:28.773Z"
+    },
+    {
+      "id": "prod_01K9HA5KDF54TATEDJSEZW5ZJT",
+      "handle": "addon-photo-album",
+      "title": "Professional Photo Album",
+      "description": null,
+      "status": "published",
+      "metadata": {
+        "unit": "per_booking",
+        "addon": true,
+        "category": "Photography",
+        "features": [
+          "30-40 page premium hardcover album",
+          "Professional photo curation and layout design",
+          "Archival-quality printing on premium paper",
+          "Custom cover with your choice of hero image",
+          "Protective presentation box included",
+          "Delivered to your home within 2 weeks"
+        ],
+        "description": "Printed photo album of your trip, professionally curated and designed",
+        "testimonial": "This album sits on our coffee table and every guest picks it up. The quality is incredible and it's such a beautiful way to relive our Fraser Island adventure. - Mark & Jenny, Canberra",
+        "category_intro": "Preserve Your Memories",
+        "applicable_tours": [],
+        "persuasive_title": "Heirloom Photo Album - Your Adventure, Beautifully Bound",
+        "value_proposition": "Own a tangible, professionally-designed keepsake that brings your adventure to life every time someone opens it - far beyond what digital photos can deliver.",
+        "category_persuasion": "Years from now, you'll treasure these moments. Our photography packages ensure you capture every spectacular second of your adventure in stunning detail.",
+        "persuasive_description": "Transform your digital photos into a stunning coffee table masterpiece. Our professional designers curate the best moments from your tour and create a premium hardcover album with archival-quality printing. Each page tells your story with carefully selected images, captions, and elegant layouts that do justice to your incredible journey."
+      },
+      "variants": [
+        {
+          "id": "variant_01K9HA5KDQXQ2WNT3RK1WAKRR7",
+          "title": "Default",
+          "sku": "ADDON-ADDON-PHOTO-ALBUM",
+          "allow_backorder": false,
+          "manage_inventory": false,
+          "prices": [
+            {
+              "amount": 150,
+              "currency_code": "aud",
+              "min_quantity": null,
+              "max_quantity": null
+            }
+          ]
+        }
+      ],
+      "images": [],
+      "collection_id": "pcol_01K9FWH3KMH96DNKKBBB0M51XA",
+      "created_at": "2025-11-08T08:43:48.015Z",
+      "updated_at": "2025-11-10T03:41:43.129Z"
+    },
+    {
+      "id": "prod_01K9HA5KEJ364PDCH6AGNYZCH8",
+      "handle": "addon-beach-cabana",
+      "title": "Beach Cabana",
+      "description": null,
+      "status": "published",
+      "metadata": {
+        "unit": "per_day",
+        "addon": true,
+        "category": "Accommodation",
+        "features": [
+          "Large premium beach tent with UV protection",
+          "Comfortable beach loungers and chairs",
+          "Portable table for dining and drinks",
+          "Cooler box with ice for refreshments",
+          "Beach blankets and towels",
+          "Quick setup and takedown by guide"
+        ],
+        "description": "Private beach shelter with comfortable seating and shade",
+        "testimonial": "The cabana made such a difference on the hot days. We had our own shaded paradise while others huddled under trees. Felt like VIP treatment on the beach! - Linda & Mark, Brisbane",
+        "category_intro": "Elevate Your Comfort",
+        "applicable_tours": [
+          "*"
+        ],
+        "persuasive_title": "Your Private Beach Paradise - Luxury Cabana Setup",
+        "value_proposition": "Transform any beach stop into your personal luxury resort - shade, comfort, and privacy while everyone else scrambles for sparse natural shade.",
+        "category_persuasion": "Multi-day adventures deserve proper rest. Our accommodation upgrades ensure you wake up refreshed and ready to explore, not sore and exhausted from basic camping.",
+        "persuasive_description": "Claim your own slice of paradise with our premium beach cabana. Escape the sun during the heat of the day in your private shaded retreat, complete with comfortable loungers, cooling breeze, and stunning ocean views. Perfect for lunch breaks, afternoon relaxation, or simply enjoying the beach in comfort while others bake in the sun."
+      },
+      "variants": [
+        {
+          "id": "variant_01K9HA5KEQ2347ASNBWE39A1RM",
+          "title": "Default",
+          "sku": "ADDON-ADDON-BEACH-CABANA",
+          "allow_backorder": false,
+          "manage_inventory": false,
+          "prices": [
+            {
+              "amount": 180,
+              "currency_code": "aud",
+              "min_quantity": null,
+              "max_quantity": null
+            }
+          ]
+        }
+      ],
+      "images": [],
+      "collection_id": "pcol_01K9FWH3KMH96DNKKBBB0M51XA",
+      "created_at": "2025-11-08T08:43:48.050Z",
+      "updated_at": "2025-11-08T13:59:58.821Z"
+    },
+    {
+      "id": "prod_01K9HA5KF4JYJ0SFSNRE0124RZ",
+      "handle": "addon-eco-lodge",
+      "title": "Eco-Lodge Upgrade",
+      "description": null,
+      "status": "published",
+      "metadata": {
+        "unit": "per_day",
+        "addon": true,
+        "category": "Accommodation",
+        "features": [
+          "Private room with en-suite bathroom",
+          "Hot shower and modern facilities",
+          "Ocean or rainforest views from your room",
+          "100% renewable energy powered",
+          "Gourmet breakfast included",
+          "Access to lodge pool and common areas",
+          "Supporting local conservation projects"
+        ],
+        "description": "Upgrade to sustainable eco-lodge accommodation with modern comforts",
+        "testimonial": "The eco-lodge was incredible - felt like a 5-star resort but knowing it's sustainable made it even better. The sunrise view from our room was unforgettable! - Emma & Chris, Sydney",
+        "urgency_text": "Limited eco-lodge rooms available - these sustainable sanctuaries book months in advance",
+        "category_intro": "Elevate Your Comfort",
+        "applicable_tours": [
+          "2d-fraser-rainbow",
+          "3d-fraser-rainbow",
+          "4d-fraser-rainbow"
+        ],
+        "persuasive_title": "Premium Eco-Lodge - Sustainability Meets Luxury",
+        "value_proposition": "Enjoy resort-quality accommodations with clear conscience - luxury that's carbon-neutral and supports local environmental conservation efforts.",
+        "category_persuasion": "Multi-day adventures deserve proper rest. Our accommodation upgrades ensure you wake up refreshed and ready to explore, not sore and exhausted from basic camping.",
+        "persuasive_description": "Upgrade to our partner eco-lodges and experience sustainable tourism at its finest. These award-winning accommodations offer private rooms with ocean views, modern bathrooms with hot showers, gourmet dining, and resort-style amenities - all powered by renewable energy. Sleep soundly knowing you're minimizing your environmental impact while maximizing your comfort."
+      },
+      "variants": [
+        {
+          "id": "variant_01K9HA5KF926VNJ28W9523W6M9",
+          "title": "Default",
+          "sku": "ADDON-ADDON-ECO-LODGE",
+          "allow_backorder": false,
+          "manage_inventory": false,
+          "prices": [
+            {
+              "amount": 300,
+              "currency_code": "aud",
+              "min_quantity": null,
+              "max_quantity": null
+            }
+          ]
+        }
+      ],
+      "images": [],
+      "collection_id": "pcol_01K9FWH3KMH96DNKKBBB0M51XA",
+      "created_at": "2025-11-08T08:43:48.068Z",
+      "updated_at": "2025-11-08T13:59:58.847Z"
+    },
+    {
+      "id": "prod_01K9HA5KFM63QH9Z7RBM4FJ91S",
+      "handle": "addon-fishing",
+      "title": "Fishing Equipment",
+      "description": null,
+      "status": "published",
+      "metadata": {
+        "icon": "star",
+        "unit": "per_day",
+        "addon": true,
+        "best_for": [
+          "Fishing enthusiasts",
+          "Families seeking adventure",
+          "First-time anglers",
+          "Nature lovers"
+        ],
+        "category": "Activities",
+        "features": [
+          "Quality fishing rods and reels (multiple setups)",
+          "Complete tackle box with lures and hooks",
+          "Fresh bait and local fishing expertise",
+          "Guidance on best fishing spots and techniques",
+          "Fish cleaning kit (catch and keep allowed)",
+          "All necessary fishing accessories"
+        ],
+        "description": "Complete fishing setup including rods, tackle, and bait",
+        "testimonial": "Caught a 60cm flathead with the guide's help! Haven't been that excited in years. The equipment was great quality and made fishing so easy. - Paul, Newcastle",
+        "social_proof": "42% of our fishing gear renters catch their first-ever fish!",
+        "category_intro": "Amplify Your Adventure",
+        "applicable_tours": [
+          "*"
+        ],
+        "persuasive_title": "Catch Your Dinner - Premium Fishing Experience",
+        "value_proposition": "Experience the thrill of catching your own fresh fish in pristine waters, with expert guidance and quality gear that increases your chances of success.",
+        "category_persuasion": "Take your tour beyond sightseeing. Our activity packages let you actively engage with the environment, creating hands-on memories and stories worth telling.",
+        "persuasive_description": "Cast a line into some of Queensland's best fishing waters with our professional-grade equipment. Whether you're targeting flathead in the shallows, bream in the creeks, or trying your luck from the beach, we provide everything you need. Our guides know the best spots and techniques - you just need to reel them in."
+      },
+      "variants": [
+        {
+          "id": "variant_01K9HA5KFT6DTBSEREW2B3341K",
+          "title": "Default",
+          "sku": "ADDON-ADDON-FISHING",
+          "allow_backorder": false,
+          "manage_inventory": false,
+          "prices": [
+            {
+              "amount": 65,
+              "currency_code": "aud",
+              "min_quantity": null,
+              "max_quantity": null
+            }
+          ]
+        }
+      ],
+      "images": [],
+      "collection_id": "pcol_01K9FWH3KMH96DNKKBBB0M51XA",
+      "created_at": "2025-11-08T08:43:48.084Z",
+      "updated_at": "2025-11-08T13:59:58.870Z"
+    },
+    {
+      "id": "prod_01K9HA5KG5T8717K9HJJ3MRG79",
+      "handle": "addon-sandboarding",
+      "title": "Sandboarding Gear",
+      "description": null,
+      "status": "published",
+      "metadata": {
+        "unit": "per_day",
+        "addon": true,
+        "category": "Activities",
+        "features": [
+          "High-performance sandboards designed for dunes",
+          "Quality wax for optimal board performance",
+          "Safety instruction and technique coaching",
+          "Access to the best sandboarding dunes",
+          "Suitable for beginners to advanced riders",
+          "GoPro compatible for action footage"
+        ],
+        "description": "Sandboards and wax for an adrenaline-pumping dune experience",
+        "testimonial": "So much fun! Hit speeds we never expected and the jumps were epic. My teens loved it - best part of the trip for them. Definitely worth adding! - Karen & Family, Adelaide",
+        "category_intro": "Amplify Your Adventure",
+        "applicable_tours": [
+          "2d-fraser-rainbow",
+          "3d-fraser-rainbow",
+          "4d-fraser-rainbow"
+        ],
+        "persuasive_title": "Shred the Dunes - Extreme Sandboarding Adventure",
+        "value_proposition": "Get your adrenaline fix without the cold - pure speed and excitement on towering sand dunes that you won't find anywhere else.",
+        "category_persuasion": "Take your tour beyond sightseeing. Our activity packages let you actively engage with the environment, creating hands-on memories and stories worth telling.",
+        "persuasive_description": "Experience the rush of surfing down massive sand dunes at exhilarating speeds. Fraser Island and Rainbow Beach offer some of Australia's best sandboarding terrain - towering golden slopes perfect for carving, jumping, and catching serious air. It's like snowboarding, but warmer and no ski lifts required."
+      },
+      "variants": [
+        {
+          "id": "variant_01K9HA5KGAWZ7V5J0T58XNC7D7",
+          "title": "Default",
+          "sku": "ADDON-ADDON-SANDBOARDING",
+          "allow_backorder": false,
+          "manage_inventory": false,
+          "prices": [
+            {
+              "amount": 45,
+              "currency_code": "aud",
+              "min_quantity": null,
+              "max_quantity": null
+            }
+          ]
+        }
+      ],
+      "images": [],
+      "collection_id": "pcol_01K9FWH3KMH96DNKKBBB0M51XA",
+      "created_at": "2025-11-08T08:43:48.102Z",
+      "updated_at": "2025-11-09T20:49:42.738Z"
+    },
+    {
+      "id": "prod_01K9HA5KGP208K08SE4SA133VN",
+      "handle": "addon-bodyboarding",
+      "title": "Bodyboarding Set",
+      "description": null,
+      "status": "published",
+      "metadata": {
+        "unit": "per_day",
+        "addon": true,
+        "category": "Activities",
+        "features": [
+          "Quality bodyboards in multiple sizes",
+          "Professional swim fins for wave catching",
+          "Quick instruction for beginners",
+          "Works in various wave conditions",
+          "Suitable for ages 8 and up",
+          "Safety leash and wetsuit available"
+        ],
+        "description": "Bodyboards and fins for riding the waves",
+        "testimonial": "Never bodyboarded before but picked it up in minutes! Spent hours in the waves having a blast. Great value and perfect for families. - Michelle, Gold Coast",
+        "category_intro": "Amplify Your Adventure",
+        "applicable_tours": [
+          "*"
+        ],
+        "persuasive_title": "Ride the Waves - Bodyboarding Made Easy",
+        "value_proposition": "Experience the excitement of surfing without the steep learning curve - bodyboarding is easy to learn and instantly fun for all ages.",
+        "category_persuasion": "Take your tour beyond sightseeing. Our activity packages let you actively engage with the environment, creating hands-on memories and stories worth telling.",
+        "persuasive_description": "Feel the thrill of riding Queensland's perfect waves with our premium bodyboarding setup. Whether you're a first-timer or experienced wave rider, 75 Mile Beach and Rainbow Beach offer ideal conditions for bodyboarding fun. Catch waves, feel the rush, and experience the ocean in an entirely new way."
+      },
+      "variants": [
+        {
+          "id": "variant_01K9HA5KGX9BKF00FC28D768XC",
+          "title": "Default",
+          "sku": "ADDON-ADDON-BODYBOARDING",
+          "allow_backorder": false,
+          "manage_inventory": false,
+          "prices": [
+            {
+              "amount": 35,
+              "currency_code": "aud",
+              "min_quantity": null,
+              "max_quantity": null
+            }
+          ]
+        }
+      ],
+      "images": [],
+      "collection_id": "pcol_01K9FWH3KMH96DNKKBBB0M51XA",
+      "created_at": "2025-11-08T08:43:48.118Z",
+      "updated_at": "2025-11-08T13:59:58.914Z"
+    },
+    {
+      "id": "prod_01K9HA5KHD1X7HJH826DJWBT44",
+      "handle": "addon-paddleboarding",
+      "title": "Paddleboarding Package",
+      "description": null,
+      "status": "published",
+      "metadata": {
+        "unit": "per_day",
+        "addon": true,
+        "category": "Activities",
+        "features": [
+          "Stable inflatable SUPs perfect for beginners",
+          "Adjustable paddles for all heights",
+          "Life jackets and safety equipment",
+          "Dry bag for phone and valuables",
+          "Quick instruction and technique tips",
+          "Suitable for calm lakes and protected waters"
+        ],
+        "description": "Stand-up paddleboards and paddles for exploring calm waters",
+        "testimonial": "Paddleboarding on Lake McKenzie was surreal - so peaceful and beautiful. Easy to learn and such a unique way to experience the lake. Highly recommend! - Sarah, Sydney",
+        "category_intro": "Amplify Your Adventure",
+        "applicable_tours": [
+          "*"
+        ],
+        "persuasive_title": "Glide Across Crystal Waters - SUP Paradise",
+        "value_proposition": "Explore hidden waterways and experience nature from a unique vantage point - peaceful meditation meets gentle exercise in paradise.",
+        "category_persuasion": "Take your tour beyond sightseeing. Our activity packages let you actively engage with the environment, creating hands-on memories and stories worth telling.",
+        "persuasive_description": "Stand-up paddleboarding on Fraser Island's calm creeks and pristine lakes is absolutely magical. Glide across mirror-like waters, spot fish beneath your board, and access hidden corners unreachable on foot. It's peaceful, invigorating, and the perfect way to connect with nature while getting a surprising full-body workout."
+      },
+      "variants": [
+        {
+          "id": "variant_01K9HA5KHKVM6DX2WCW2CW2P36",
+          "title": "Default",
+          "sku": "ADDON-ADDON-PADDLEBOARDING",
+          "allow_backorder": false,
+          "manage_inventory": false,
+          "prices": [
+            {
+              "amount": 55,
+              "currency_code": "aud",
+              "min_quantity": null,
+              "max_quantity": null
+            }
+          ]
+        }
+      ],
+      "images": [],
+      "collection_id": "pcol_01K9FWH3KMH96DNKKBBB0M51XA",
+      "created_at": "2025-11-08T08:43:48.141Z",
+      "updated_at": "2025-11-08T13:59:58.934Z"
+    },
+    {
+      "id": "prod_01K9HA5KJ1DD260TM0PZD5NPBX",
+      "handle": "addon-kayaking",
+      "title": "Kayaking Adventure",
+      "description": null,
+      "status": "published",
+      "metadata": {
+        "unit": "per_day",
+        "addon": true,
+        "category": "Activities",
+        "features": [
+          "Single or tandem ocean kayaks",
+          "Quality paddles and safety equipment",
+          "Waterproof storage compartments",
+          "Life jackets and whistle",
+          "Wildlife spotting guide and binoculars",
+          "Best for calm waters and sheltered areas",
+          "Perfect for couples or solo adventurers"
+        ],
+        "description": "Single or double kayaks for coastal exploration and wildlife viewing",
+        "testimonial": "Kayaking through the mangroves and creeks was incredible! We saw stingrays, fish, and amazing birds. So quiet and peaceful - felt like we had the whole place to ourselves. - Ben & Amy, Melbourne",
+        "urgency_text": "Limited kayaks available - popular with couples and nature photographers",
+        "category_intro": "Amplify Your Adventure",
+        "applicable_tours": [
+          "*"
+        ],
+        "persuasive_title": "Paddle Your Own Adventure - Kayak Exploration",
+        "value_proposition": "Discover secret spots and encounter wildlife up close - the quiet approach of kayaking reveals nature's hidden treasures.",
+        "category_persuasion": "Take your tour beyond sightseeing. Our activity packages let you actively engage with the environment, creating hands-on memories and stories worth telling.",
+        "persuasive_description": "Navigate pristine waterways at your own pace with our premium kayaking package. Perfect for couples or solo explorers, kayaking lets you venture into shallow creeks teeming with fish, explore secluded coves, and get up close to coastal wildlife. It's peaceful, romantic, and offers access to places most tourists never see."
+      },
+      "variants": [
+        {
+          "id": "variant_01K9HA5KJ6CSYM3T6YXJJJNVWR",
+          "title": "Default",
+          "sku": "ADDON-ADDON-KAYAKING",
+          "allow_backorder": false,
+          "manage_inventory": false,
+          "prices": [
+            {
+              "amount": 75,
+              "currency_code": "aud",
+              "min_quantity": null,
+              "max_quantity": null
+            }
+          ]
+        }
+      ],
+      "images": [],
+      "collection_id": "pcol_01K9FWH3KMH96DNKKBBB0M51XA",
+      "created_at": "2025-11-08T08:43:48.161Z",
+      "updated_at": "2025-11-08T13:59:58.957Z"
+    },
+    {
+      "id": "prod_01K9HKNPYM42CW1TPTTFWCZ8HV",
+      "handle": "addon-camera",
+      "title": "Professional Camera Rental",
+      "description": null,
+      "status": "published",
+      "metadata": {
+        "icon": "camera",
+        "unit": "per_booking",
+        "addon": true,
+        "best_for": [
+          "Photography enthusiasts",
+          "Instagram influencers",
+          "Anyone wanting pro-quality memories",
+          "First-time DSLR users"
+        ],
+        "category": "Photography",
+        "features": [
+          "Canon EOS R6 mirrorless camera (20MP)",
+          "Wide-angle lens perfect for landscapes",
+          "Portrait lens for stunning people shots",
+          "Weatherproof protection for beach conditions",
+          "Extra batteries and 128GB memory card",
+          "Quick tutorial on camera basics included"
+        ],
+        "description": "High-end DSLR camera with multiple lenses. Capture your adventure in stunning detail.",
+        "social_proof": "Guests who rent our cameras get 3x more Instagram engagement on their photos",
+        "applicable_tours": [],
+        "persuasive_title": "Capture Pro-Quality Memories Forever",
+        "value_proposition": "Professional-quality photos without the $3,000+ price tag of buying your own camera. The memories are worth it.",
+        "persuasive_description": "Don't settle for phone photos of your once-in-a-lifetime adventure. Our professional Canon EOS R6 with premium lenses captures stunning 20MP images that will blow your Instagram followers away. Includes a quick tutorial so even beginners can shoot like pros."
+      },
+      "variants": [
+        {
+          "id": "variant_01K9HKNPZ6JP76WW4NY0F1F521",
+          "title": "Default",
+          "sku": "ADDON-CAMERA",
+          "allow_backorder": false,
+          "manage_inventory": false,
+          "prices": [
+            {
+              "amount": 75,
+              "currency_code": "aud",
+              "min_quantity": null,
+              "max_quantity": null
+            }
+          ]
+        }
+      ],
+      "images": [],
+      "collection_id": "pcol_01K9FWH3KMH96DNKKBBB0M51XA",
+      "created_at": "2025-11-08T11:29:53.109Z",
+      "updated_at": "2025-11-10T04:02:03.641Z"
+    },
+    {
+      "id": "prod_01K9HKNQ2P1Y3BQXHDZXKD3P47",
+      "handle": "addon-picnic",
+      "title": "Gourmet Picnic Package",
+      "description": null,
+      "status": "published",
+      "metadata": {
+        "icon": "utensils",
+        "unit": "per_day",
+        "addon": true,
+        "best_for": [
+          "Foodies",
+          "Romantic outings",
+          "Families",
+          "Health-conscious travelers"
+        ],
+        "category": "Food & Beverage",
+        "features": [
+          "Artisan sandwiches on fresh sourdough",
+          "Local Queensland cheeses and seasonal fruits",
+          "Premium snacks and gourmet treats",
+          "Cold beverages included",
+          "Delivered fresh daily to your location",
+          "Dietary requirements accommodated"
+        ],
+        "description": "Delicious gourmet picnic with local Queensland produce. Perfect for beach lunches.",
+        "social_proof": "Featured in Queensland Food & Travel Magazine as 'Best Picnic Experience 2024'",
+        "applicable_tours": [],
+        "persuasive_title": "Artisan Picnic Hamper - Taste the Sunshine Coast",
+        "value_proposition": "Enjoy restaurant-quality dining anywhere your adventure takes you, without the hassle of meal planning or prep.",
+        "persuasive_description": "Skip the ordinary packed lunch and indulge in our curated picnic experience. Featuring artisan breads, local cheeses, premium deli meats, and fresh seasonal fruit, every bite celebrates Queensland's finest produce. Perfect for scenic lakeside stops or beachfront breaks."
+      },
+      "variants": [
+        {
+          "id": "variant_01K9HKNQ3JT4X1TT38QZ7S5JNQ",
+          "title": "Default",
+          "sku": "ADDON-PICNIC",
+          "allow_backorder": false,
+          "manage_inventory": false,
+          "prices": [
+            {
+              "amount": 85,
+              "currency_code": "aud",
+              "min_quantity": null,
+              "max_quantity": null
+            }
+          ]
+        }
+      ],
+      "images": [],
+      "collection_id": "pcol_01K9FWH3KMH96DNKKBBB0M51XA",
+      "created_at": "2025-11-08T11:29:53.239Z",
+      "updated_at": "2025-11-10T04:01:52.136Z"
+    }
+  ]
+}

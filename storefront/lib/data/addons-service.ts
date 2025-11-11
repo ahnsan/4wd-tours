@@ -195,9 +195,9 @@ export async function fetchAllAddOns(regionId?: string): Promise<AddOnsResponse>
     // Get dynamic region ID
     const dynamicRegionId = getRegionId(regionId);
 
-    // Fetch from dedicated add-ons API endpoint
+    // Fetch from standard products API and filter for add-ons
     const response = await fetchWithTimeout(
-      `${API_BASE_URL}/store/add-ons?region_id=${dynamicRegionId}`,
+      `${API_BASE_URL}/store/products?region_id=${dynamicRegionId}&fields=*images,*variants`,
       { headers, cache: 'no-store' },
       API_TIMEOUT
     );
@@ -208,8 +208,9 @@ export async function fetchAllAddOns(regionId?: string): Promise<AddOnsResponse>
 
     const data = await response.json();
 
-    // Backend returns data.add_ons (not data.products)
-    const addons = (data.add_ons || [])
+    // Filter for products with addon=true metadata and convert to addon format
+    const addons = (data.products || [])
+      .filter((p: any) => p.metadata?.addon === true || p.handle?.startsWith('addon-'))
       .map(convertProductToAddOn);
 
     console.log(`[Add-ons Service] Fetched ${addons.length} add-ons from API`);
