@@ -4,7 +4,6 @@
 import { useEffect } from 'react';
 import useSWR from 'swr';
 import type { Addon } from '../types/cart';
-import { fetchAllAddOns } from '../data/addons-service';
 
 // MANDATORY: Use coordination hooks before API calls
 const useCoordinationHook = (operation: string) => {
@@ -45,16 +44,28 @@ export function useAddOns(): UseAddOnsReturn {
   } = useSWR(
     // Key for SWR cache - use string key since addons don't change per session
     'addons-list',
-    // Fetcher function
+    // Fetcher function - use API route instead of direct backend call
     async () => {
       // CLIENT-SIDE ONLY: Prevent SSR fetch issues
       if (typeof window === 'undefined') {
         return { addons: [], source: 'cache' as const, count: 0 };
       }
 
-      const response = await fetchAllAddOns();
-      console.log(`[useAddOns] Loaded ${response.count} add-ons from ${response.source} (SWR)`);
-      return response;
+      // Call Next.js API route instead of direct backend fetch
+      const apiResponse = await fetch('/api/addons');
+
+      if (!apiResponse.ok) {
+        throw new Error(`API request failed with status ${apiResponse.status}`);
+      }
+
+      const data = await apiResponse.json();
+
+      if (!data.success) {
+        throw new Error(data.error || 'Failed to fetch add-ons');
+      }
+
+      console.log(`[useAddOns] Loaded ${data.count} add-ons from ${data.source} (via API route)`);
+      return { addons: data.addons, source: data.source, count: data.count };
     },
     {
       // Performance optimizations
