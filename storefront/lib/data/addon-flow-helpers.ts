@@ -37,7 +37,7 @@ export async function getCategoryStepsV2(tourHandle?: string): Promise<CategoryS
     console.log(`[Flow Helpers] Fetching add-ons for tour: ${tourHandle || 'all'}`)
 
     // Get region ID from environment or cart context
-    const regionId = process.env.NEXT_PUBLIC_DEFAULT_REGION_ID || 'reg_01K9G4HA190556136E7RJQ4411'
+    const regionId = process.env.NEXT_PUBLIC_DEFAULT_REGION_ID || 'reg_01K9S1YB6T87JJW43F5ZAE8HWG'
 
     if (!tourHandle) {
       console.warn('[Flow Helpers] No tour handle provided')

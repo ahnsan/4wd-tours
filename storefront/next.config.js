@@ -60,6 +60,26 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: '4wd-tours-production.up.railway.app',
+        pathname: '/uploads/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '4wd-tours-production.up.railway.app',
+        pathname: '/static/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.up.railway.app',
+        pathname: '/uploads/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.up.railway.app',
+        pathname: '/static/**',
+      },
+      {
+        protocol: 'https',
         hostname: '**.amazonaws.com',
         pathname: '/**',
       },

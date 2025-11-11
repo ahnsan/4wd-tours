@@ -34,7 +34,7 @@ import {
 const MEDUSA_BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || 'http://localhost:9000';
 const STORE_API_URL = `${MEDUSA_BACKEND_URL}/store`;
 const API_TIMEOUT = 10000; // 10 seconds for cart operations
-const DEFAULT_REGION_ID = 'reg_01K9G4HA190556136E7RJQ4411'; // Australia region (Sunshine Coast)
+const DEFAULT_REGION_ID = process.env.NEXT_PUBLIC_DEFAULT_REGION_ID || 'reg_01K9S1YB6T87JJW43F5ZAE8HWG'; // Australia region (Sunshine Coast)
 
 // ============================================================================
 // TypeScript Types & Interfaces
