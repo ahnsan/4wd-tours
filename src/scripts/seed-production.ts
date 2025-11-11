@@ -360,30 +360,41 @@ export default async function seedProductionData({ container }: ExecArgs) {
     return;
   }
 
-  const { result: categoryResult } = await createProductCategoriesWorkflow(
-    container
-  ).run({
-    input: {
-      product_categories: [
-        {
-          name: "4WD Tours",
-          is_active: true,
-        },
-        {
-          name: "Fraser Island Tours",
-          is_active: true,
-        },
-        {
-          name: "Rainbow Beach Tours",
-          is_active: true,
-        },
-        {
-          name: "Add-ons",
-          is_active: true,
-        },
-      ],
-    },
-  });
+  // Check for existing categories
+  const existingCategories = await productModuleService.listProductCategories({});
+
+  let categoryResult;
+  if (existingCategories.length === 0) {
+    const { result } = await createProductCategoriesWorkflow(
+      container
+    ).run({
+      input: {
+        product_categories: [
+          {
+            name: "4WD Tours",
+            is_active: true,
+          },
+          {
+            name: "Fraser Island Tours",
+            is_active: true,
+          },
+          {
+            name: "Rainbow Beach Tours",
+            is_active: true,
+          },
+          {
+            name: "Add-ons",
+            is_active: true,
+          },
+        ],
+      },
+    });
+    categoryResult = result;
+    logger.info("Created product categories.");
+  } else {
+    categoryResult = existingCategories;
+    logger.info("Using existing product categories.");
+  }
 
   // Seed all 5 tours + 19 add-ons
   await createProductsWorkflow(container).run({
