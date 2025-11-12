@@ -90,7 +90,7 @@ STRIPE_PUBLISHABLE_KEY=pk_live_your_stripe_publishable_key_here
 STRIPE_WEBHOOK_SECRET=<get-from-stripe-dashboard>
 
 # Backend Config (Will be updated after Medusa Cloud deployment)
-DISABLE_ADMIN=true
+DISABLE_ADMIN=false
 BACKEND_URL=<will-be-provided-by-medusa-cloud>
 
 # CORS (Update with your actual Vercel domains)
