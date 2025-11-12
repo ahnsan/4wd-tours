@@ -21,10 +21,12 @@ if (process.env.JWT_SECRET.length < minSecretLength || process.env.COOKIE_SECRET
 
 module.exports = defineConfig({
   admin: {
-    // Admin deployed separately on Vercel
-    disable: true,
-    // Backend URL embedded in admin build for API calls
-    backendUrl: "https://4wd-tours-production.up.railway.app",
+    // Environment-based admin configuration
+    // Local: Admin served from backend (disable: false)
+    // Production: Admin served from Vercel (disable: true)
+    disable: process.env.DISABLE_ADMIN === 'true',
+    // Backend URL for admin API calls
+    backendUrl: process.env.BACKEND_URL || "http://localhost:9000",
     // Use default /app path (Medusa v2 standard)
     path: "/app",
   },
