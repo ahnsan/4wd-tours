@@ -10,7 +10,15 @@
   "public": true,
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/app",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/app/(.*)",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/",
       "destination": "/index.html"
     }
   ],
@@ -41,7 +49,7 @@
       ]
     },
     {
-      "source": "/assets/(.*)",
+      "source": "/app/assets/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
