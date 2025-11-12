@@ -82,7 +82,12 @@ export async function POST(
     // Step 4: Fix each addon
     console.log("Step 4: Fixing addons...\n");
 
-    const results = [];
+    const results: Array<{
+      handle: string;
+      id: string;
+      status: string;
+      error?: string;
+    }> = [];
     let successCount = 0;
     let errorCount = 0;
 
