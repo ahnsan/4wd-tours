@@ -2,21 +2,41 @@ import { loadEnv, defineConfig } from '@medusajs/framework/utils'
 
 loadEnv(process.env.NODE_ENV || 'development', process.cwd())
 
-// SECURITY: Validate required secrets on startup
-if (!process.env.JWT_SECRET || !process.env.COOKIE_SECRET) {
-  throw new Error(
-    'SECURITY ERROR: JWT_SECRET and COOKIE_SECRET environment variables are required. ' +
-    'Generate strong secrets using: node -e "console.log(require(\'crypto\').randomBytes(64).toString(\'hex\'))"'
-  )
-}
+// SECURITY: Build-time safe defaults (will be overridden at runtime by Medusa Cloud)
+// Medusa Cloud injects environment variables at RUNTIME, not BUILD-TIME
+// These dummy values allow the build to succeed, then real secrets are validated at startup
+const JWT_SECRET = process.env.JWT_SECRET || 'BUILD_TIME_DUMMY_VALUE_MIN_32_CHARS_LONG_PLACEHOLDER_JWT_SECRET'
+const COOKIE_SECRET = process.env.COOKIE_SECRET || 'BUILD_TIME_DUMMY_VALUE_MIN_32_CHARS_LONG_PLACEHOLDER_COOKIE'
 
-// SECURITY: Reject weak secrets
-const minSecretLength = 32
-if (process.env.JWT_SECRET.length < minSecretLength || process.env.COOKIE_SECRET.length < minSecretLength) {
-  throw new Error(
-    `SECURITY ERROR: JWT_SECRET and COOKIE_SECRET must be at least ${minSecretLength} characters long. ` +
-    'Use cryptographically strong random values.'
-  )
+// SECURITY: Runtime-only validation (only when starting server, not during build)
+// Check if we're actually starting the server (not just building)
+const isServerStartup = process.env.NODE_ENV === 'production' || process.argv.some(arg => arg.includes('start') || arg.includes('develop'))
+
+if (isServerStartup) {
+  // SECURITY: Validate required secrets on server startup
+  if (!process.env.JWT_SECRET || !process.env.COOKIE_SECRET) {
+    throw new Error(
+      'SECURITY ERROR: JWT_SECRET and COOKIE_SECRET environment variables are required. ' +
+      'Generate strong secrets using: node -e "console.log(require(\'crypto\').randomBytes(64).toString(\'hex\'))"'
+    )
+  }
+
+  // SECURITY: Reject weak secrets
+  const minSecretLength = 32
+  if (process.env.JWT_SECRET.length < minSecretLength || process.env.COOKIE_SECRET.length < minSecretLength) {
+    throw new Error(
+      `SECURITY ERROR: JWT_SECRET and COOKIE_SECRET must be at least ${minSecretLength} characters long. ` +
+      'Use cryptographically strong random values.'
+    )
+  }
+
+  // SECURITY: Check if using dummy build-time values in production
+  if (JWT_SECRET.includes('DUMMY') || COOKIE_SECRET.includes('DUMMY')) {
+    throw new Error(
+      'SECURITY ERROR: Production environment detected with dummy secrets. ' +
+      'Set real JWT_SECRET and COOKIE_SECRET environment variables in Medusa Cloud dashboard.'
+    )
+  }
 }
 
 module.exports = defineConfig({
@@ -42,9 +62,9 @@ module.exports = defineConfig({
       adminCors: process.env.ADMIN_CORS!,
       // Auth CORS - allows authentication from admin domain
       authCors: process.env.AUTH_CORS!,
-      // SECURITY: No fallback secrets - must be set in environment
-      jwtSecret: process.env.JWT_SECRET,
-      cookieSecret: process.env.COOKIE_SECRET,
+      // SECURITY: Use build-safe values with runtime validation
+      jwtSecret: JWT_SECRET,
+      cookieSecret: COOKIE_SECRET,
     }
   },
   modules: [
