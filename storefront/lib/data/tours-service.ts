@@ -10,7 +10,7 @@ import type { Tour } from '../types/cart';
 // Environment configuration
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:9000';
 const API_TIMEOUT = 5000; // 5 seconds
-const DEFAULT_REGION_ID = process.env.NEXT_PUBLIC_DEFAULT_REGION_ID || 'reg_01K9S1YB6T87JJW43F5ZAE8HWG'; // Australia region
+const DEFAULT_REGION_ID = process.env.NEXT_PUBLIC_DEFAULT_REGION_ID || 'reg_01K9G4HA190556136E7RJQ4411'; // Australia region
 
 // Data source tracking
 type DataSource = 'api' | 'cache';
