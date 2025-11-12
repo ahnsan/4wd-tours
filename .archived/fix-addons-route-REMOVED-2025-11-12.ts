@@ -1,4 +1,24 @@
 /**
+ * ARCHIVED: 2025-11-12
+ * REASON: One-time utility endpoint with TypeScript compilation errors
+ *
+ * This file was removed from the build to fix TypeScript compilation errors.
+ * It was a one-time fix endpoint marked for deletion after use.
+ *
+ * ORIGINAL ERRORS:
+ * 1. Line 265: Property 'query' does not exist on type 'Link'
+ * 2. Line 299: Property 'updatePrices' does not exist (should be updatePriceSets)
+ * 3. Line 319: Property 'createPrices' does not exist (should use createPriceSets)
+ *
+ * If this functionality is needed again, use the correct Medusa v2 APIs:
+ * - Use pricingModuleService.createPriceSets() instead of createPrices()
+ * - Use pricingModuleService.listPriceSets() instead of remoteLink.query()
+ * - Link variants to price sets using remoteLink.create()
+ *
+ * See /src/modules/seeding/addon-upsert.ts for correct pricing implementation
+ */
+
+/**
  * ONE-TIME FIX ENDPOINT - Fix addon collection assignments and pricing
  * POST /store/fix-addons?secret=<FIX_SECRET>  - Fix collections
  * GET /store/fix-addons?secret=<FIX_SECRET>   - Fix pricing
@@ -261,7 +281,8 @@ export async function GET(
         const priceAmount = ADDON_PRICING[product.handle] || DEFAULT_ADDON_PRICE;
 
         for (const variant of product.variants) {
-          // Get existing price set links
+          // ERROR LINE 265: remoteLink.query() doesn't exist
+          // SHOULD USE: pricingModuleService.listPriceSets() or check variant.price_set_id
           const priceSetLinks = await remoteLink.query({
             [Modules.PRODUCT]: {
               variant_id: variant.id,
@@ -296,6 +317,8 @@ export async function GET(
               if (australiaPrice) {
                 // Price exists - check if amount needs updating
                 if (australiaPrice.amount !== priceAmount) {
+                  // ERROR LINE 299: updatePrices() doesn't exist
+                  // SHOULD USE: updatePriceSets() or recreate the price
                   await pricingModuleService.updatePrices({
                     id: australiaPrice.id,
                     amount: priceAmount,
@@ -316,6 +339,8 @@ export async function GET(
                 }
               } else {
                 // No Australia price - add it
+                // ERROR LINE 319: createPrices() doesn't exist
+                // SHOULD USE: createPriceSets() with proper structure
                 await pricingModuleService.createPrices({
                   price_set_id: priceSet.id,
                   amount: priceAmount,
