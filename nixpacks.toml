@@ -1,0 +1,21 @@
+# Nixpacks Configuration for Medusa Backend on Railway
+# Uses Yarn Classic v1 (compatible with yarn.lock v1)
+
+[phases.setup]
+nixPkgs = ["nodejs_20"]
+
+[phases.install]
+cmds = [
+  "corepack enable",
+  "corepack prepare yarn@1.22.22 --activate",
+  "yarn install --frozen-lockfile"
+]
+
+[phases.build]
+cmds = ["yarn build"]
+
+[start]
+cmd = "npx medusa db:migrate && npx medusa exec ./src/scripts/seed-production.ts && npx medusa exec ./src/scripts/create-admin-user.ts && npx medusa start"
+
+[variables]
+NODE_ENV = "production"
