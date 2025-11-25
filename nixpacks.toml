@@ -15,7 +15,7 @@ cmds = [
 cmds = ["yarn build"]
 
 [start]
-cmd = "npx medusa db:migrate && npx medusa exec ./src/scripts/seed-production.ts && npx medusa exec ./src/scripts/create-admin-user.ts && npx medusa start"
+cmd = "npx medusa db:migrate && npx medusa exec ./src/scripts/seed.ts && npx medusa exec ./src/scripts/create-admin-user.ts && npx medusa start"
 
 [variables]
 NODE_ENV = "production"
