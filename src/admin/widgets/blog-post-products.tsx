@@ -130,7 +130,7 @@ const BlogPostProductSelector = ({ data }: any) => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "post.details.after",
+  zone: "product.details.after",
 })
 
 export default BlogPostProductSelector
