@@ -1,5 +1,7 @@
 import { loadEnv, defineConfig } from '@medusajs/framework/utils'
 
+// Load environment variables from .env file
+// In production, Railway env vars take precedence
 loadEnv(process.env.NODE_ENV || 'development', process.cwd())
 
 // SECURITY: Validate required secrets on startup
